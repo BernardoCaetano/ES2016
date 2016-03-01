@@ -1,0 +1,65 @@
+package pt.tecnico.myDrive;
+
+class MyDrive {
+	int fileCounter;
+}
+
+class User {
+	String _username;
+	String _password;
+	String _name;
+	String _umask;
+}
+
+class File {
+	int _fileId;
+	String _name;
+	DateTime _lastModified;
+	String _fmask;	
+}
+
+class Dir extends File;
+
+class PlainFile extends File {
+	String _text;
+}
+
+class App extends PlainFile;
+
+class Link extends PlainFile;
+
+
+relation KnowsMyDrive {
+	MyDrive playsRole _myDriveApplication { multiplicity 0..1; }
+	.pt.ist.fenixframework.DomainRoot playsRole _root;
+}
+
+relation MyDriveHasUsers {
+	MyDrive playsRole _myDriveU { multiplicity 1; }
+	User playsRole _usersU { multiplicity *; } 
+}
+
+relation MyDriveHasFiles {
+	MyDrive playsRole _myDriveF { multiplicity 1; }
+	User playsRole _usersF { multiplicity *; } 
+}
+
+relation UserHasFiles {
+	User playsRole _createrUser { multiplicity 1; }
+	File playsRole _userFiles { multiplicity *; }
+}
+
+relation UserHasHomeDir {
+	User playsRole _users { multiplicity *; }
+	Dir playsRole _homeDir { multiplicity 1;}
+}
+
+relation DirHasFiles {
+	Dir playsRole _dir { multiplicity 1; }
+	File playsRole _dirFiles { multiplicity *; }
+}
+
+relation DirKnowsParent {
+	Dir playsRole _selfDir { multiplicity 1; }
+	Dir playsRole _parentDir { multiplicity 1; }
+}
