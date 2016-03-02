@@ -1,0 +1,82 @@
+package pt.tecnico.myDrive;
+
+class MyDrive;
+
+
+relation RootRelation {
+	MyDrive playsRole mydrive { multiplicity 0..1; }
+	.pt.ist.fenixframework.DomainRoot playsRole root { multiplicity 0..1; }
+}
+
+
+class User {
+	String username;
+	String password;
+	String name;
+	int umask;
+}
+
+class SuperUser extends User;
+
+class AbstractFile {
+	String name;
+	int id;
+	int permissions;
+	DateTime modifiedTime;
+	DateTime createdTime;
+}
+
+class Directory extends AbstractFile;
+
+relation MyDriveHasUsers {
+	MyDrive playsRole;
+	User playsRole users { multiplicity *; }
+}
+
+relation MyDriveHasRootDirectory {
+	MyDrive playsRole;
+	Directory playsRole rootDirectory;
+}
+
+class TextFile extends AbstractFile {
+	String text;
+}
+
+class Link extends AbstractFile {
+	String link;
+}
+
+class App extends AbstractFile {
+	String app;
+}
+
+relation UserHasHomeDirectory {
+	User playsRole;
+	Directory playsRole homeDirectory { multiplicity 0..1; }
+}
+
+relation AbstractFileHasParent {
+	AbstractFile playsRole;
+	Directory playsRole parentDirectory { multiplicity 0..1; }
+}
+
+relation DirectoryHasStuff {
+	Directory playsRole;
+	AbstractFile playsRole children { multiplicity *; }
+}
+
+relation AbstractFileOwnedByUser {
+	User playsRole owner { multiplicity 0..1; }
+	AbstractFile playsRole;
+}
+
+
+relation AbstractFileCreatedBy {
+	AbstractFile playsRole;
+	User playsRole creator;
+}
+
+relation AbstractFileModifiedBy {
+	AbstractFile playsRole;
+	User playsRole lastModificator;
+}
