@@ -1,0 +1,89 @@
+package pt.tecnico.myDrive;
+
+class FileSystem;
+
+class User {
+	String _username;
+	String _password;
+	String _name;
+	String _mask;
+}
+
+class SuperUser extends User{
+
+}
+
+class File {
+	Integer _fileID;
+	String _name;
+	Integer _lastModified;
+	String _permissions;
+}
+
+
+class Txt extends File {
+	String _content;
+	
+}
+
+class Dir extends File{
+}
+
+class Link extends File{
+	String _content;
+}
+
+class App extends File{
+	String _content;
+}
+
+relation DomainRootHasFileSystem {
+  .pt.ist.fenixframework.DomainRoot playsRole root {
+    multiplicity 0..1;
+  }
+  FileSystem playsRole FileSystem {
+    multiplicity 0..1;
+  }
+}
+
+relation DirHasFiles {
+	Dir playsRole Dir;
+	File playsRole _files {
+		multiplicity *;
+	}
+}
+
+relation FileSystemHasSuperUser{
+	FileSystem playsRole _fs;
+	Dir playsRole _rootDir{
+		multiplicity *;
+	}
+}
+
+relation UserHasDir{
+	User playsRole _user;
+	Dir playsRole _homedir{
+		multiplicity 1;
+	} 
+}
+
+relation UserHasFiles{
+	User playsRole _user;
+	Link playsRole _fileLinks{
+		multiplicity *;
+	}
+}
+
+relation FileHasCreator{
+	File playsRole _file;
+	User playsRole _creator{
+		multiplicity 1;
+	}
+}
+
+relation FileHasDir{
+	File playsRole _file;
+	Dir playsRole _dir{
+		multiplicity 1;
+	}
+}
