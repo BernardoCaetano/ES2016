@@ -17,7 +17,7 @@ public class Main {
     }
 
     public static void applicationCodeGoesHere() {
-        someTransaction();
+        someTransaction(); 
     }
 
     @Atomic
