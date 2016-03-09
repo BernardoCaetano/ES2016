@@ -21,4 +21,9 @@ public class Directory extends Directory_Base {
     	return null;
     }
     
+    @Override
+    public String getPath(){
+    	return super.getPath() + "/";
+    }
+    
 }
