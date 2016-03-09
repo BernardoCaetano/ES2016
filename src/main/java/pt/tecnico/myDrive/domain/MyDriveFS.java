@@ -6,6 +6,7 @@ import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 
 public class MyDriveFS extends MyDriveFS_Base {
     
+    //Singleton
 	public static MyDriveFS getInstance() {
         MyDriveFS mydrive = FenixFramework.getDomainRoot().getMyDrive();
         if (mydrive != null)
@@ -14,7 +15,7 @@ public class MyDriveFS extends MyDriveFS_Base {
         return new MyDriveFS();
     }
 
-    public MyDriveFS() {
+    private MyDriveFS() {
         setRoot(FenixFramework.getDomainRoot());
     }
 
