@@ -45,8 +45,8 @@ relation MyDriveHasRootDirectory {
 	RootDirectory playsRole rootDirectory;
 }
 
-relation FileHasOwner {
-	AbstractFile playsRole files;
+relation FilesHaveOwner {
+	AbstractFile playsRole files { multiplicity *; }
 	User playsRole owner;
 }
 
