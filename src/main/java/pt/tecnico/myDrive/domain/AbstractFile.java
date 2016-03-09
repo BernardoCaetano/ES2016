@@ -6,4 +6,7 @@ public class AbstractFile extends AbstractFile_Base {
         super();
     }
     
+    public String getPath() {
+    	return getParent().getPath() + getName();
+    }
 }

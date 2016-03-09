@@ -6,4 +6,8 @@ public class RootDirectory extends RootDirectory_Base {
         super();
     }
     
+    @Override
+    public String getPath(){
+    	return "/";
+    }
 }
