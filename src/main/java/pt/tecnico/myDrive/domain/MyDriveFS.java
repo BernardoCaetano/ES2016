@@ -1,23 +1,42 @@
 package pt.tecnico.myDrive.domain;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import pt.ist.fenixframework.FenixFramework;
+
+import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 
 public class MyDriveFS extends MyDriveFS_Base {
     
 	public static MyDriveFS getInstance() {
-        MyDriveFS fs = FenixFramework.getDomainRoot().getMyDriveFS();
-        if (fs != null)
-	    return fs;
+        MyDriveFS mydrive = FenixFramework.getDomainRoot().getMyDrive();
+        if (mydrive != null)
+	    return mydrive;
 
-		log.trace("new MyDriveFS");
         return new MyDriveFS();
     }
 
     public MyDriveFS() {
         setRoot(FenixFramework.getDomainRoot());
     }
-    
+
+    @Override
+    public void addUsers(User userToBeAdded) { //throws NameAlreadyExistsException {
+        if (hasUser(userToBeAdded.getUsername()))
+            //throw new NameAlreadyExistsException(userToBeAdded.getUsername());
+
+        super.addUsers(userToBeAdded);
+    }
+
+    public boolean hasUser(String username) {
+        return getUserByUsername(username) != null;
+    }
+
+    public User getUserByUsername(String username) {
+        for (User user : getUsersSet()) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
 }
