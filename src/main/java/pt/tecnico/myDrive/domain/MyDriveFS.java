@@ -40,5 +40,23 @@ public class MyDriveFS extends MyDriveFS_Base {
         }
         return null;
     }
+    
+	public AbstractFile getFileByPath(Directory currentDir, String path) {
+		if (path.equals("/")) {
+			return getRootDirectory();
+		} else if (path.startsWith("/")) {
+			currentDir = getRootDirectory();
+			path = path.substring(1);
+		}
+
+		String[] parts = path.split("/", 2);
+		AbstractFile f = currentDir.getFileByName(parts[0]);
+
+		if (parts.length < 2) {
+			return f;
+		}
+
+		return getFileByPath((Directory) f, parts[1]);
+	}
 
 }
