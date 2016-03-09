@@ -20,7 +20,10 @@ class AbstractFile {
 	DateTime lastModified;
 }
 
-class TextFile extends AbstractFile;
+class TextFile extends AbstractFile {
+	String content;
+}
+
 class Directory extends AbstractFile;
 class Link extends TextFile;
 class App extends TextFile;
