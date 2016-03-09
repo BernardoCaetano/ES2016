@@ -4,16 +4,16 @@ public class NameAlreadyExistsException extends MyDriveException {
 
     private static final long serialVersionUID = 1L;
 
-    private String conflictingName;
+    private String _conflictingName;
 
     public NameAlreadyExistsException(String conflictingName) {
-        conflictingName = conflictingName;
+        _conflictingName = conflictingName;
     }
 
-    public String getConflictingName() { return conflictingName; }
+    public String getConflictingName() { return _conflictingName; }
 
     @Override
     public String getMessage() {
-        return "This name '" + conflictingName + "' is already being used";
+        return "This name '" + _conflictingName + "' is already being used";
     }
 }

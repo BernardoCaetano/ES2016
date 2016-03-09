@@ -6,7 +6,7 @@ import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 
 public class MyDriveFS extends MyDriveFS_Base {
     
-    //Singleton
+    //Singleton 
 	public static MyDriveFS getInstance() {
         MyDriveFS mydrive = FenixFramework.getDomainRoot().getMyDrive();
         if (mydrive != null)
@@ -20,9 +20,10 @@ public class MyDriveFS extends MyDriveFS_Base {
     }
 
     @Override
-    public void addUsers(User userToBeAdded) { //throws NameAlreadyExistsException {
-        if (hasUser(userToBeAdded.getUsername()))
-            //throw new NameAlreadyExistsException(userToBeAdded.getUsername());
+    public void addUsers(User userToBeAdded) throws NameAlreadyExistsException {
+        if (hasUser(userToBeAdded.getUsername())){
+            throw new NameAlreadyExistsException(userToBeAdded.getUsername());
+        }
 
         super.addUsers(userToBeAdded);
     }
