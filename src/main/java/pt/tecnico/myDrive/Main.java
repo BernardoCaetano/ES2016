@@ -4,24 +4,36 @@ import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.DomainRoot;
 import pt.ist.fenixframework.FenixFramework;
 
-public class Main {
+import pt.tecnico.myDrive.domain.*;
+import pt.ist.fenixframework.Atomic;
+import pt.ist.fenixframework.FenixFramework;
 
-    // FenixFramework will try automatic initialization when first accessed
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import pt.tecnico.myDrive.exception.*;
+
+public class Main {
+    static final Logger log = LogManager.getRootLogger();
+
     public static void main(String [] args) {
         try {
-            applicationCodeGoesHere();
+            setup();
         } finally {
             // ensure an orderly shutdown
             FenixFramework.shutdown();
         }
     }
 
-    public static void applicationCodeGoesHere() {
-        someTransaction(); 
-    }
-
     @Atomic
-    public static void someTransaction() {
-        System.out.println("FenixFramework's root object is: " + FenixFramework.getDomainRoot());
+    public static void setup() { // phonebook with debug data
+        try {
+        log.trace("Setup: " + FenixFramework.getDomainRoot());
+        MyDriveFS mydrive = MyDriveFS.getInstance();
+        User user = new User(mydrive, "Bernardo");
+        User root = new SuperUser(mydrive, "root", "***", "Super User", "rwxdr-x-");
+        } catch(MyDriveException e){
+            System.out.println(e.getMessage());
+        }
     }
 }
