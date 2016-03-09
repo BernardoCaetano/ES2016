@@ -1,8 +1,9 @@
 package pt.tecnico.myDrive.domain;
 
-public class SuperUser extends User {
+public class SuperUser extends SuperUser_Base {
     
     public SuperUser(MyDriveFS mydrive, String username, String password, String name, String umask) {
-        super(mydrive, username, password, name, umask);
+    	super();
+        init(mydrive, username, password, name, umask);
     }
 }
