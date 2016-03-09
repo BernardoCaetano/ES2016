@@ -2,19 +2,23 @@ package pt.tecnico.myDrive.domain;
 
 public class User extends User_Base {
     
+    public User() {
+        super();
+    }
+
     public User(MyDriveFS mydrive, String username) {
-    	setUsername(username);
-    	setPassword(username);
-    	setName(username);
-    	setUmask("rwxd----");  
-        setMyDrive(mydrive);      
+    	init(mydrive, username, username, username, "rwxd----"); 
     }
 
     public User(MyDriveFS mydrive, String username, String password, String name, String umask) {
+        init(mydrive, username, password, name, umask);
+    }
+    
+    public void init(MyDriveFS mydrive, String username, String password, String name, String umask) {
         setUsername(username);
-    	setPassword(username);
-    	setName(username);
-    	setUmask(umask);
+        setPassword(password);
+        setName(name);
+        setUmask(umask);
         setMyDrive(mydrive);
     }
 
