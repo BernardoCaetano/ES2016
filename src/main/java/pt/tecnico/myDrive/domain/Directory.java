@@ -7,7 +7,7 @@ public class Directory extends Directory_Base {
     }
     
     
-    public AbstractFile getChild(String name){
+    public AbstractFile getFileByName(String name){
     	if( name.equals(".") ){
     		return this;
     	}else if( name.equals("..") ){
