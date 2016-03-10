@@ -5,7 +5,6 @@ import pt.ist.fenixframework.FenixFramework;
 
 public class RootDirectory extends RootDirectory_Base {
     
-	//Singleton 
 	public static RootDirectory getInstance() {
         RootDirectory rootDirectory = FenixFramework.getDomainRoot().getMyDrive().getRootDirectory();
         if (rootDirectory != null)

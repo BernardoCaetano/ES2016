@@ -29,6 +29,7 @@ public class AbstractFile extends AbstractFile_Base {
     	else{
     		setOwner(owner);
     	}
+    	getOwner().addFiles(this);
     }
 
     public void setId() {

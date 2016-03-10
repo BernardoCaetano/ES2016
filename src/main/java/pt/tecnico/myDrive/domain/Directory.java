@@ -30,5 +30,4 @@ public class Directory extends Directory_Base {
     public String getPath(){
     	return super.getPath() + "/";
     }
-    
 }
