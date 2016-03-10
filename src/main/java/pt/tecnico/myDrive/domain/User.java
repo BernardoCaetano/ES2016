@@ -38,7 +38,7 @@ public class User extends User_Base {
 
     @Override
     public void setUsername(String username) throws InvalidUsernameException{
-        if(username.equals("") || !StringUtils.isAlphanumeric(username.toLowerCase())) {
+        if(username.equals("") || !StringUtils.isAlphanumeric(username)) {
             throw new InvalidUsernameException(username);
         }
         super.setUsername(username);

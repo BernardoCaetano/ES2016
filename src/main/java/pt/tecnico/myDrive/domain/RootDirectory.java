@@ -17,7 +17,7 @@ public class RootDirectory extends RootDirectory_Base {
         return newRootDirectory;
     }
 
-    public RootDirectory() {
+    private RootDirectory() {
         super();
         setMyDrive(FenixFramework.getDomainRoot().getMyDrive());
     }
