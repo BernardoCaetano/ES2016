@@ -1,5 +1,9 @@
 package pt.tecnico.myDrive.domain;
 
+import org.apache.commons.lang.StringUtils;
+
+import pt.tecnico.myDrive.exception.InvalidUsernameException;
+
 public class User extends User_Base {
     
     public User() {
@@ -30,5 +34,13 @@ public class User extends User_Base {
             super.setMyDrive(null);
         else
             mydrive.addUsers(this);
+    }
+
+    @Override
+    public void setUsername(String username) throws InvalidUsernameException{
+        if(username.equals("") || !StringUtils.isAlphanumeric(username.toLowerCase())) {
+            throw new InvalidUsernameException(username);
+        }
+        super.setUsername(username);
     }
 }
