@@ -5,6 +5,11 @@ public class Directory extends Directory_Base {
     public Directory() {
         super();
     }
+
+    public Directory(Directory parentDir, User owner, String name) {
+        super();
+        initAbstractFile(parentDir, owner, name);
+    }
     
     
     public AbstractFile getFileByName(String name){

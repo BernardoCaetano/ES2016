@@ -31,7 +31,7 @@ public class Main {
         log.trace("Setup: " + FenixFramework.getDomainRoot());
         MyDriveFS mydrive = MyDriveFS.getInstance();
         User user = new User(mydrive, "Bernardo");
-        User root = new SuperUser(mydrive, "root", "***", "Super User", "rwxdr-x-");
+        Directory dir = new Directory(RootDirectory.getInstance(), null, "oi");
         } catch(MyDriveException e){
             System.out.println(e.getMessage());
         }

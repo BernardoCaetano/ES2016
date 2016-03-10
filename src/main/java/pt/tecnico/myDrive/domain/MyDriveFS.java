@@ -12,7 +12,10 @@ public class MyDriveFS extends MyDriveFS_Base {
         if (mydrive != null)
 	    return mydrive;
 
-        return new MyDriveFS();
+        MyDriveFS newMyDrive = new MyDriveFS();
+        new SuperUser(newMyDrive, "root", "***", "Super User", "rwxdr-x-");
+        newMyDrive.setRootDirectory(RootDirectory.getInstance());
+        return newMyDrive;
     }
 
     private MyDriveFS() {
@@ -39,6 +42,10 @@ public class MyDriveFS extends MyDriveFS_Base {
             }
         }
         return null;
+    }
+
+    public void incrementLastFileID() {
+        super.setLastFileID(getLastFileID() + 1);
     }
     
 	public AbstractFile getFileByPath(Directory currentDir, String path) {
