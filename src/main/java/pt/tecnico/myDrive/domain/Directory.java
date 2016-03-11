@@ -1,5 +1,6 @@
 package pt.tecnico.myDrive.domain;
 
+import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 
 public class Directory extends Directory_Base {
@@ -25,7 +26,7 @@ public class Directory extends Directory_Base {
         return getFileByName(filename) != null;
     }
 
-    public AbstractFile getFileByName(String name){
+    public AbstractFile getFileByName(String name) throws FileNotFoundException {
         if( name.equals(".") ){
             return this;
         }else if( name.equals("..") ){
@@ -36,7 +37,7 @@ public class Directory extends Directory_Base {
                 return f;
             }
         }
-        return null;
+        throw new FileNotFoundException(getPath() + "/" + name);
     }
 
     @Override
