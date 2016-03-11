@@ -2,9 +2,6 @@ package pt.tecnico.myDrive.domain;
 
 import org.joda.time.DateTime;
 
-import pt.ist.fenixframework.DomainRoot;
-import pt.ist.fenixframework.FenixFramework;
-
 public class RootDirectory extends RootDirectory_Base {
     
 	public static RootDirectory getInstance(MyDriveFS mydrive) {

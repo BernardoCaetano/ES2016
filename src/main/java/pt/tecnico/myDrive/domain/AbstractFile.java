@@ -2,9 +2,6 @@ package pt.tecnico.myDrive.domain;
 
 import org.joda.time.DateTime;
 
-import pt.ist.fenixframework.DomainRoot;
-import pt.ist.fenixframework.FenixFramework;
-
 public abstract class AbstractFile extends AbstractFile_Base {
     
     public AbstractFile() {
