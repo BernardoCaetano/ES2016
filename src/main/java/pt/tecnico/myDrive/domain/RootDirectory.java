@@ -1,5 +1,7 @@
 package pt.tecnico.myDrive.domain;
 
+import org.joda.time.DateTime;
+
 import pt.ist.fenixframework.DomainRoot;
 import pt.ist.fenixframework.FenixFramework;
 
@@ -12,18 +14,22 @@ public class RootDirectory extends RootDirectory_Base {
 
 		User root = FenixFramework.getDomainRoot().getMyDrive().getUserByUsername("root");
         RootDirectory newRootDirectory = new RootDirectory();
-        newRootDirectory.initAbstractFile(newRootDirectory, root,"/");
+        newRootDirectory.setParent(newRootDirectory);
         return newRootDirectory;
     }
 
     private RootDirectory() {
         super();
         setMyDrive(FenixFramework.getDomainRoot().getMyDrive());
+        setId();
+    	setName("");
+    	setLastModified(new DateTime());
+    	setOwner(FenixFramework.getDomainRoot().getMyDrive().getUserByUsername("root"));
     }
     
     @Override
     public String getPath(){
-    	return getName();
+    	return "/";
     }
 }
 

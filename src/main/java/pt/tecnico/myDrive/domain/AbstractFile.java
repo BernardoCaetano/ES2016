@@ -22,14 +22,24 @@ public class AbstractFile extends AbstractFile_Base {
     	setName(name);
     	setLastModified(new DateTime());
     	setParent(parentDir);
-    	//setPermissions("rwxd----");
-    	if(owner == null){
-    		setOwner(FenixFramework.getDomainRoot().getMyDrive().getUserByUsername("root"));
-    	}
-    	else{
-    		setOwner(owner);
-    	}
+   		setOwner(owner);
     	getOwner().addFiles(this);
+    }
+
+    @Override
+    public void setParent(Directory parentDir) {
+        if (parentDir == null)
+            super.setParent(null);
+        else
+            parentDir.addFiles(this);
+    }
+
+    @Override
+    public void setOwner(User owner) {
+        if (owner == null)
+            FenixFramework.getDomainRoot().getMyDrive().getUserByUsername("root").addFiles(this);
+        else
+            owner.addFiles(this);
     }
 
     public void setId() {
