@@ -6,13 +6,17 @@ import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 
 public class MyDriveFS extends MyDriveFS_Base {
     
-    //Singleton 
 	public static MyDriveFS getInstance() {
         MyDriveFS mydrive = FenixFramework.getDomainRoot().getMyDrive();
         if (mydrive != null)
 	    return mydrive;
 
-        return new MyDriveFS();
+        MyDriveFS newMyDrive = new MyDriveFS();
+        RootDirectory rootDir = RootDirectory.getInstance(newMyDrive);
+        newMyDrive.setRootDirectory(rootDir);
+        User root = new SuperUser(newMyDrive, "root", "***", "Super User", "rwxdr-x-");
+        rootDir.setOwner(root);
+        return newMyDrive;
     }
 
     private MyDriveFS() {
@@ -39,6 +43,10 @@ public class MyDriveFS extends MyDriveFS_Base {
             }
         }
         return null;
+    }
+
+    public void incrementLastFileID() {
+        super.setLastFileID(getLastFileID() + 1);
     }
     
 	public AbstractFile getFileByPath(Directory currentDir, String path) {
