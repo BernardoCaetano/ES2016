@@ -1,7 +1,8 @@
 package pt.tecnico.myDrive.domain;
 
 import pt.ist.fenixframework.FenixFramework;
-
+import pt.tecnico.myDrive.exception.FileNotFoundException;
+import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 
 public class MyDriveFS extends MyDriveFS_Base {
@@ -49,7 +50,8 @@ public class MyDriveFS extends MyDriveFS_Base {
         super.setLastFileID(getLastFileID() + 1);
     }
     
-	public AbstractFile getFileByPath(Directory currentDir, String path) {
+	public AbstractFile getFileByPath(Directory currentDir, String path)
+			throws FileNotFoundException, InvalidPathException{
 		if (path.equals("/")) {
 			return getRootDirectory();
 		} else if (path.startsWith("/")) {
@@ -58,13 +60,24 @@ public class MyDriveFS extends MyDriveFS_Base {
 		}
 
 		String[] parts = path.split("/", 2);
+		
+		if( parts.length == 0){
+			throw new InvalidPathException(path);
+		}
+
 		AbstractFile f = currentDir.getFileByName(parts[0]);
 
 		if (parts.length < 2) {
 			return f;
 		}
-
-		return getFileByPath((Directory) f, parts[1]);
+		
+		try {
+			return getFileByPath((Directory) f, parts[1]);
+		} catch (InvalidPathException e){
+			throw new InvalidPathException(path);
+		} catch (FileNotFoundException e){
+			throw new FileNotFoundException(path);
+		}
 	}
 
 }
