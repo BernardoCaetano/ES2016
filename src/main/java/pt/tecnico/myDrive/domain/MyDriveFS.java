@@ -12,8 +12,10 @@ public class MyDriveFS extends MyDriveFS_Base {
 	    return mydrive;
 
         MyDriveFS newMyDrive = new MyDriveFS();
-        new SuperUser(newMyDrive, "root", "***", "Super User", "rwxdr-x-");
-        newMyDrive.setRootDirectory(RootDirectory.getInstance());
+        RootDirectory rootDir = RootDirectory.getInstance(newMyDrive);
+        newMyDrive.setRootDirectory(rootDir);
+        User root = new SuperUser(newMyDrive, "root", "***", "Super User", "rwxdr-x-");
+        rootDir.setOwner(root);
         return newMyDrive;
     }
 

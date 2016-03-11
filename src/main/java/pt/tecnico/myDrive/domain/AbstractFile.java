@@ -5,7 +5,7 @@ import org.joda.time.DateTime;
 import pt.ist.fenixframework.DomainRoot;
 import pt.ist.fenixframework.FenixFramework;
 
-public class AbstractFile extends AbstractFile_Base {
+public abstract class AbstractFile extends AbstractFile_Base {
     
     public AbstractFile() {
         super();

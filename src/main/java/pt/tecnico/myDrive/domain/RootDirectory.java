@@ -7,24 +7,23 @@ import pt.ist.fenixframework.FenixFramework;
 
 public class RootDirectory extends RootDirectory_Base {
     
-	public static RootDirectory getInstance() {
-        RootDirectory rootDirectory = FenixFramework.getDomainRoot().getMyDrive().getRootDirectory();
+	public static RootDirectory getInstance(MyDriveFS mydrive) {
+        RootDirectory rootDirectory = mydrive.getRootDirectory();
         if (rootDirectory != null)
 	    return rootDirectory;
 
-		User root = FenixFramework.getDomainRoot().getMyDrive().getUserByUsername("root");
-        RootDirectory newRootDirectory = new RootDirectory();
+		User root = mydrive.getUserByUsername("root");
+        RootDirectory newRootDirectory = new RootDirectory(mydrive);
         newRootDirectory.setParent(newRootDirectory);
         return newRootDirectory;
     }
 
-    private RootDirectory() {
+    private RootDirectory(MyDriveFS mydrive) {
         super();
-        setMyDrive(FenixFramework.getDomainRoot().getMyDrive());
+        setMyDrive(mydrive);
         setId();
     	setName("");
     	setLastModified(new DateTime());
-    	setOwner(FenixFramework.getDomainRoot().getMyDrive().getUserByUsername("root"));
     }
     
     @Override
