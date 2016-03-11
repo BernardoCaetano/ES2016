@@ -4,16 +4,16 @@ public class FileNotFoundException extends MyDriveException {
 
     private static final long serialVersionUID = 1L;
 
-    private String _filename;
+    private String unknownPath;
 
-    public FileNotFoundException(String filename) {
-        _filename = filename;
+    public FileNotFoundException(String path) {
+        unknownPath = path;
     }
 
-    public String getFilename() { return _filename; }
+    public String getUnknownPath() { return unknownPath; }
 
     @Override
     public String getMessage() {
-        return "The file '" + _filename + "' does not exist";
+        return "The file '" + unknownPath + "' does not exist";
     }
 }
