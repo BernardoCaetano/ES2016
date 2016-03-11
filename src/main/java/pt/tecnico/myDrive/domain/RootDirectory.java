@@ -21,9 +21,10 @@ public class RootDirectory extends RootDirectory_Base {
     private RootDirectory(MyDriveFS mydrive) {
         super();
         setMyDrive(mydrive);
-        setId();
+        setId(mydrive);
     	setName("");
     	setLastModified(new DateTime());
+    	setOwner(mydrive.getUserByUsername("root"));
     }
     
     @Override

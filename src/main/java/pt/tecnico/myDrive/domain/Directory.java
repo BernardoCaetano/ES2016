@@ -8,9 +8,9 @@ public class Directory extends Directory_Base {
         super();
     }
 
-    public Directory(Directory parentDir, User owner, String name) {
+    public Directory(MyDriveFS mydrive, Directory parentDir, User owner, String name) {
         super();
-        initAbstractFile(parentDir, owner, name);
+        initAbstractFile(mydrive, parentDir, owner, name);
     }
     
     @Override

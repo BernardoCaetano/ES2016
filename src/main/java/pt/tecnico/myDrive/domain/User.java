@@ -48,7 +48,7 @@ public class User extends User_Base {
         Directory home;
 
         if (!rootDir.hasFile("home")) {
-            home = new Directory(rootDir, null, "home");
+            home = new Directory(mydrive, rootDir, null, "home");
         } else {
             // check if home is a directory and thorw exception if not 
             // "There is a file in /home/ with new User username"
@@ -56,7 +56,7 @@ public class User extends User_Base {
         }
         Directory userHomeDir;
         if (!home.hasFile(this.getUsername())) {
-            userHomeDir = new Directory(home, this, this.getUsername());
+            userHomeDir = new Directory(mydrive, home, this, this.getUsername());
             setHomeDirectory(userHomeDir);
         } else {
             userHomeDir = (Directory) home.getFileByName(this.getUsername());

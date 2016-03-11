@@ -11,18 +11,18 @@ public abstract class AbstractFile extends AbstractFile_Base {
         super();
     }
 
-    public AbstractFile(Directory parentDir, User owner, String name) {
+    public AbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name) {
     	super();
-    	initAbstractFile(parentDir, owner, name);
+    	initAbstractFile(mydrive, parentDir, owner, name);
     }
 
-    public void initAbstractFile(Directory parentDir, User owner, String name) {
+    public void initAbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name) {
 
-    	setId();
+    	setId(mydrive);
     	setName(name);
     	setLastModified(new DateTime());
     	setParent(parentDir);
-   		setOwner(owner);
+   		setOwner(mydrive, owner);
     	getOwner().addFiles(this);
     }
 
@@ -34,16 +34,14 @@ public abstract class AbstractFile extends AbstractFile_Base {
             parentDir.addFiles(this);
     }
 
-    @Override
-    public void setOwner(User owner) {
+    public void setOwner(MyDriveFS mydrive, User owner) {
         if (owner == null)
-            FenixFramework.getDomainRoot().getMyDrive().getUserByUsername("root").addFiles(this);
+            mydrive.getUserByUsername("root").addFiles(this);
         else
             owner.addFiles(this);
     }
 
-    public void setId() {
-    	MyDriveFS mydrive = FenixFramework.getDomainRoot().getMyDrive();
+    public void setId(MyDriveFS mydrive) {
     	mydrive.incrementLastFileID();
     	super.setId(mydrive.getLastFileID());
     }
