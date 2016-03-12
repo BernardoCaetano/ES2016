@@ -2,6 +2,8 @@ package pt.tecnico.myDrive.domain;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.Set;
+
 import org.jdom2.Element;
 
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
@@ -68,8 +70,22 @@ public class User extends User_Base {
 
 
     public Element xmlExport() {
-        Element element = new Element("placeHolderUser");
+        Element element = new Element("user");
         
+        element.setAttribute("username", getUsername());
+        element.setAttribute("password", getPassword());
+        element.setAttribute("name", getName());
+        element.setAttribute("umask", getUmask());
+        element.setAttribute("homeDirectory", getHomeDirectory().getPath());
+
+        Set<AbstractFile> ownedFiles = getFilesSet();
+
+        for (AbstractFile f: getFilesSet()) {
+            Element fileElement = f.xmlExport();
+            fileElement.setAttribute("path", f.getPath());
+            element.addContent(fileElement);
+        }
+
         return element;
     }
 }
