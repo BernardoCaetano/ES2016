@@ -46,4 +46,6 @@ public abstract class AbstractFile extends AbstractFile_Base {
     public String getPath() {
     	return getParent().getPath() + getName();
     }
+
+    public void removeFile(){};
 }

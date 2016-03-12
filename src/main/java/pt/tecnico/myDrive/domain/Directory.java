@@ -44,4 +44,28 @@ public class Directory extends Directory_Base {
     public String getPath(){
     	return super.getPath() + "/";
     }
+
+    
+    public String readTextFile(String path) {
+
+        MyDriveFS mydrive= this.getOwner().getMyDrive();
+        TextFile tf = (TextFile) mydrive.getFileByPath(this, path);     
+        return tf.getContent();
+    }
+
+    public void deleteFile(String path) {
+
+        MyDriveFS mydrive= this.getOwner().getMyDrive();
+        AbstractFile f = mydrive.getFileByPath(null , path);
+        f.removeFile();
+    }
+
+
+    @Override
+    public void removeFile(){
+        if (getFilesCount() == 0){
+            setOwner(null);
+            deleteDomainObject();
+        }
+    }
 }
