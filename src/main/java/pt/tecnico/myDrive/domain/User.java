@@ -80,8 +80,8 @@ public class User extends User_Base {
 
         Set<AbstractFile> ownedFiles = getFilesSet();
 
-        for (AbstractFile f: getFilesSet()) {
-            Element fileElement = f.xmlExport();
+        for (AbstractFile f: ownedFiles) {
+            Element fileElement = f.xmlAddFile();
             fileElement.setAttribute("path", f.getPath());
             element.addContent(fileElement);
         }

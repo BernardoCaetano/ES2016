@@ -8,6 +8,8 @@ import java.util.Set;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 
+import org.jdom2.Element;
+
 public class Directory extends Directory_Base {
 
 	public Directory() {
@@ -90,5 +92,22 @@ public class Directory extends Directory_Base {
 
 		return fileList;
 
+	}
+	
+	public Element xmlExport() {
+		Element element = xmlAddFile();
+		
+		Set<AbstractFile> children = getFilesSet();
+
+		for(AbstractFile c: children){
+			if (c != this && c != getParent())
+				element.addContent(c.xmlExport());
+		}
+
+		return element;
+	}
+	
+	public String xmlTag() {
+		return "directory";
 	}
 }
