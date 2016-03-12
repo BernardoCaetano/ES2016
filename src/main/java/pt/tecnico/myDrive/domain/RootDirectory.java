@@ -26,6 +26,11 @@ public class RootDirectory extends RootDirectory_Base {
     }
     
     @Override
+    public void setParent(Directory parentDir) {
+        super.setParent(parentDir);
+    }
+
+    @Override
     public String getPath(){
     	return "/";
     }
