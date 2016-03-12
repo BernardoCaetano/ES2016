@@ -11,7 +11,6 @@ public class RootDirectory extends RootDirectory_Base {
 
 		User root = mydrive.getUserByUsername("root");
         RootDirectory newRootDirectory = new RootDirectory(mydrive);
-        newRootDirectory.setParent(newRootDirectory);
         return newRootDirectory;
     }
 
@@ -26,8 +25,8 @@ public class RootDirectory extends RootDirectory_Base {
     }
     
     @Override
-    public void setParent(Directory parentDir) {
-        super.setParent(parentDir);
+    public Directory getParent() {
+    	return this;
     }
 
     @Override
