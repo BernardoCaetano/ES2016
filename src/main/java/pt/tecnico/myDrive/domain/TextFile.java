@@ -1,5 +1,7 @@
 package pt.tecnico.myDrive.domain;
 
+import org.jdom2.Element;
+
 public class TextFile extends TextFile_Base {
     
     public TextFile() {
@@ -23,4 +25,15 @@ public class TextFile extends TextFile_Base {
         deleteDomainObject();
     }
     
+    public Element xmlExport() {
+		Element element = new Element("textFile");
+		element.setAttribute("id", ""+getId());
+		element.setAttribute("name", getName());
+		element.setAttribute("permissions", "Permissions not initialized. Alert Bernardo!");
+		element.setAttribute("lastModified", getLastModified().toString());
+		element.setAttribute("owner", getOwner().getName());
+		element.setAttribute("content", getContent());
+
+		return element;
+    }    
 }
