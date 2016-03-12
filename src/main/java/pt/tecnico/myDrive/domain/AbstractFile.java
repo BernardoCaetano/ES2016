@@ -56,7 +56,7 @@ public abstract class AbstractFile extends AbstractFile_Base {
 		Element element = new Element(xmlTag());
 		element.setAttribute("id", ""+getId());
 		element.setAttribute("name", getName());
-		element.setAttribute("permissions", "Permissions not initialized. Alert Bernardo!");
+		element.setAttribute("permissions", getPermissions());
 		element.setAttribute("lastModified", getLastModified().toString());
 		element.setAttribute("owner", getOwner().getName());
 
