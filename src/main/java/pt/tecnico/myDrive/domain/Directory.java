@@ -42,7 +42,8 @@ public class Directory extends Directory_Base {
 				return f;
 			}
 		}
-		throw new FileNotFoundException(getPath() + "/" + name);
+        return null;
+		//throw new FileNotFoundException(getPath() + "/" + name);
 	}
 
 	@Override
