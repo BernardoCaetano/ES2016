@@ -20,6 +20,7 @@ public abstract class AbstractFile extends AbstractFile_Base {
     	setId(mydrive);
     	setName(name);
     	setLastModified(new DateTime());
+        setPermissions("rwxdr-x-");
     	setParent(parentDir);
    		setOwner(mydrive, owner);
     	getOwner().addFiles(this);
