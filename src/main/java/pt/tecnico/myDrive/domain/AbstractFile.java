@@ -50,11 +50,20 @@ public abstract class AbstractFile extends AbstractFile_Base {
     	return getParent().getPath() + getName();
     }
 
-    public Element xmlExport() {
-        Element element = new Element("placeHolderFile");
+    public abstract Element xmlExport();
+    
+    public Element xmlAddFile() {
+		Element element = new Element(xmlTag());
+		element.setAttribute("id", ""+getId());
+		element.setAttribute("name", getName());
+		element.setAttribute("permissions", "Permissions not initialized. Alert Bernardo!");
+		element.setAttribute("lastModified", getLastModified().toString());
+		element.setAttribute("owner", getOwner().getName());
 
-        return element;
+		return element;
     }
+    
+    public abstract String xmlTag();
 
     public void removeFile(){};
 }

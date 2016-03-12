@@ -11,5 +11,8 @@ public class App extends App_Base {
     	initTextFile(mydrive, parentDir, owner, name, content);
     }
 
-
+     public String xmlTag() {
+    	 return "app";
+     }
+     
 }

@@ -26,14 +26,13 @@ public class TextFile extends TextFile_Base {
     }
     
     public Element xmlExport() {
-		Element element = new Element("textFile");
-		element.setAttribute("id", ""+getId());
-		element.setAttribute("name", getName());
-		element.setAttribute("permissions", "Permissions not initialized. Alert Bernardo!");
-		element.setAttribute("lastModified", getLastModified().toString());
-		element.setAttribute("owner", getOwner().getName());
+		Element element = xmlAddFile();
 		element.setAttribute("content", getContent());
 
 		return element;
-    }    
+    }
+    
+    public String xmlTag() {
+    	return "textFile";
+    }
 }
