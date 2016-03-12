@@ -40,6 +40,7 @@ public class Main {
         User root = mydrive.getUserByUsername("root");
         new Directory(mydrive, RootDirectory.getInstance(mydrive), null, "oi");
         new User(mydrive, "Bernardo", null, null, null);
+        new App(mydrive, RootDirectory.getInstance(mydrive), null, "AppExample", "This is my content");
         xmlPrint();
         } catch(MyDriveException e){
             System.out.println(e.getMessage());

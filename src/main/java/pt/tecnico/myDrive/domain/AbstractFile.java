@@ -54,4 +54,6 @@ public abstract class AbstractFile extends AbstractFile_Base {
 
         return element;
     }
+
+    public void removeFile(){};
 }
