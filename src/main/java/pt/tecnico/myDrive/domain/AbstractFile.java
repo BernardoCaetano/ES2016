@@ -2,6 +2,8 @@ package pt.tecnico.myDrive.domain;
 
 import org.joda.time.DateTime;
 
+import org.jdom2.Element;
+
 public abstract class AbstractFile extends AbstractFile_Base {
     
     public AbstractFile() {
@@ -45,5 +47,11 @@ public abstract class AbstractFile extends AbstractFile_Base {
     
     public String getPath() {
     	return getParent().getPath() + getName();
+    }
+
+    public Element xmlExport() {
+        Element element = new Element("placeHolderFile");
+
+        return element;
     }
 }

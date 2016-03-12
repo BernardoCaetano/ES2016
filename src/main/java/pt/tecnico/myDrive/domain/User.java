@@ -2,6 +2,8 @@ package pt.tecnico.myDrive.domain;
 
 import org.apache.commons.lang.StringUtils;
 
+import org.jdom2.Element;
+
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
 
 public class User extends User_Base {
@@ -62,5 +64,12 @@ public class User extends User_Base {
             userHomeDir = (Directory) home.getFileByName(this.getUsername());
             setHomeDirectory(userHomeDir);
         }
+    }
+
+
+    public Element xmlExport() {
+        Element element = new Element("placeHolderUser");
+        
+        return element;
     }
 }

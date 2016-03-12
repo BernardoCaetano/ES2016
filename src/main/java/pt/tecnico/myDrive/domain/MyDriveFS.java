@@ -5,6 +5,11 @@ import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 
+import org.jdom2.Element;
+import org.jdom2.Document;
+
+import java.util.Set;
+
 public class MyDriveFS extends MyDriveFS_Base {
     
 	public static MyDriveFS getInstance() {
@@ -79,5 +84,22 @@ public class MyDriveFS extends MyDriveFS_Base {
 			throw new FileNotFoundException(path);
 		}
 	}
+
+    public Document xmlExport() {
+        Element element = new Element("myDrive");
+        element.setAttribute("lastFileID", ""+getLastFileID());
+        Document doc = new Document(element);
+
+        element.addContent(getRootDirectory().xmlExport());
+
+        Set<User> userSet = getUsersSet();
+
+        for (User u: userSet) {
+            element.addContent(u.xmlExport());
+        }
+
+        return doc;
+    }
+
 
 }

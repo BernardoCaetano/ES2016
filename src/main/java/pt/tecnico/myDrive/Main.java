@@ -13,6 +13,13 @@ import org.apache.logging.log4j.Logger;
 
 import pt.tecnico.myDrive.exception.*;
 
+import java.io.PrintStream;
+import java.io.IOException;
+
+import org.jdom2.Document;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
 public class Main {
     static final Logger log = LogManager.getRootLogger();
 
@@ -33,8 +40,18 @@ public class Main {
         User root = mydrive.getUserByUsername("root");
         new Directory(mydrive, RootDirectory.getInstance(mydrive), null, "oi");
         new User(mydrive, "Bernardo", null, null, null);
+        xmlPrint();
         } catch(MyDriveException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    @Atomic
+    public static void xmlPrint() {
+        log.trace("xmlPrint: " + FenixFramework.getDomainRoot());
+        Document doc = MyDriveFS.getInstance().xmlExport();
+        XMLOutputter xmlOutput = new XMLOutputter(Format.getPrettyFormat());
+        try { xmlOutput.output(doc, new PrintStream(System.out));
+        } catch (IOException e) { System.out.println(e); }
     }
 }
