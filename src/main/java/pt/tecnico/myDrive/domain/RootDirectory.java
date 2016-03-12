@@ -21,6 +21,7 @@ public class RootDirectory extends RootDirectory_Base {
         setId(mydrive);
     	setName("");
     	setLastModified(new DateTime());
+    	setPermissions("rwxdr-x-");
     	setOwner(mydrive.getUserByUsername("root"));
     }
     
