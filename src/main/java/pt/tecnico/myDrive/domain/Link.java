@@ -11,4 +11,8 @@ public class Link extends Link_Base {
     	initTextFile(mydrive, parentDir, owner, name, content);
     }
     
+    public String xmlTag() {
+   	 return "app";
+    }
+    
 }
