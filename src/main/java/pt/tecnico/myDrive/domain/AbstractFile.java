@@ -4,8 +4,6 @@ import org.joda.time.DateTime;
 
 import org.jdom2.Element;
 
-import org.apache.commons.lang.StringUtils;
-
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
     
     public AbstractFile() {
