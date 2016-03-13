@@ -2,6 +2,8 @@ package pt.tecnico.myDrive.domain;
 
 import org.apache.commons.lang.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Set;
 
 import org.jdom2.Element;
@@ -84,8 +86,10 @@ public class User extends User_Base {
         element.setAttribute("name", getName());
         element.setAttribute("umask", getUmask());
         element.setAttribute("homeDirectory", getHomeDirectory().getPath());
-
-        Set<AbstractFile> ownedFiles = getFilesSet();
+        
+		ArrayList<AbstractFile> ownedFiles = new ArrayList<AbstractFile>();
+		ownedFiles.addAll(getFilesSet());
+		Collections.sort(ownedFiles);
 
         for (AbstractFile f: ownedFiles) {
             Element fileElement = f.xmlAddFile();

@@ -27,20 +27,23 @@ public class Main {
         try {
             setup();
         } finally {
-            // ensure an orderly shutdown
+            
             FenixFramework.shutdown();
         }
     }
 
     @Atomic
-    public static void setup() { // phonebook with debug data
+    public static void setup() { 
         try {
         log.trace("Setup: " + FenixFramework.getDomainRoot());
         MyDriveFS mydrive = MyDriveFS.getInstance();
         User root = mydrive.getUserByUsername("root");
+        Directory rootDir = RootDirectory.getInstance(mydrive);
         new Directory(mydrive, RootDirectory.getInstance(mydrive), null, "oi");
         new User(mydrive, "Bernardo", null, null, null);
-        new App(mydrive, RootDirectory.getInstance(mydrive), null, "AppExample", "This is my content");
+        new App(mydrive, rootDir, null, "AppExample", "This is my content");
+        new Directory(mydrive, (Directory) mydrive.getFileByPath(rootDir, "/home/root"), null, "Projecto de ES");
+        new TextFile(mydrive, (Directory) mydrive.getFileByPath(rootDir, "/home/root"), null, "Tese de mestrado", "Lorem ipsum dolor sit amet");
         xmlPrint();
         } catch(MyDriveException e){
             System.out.println(e.getMessage());

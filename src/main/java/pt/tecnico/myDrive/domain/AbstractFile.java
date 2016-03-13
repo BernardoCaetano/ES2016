@@ -4,6 +4,8 @@ import org.joda.time.DateTime;
 
 import org.jdom2.Element;
 
+import org.apache.commons.lang.StringUtils;
+
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
     
     public AbstractFile() {
@@ -57,7 +59,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		element.setAttribute("id", ""+getId());
 		element.setAttribute("name", getName());
 		element.setAttribute("permissions", getPermissions());
-		element.setAttribute("lastModified", getLastModified().toString());
+		element.setAttribute("lastModified", getLastModified().toString().substring(0, 10));
 		element.setAttribute("owner", getOwner().getName());
 
 		return element;
@@ -68,6 +70,11 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     public void removeFile(){};
     
     public int compareTo(AbstractFile f) {
-    	return this.getName().compareToIgnoreCase(f.getName());
-	}
+    	String thisPath = this.getPath().replaceAll("/", "");
+    	String otherPath = f.getPath().replaceAll("/", "");
+    	
+    	return thisPath.compareToIgnoreCase(otherPath);
+    }
+    
+    
 }
