@@ -168,4 +168,10 @@ public class MyDriveFS extends MyDriveFS_Base {
 		return a;
 	}
 
+	public void removeFileGivenPath(Directory currentDir, String path) {
+
+		AbstractFile af = getFileByPath(currentDir, path);
+		af.removeFile();
+	}
+
 }
