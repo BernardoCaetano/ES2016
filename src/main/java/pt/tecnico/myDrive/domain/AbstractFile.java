@@ -4,7 +4,7 @@ import org.joda.time.DateTime;
 
 import org.jdom2.Element;
 
-public abstract class AbstractFile extends AbstractFile_Base {
+public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
     
     public AbstractFile() {
         super();
@@ -66,4 +66,8 @@ public abstract class AbstractFile extends AbstractFile_Base {
     public abstract String xmlTag();
 
     public void removeFile(){};
+    
+    public int compareTo(AbstractFile f) {
+    	return this.getName().compareToIgnoreCase(f.getName());
+	}
 }

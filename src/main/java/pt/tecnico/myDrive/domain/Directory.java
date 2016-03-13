@@ -2,7 +2,6 @@ package pt.tecnico.myDrive.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Set;
 
 import pt.tecnico.myDrive.exception.FileNotFoundException;
@@ -83,12 +82,7 @@ public class Directory extends Directory_Base {
 			fileList.add(f);
 		}
 
-		Collections.sort(fileList, new Comparator<AbstractFile>() {
-			@Override
-			public int compare(AbstractFile f1, AbstractFile f2) {
-				return f1.getName().compareToIgnoreCase(f2.getName());
-			}
-		});
+		Collections.sort(fileList);
 
 		return fileList;
 
