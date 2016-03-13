@@ -7,6 +7,7 @@ import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
+import pt.tecnico.myDrive.exception.UserNotFoundException;
 
 import org.jdom2.Element;
 import org.jdom2.Document;
@@ -37,21 +38,24 @@ public class MyDriveFS extends MyDriveFS_Base {
 		if (hasUser(userToBeAdded.getUsername())) {
 			throw new NameAlreadyExistsException(userToBeAdded.getUsername());
 		}
-
 		super.addUsers(userToBeAdded);
 	}
 
 	public boolean hasUser(String username) {
-		return getUserByUsername(username) != null;
+		try {
+			return getUserByUsername(username) != null;
+		} catch(UserNotFoundException e){
+			return false;
+		}
 	}
 
-	public User getUserByUsername(String username) {
+	public User getUserByUsername(String username) throws UserNotFoundException{
 		for (User user : getUsersSet()) {
 			if (user.getUsername().equals(username)) {
 				return user;
 			}
 		}
-		return null;
+		throw new UserNotFoundException(username);
 	}
 
 	public void incrementLastFileID() {

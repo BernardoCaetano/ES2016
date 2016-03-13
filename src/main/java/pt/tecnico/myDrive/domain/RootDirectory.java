@@ -9,7 +9,6 @@ public class RootDirectory extends RootDirectory_Base {
         if (rootDirectory != null)
 	    return rootDirectory;
 
-		User root = mydrive.getUserByUsername("root");
         RootDirectory newRootDirectory = new RootDirectory(mydrive);
         return newRootDirectory;
     }
@@ -21,7 +20,6 @@ public class RootDirectory extends RootDirectory_Base {
     	setName("");
     	setLastModified(new DateTime());
     	setPermissions("rwxdr-x-");
-    	setOwner(mydrive.getUserByUsername("root"));
     }
     
     @Override
