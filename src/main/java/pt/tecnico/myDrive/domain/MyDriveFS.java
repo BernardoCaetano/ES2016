@@ -6,6 +6,7 @@ import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
+import pt.tecnico.myDrive.exception.NotTextFileException;
 
 import org.jdom2.Element;
 import org.jdom2.Document;
@@ -179,6 +180,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		if (!(af instanceof TextFile)){
 			throw new NotTextFileException(af.getName());
 		}
+		TextFile tf = (TextFile) af;
 		return tf.getContent();
 	}
 }
