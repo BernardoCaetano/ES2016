@@ -174,8 +174,11 @@ public class MyDriveFS extends MyDriveFS_Base {
 		af.removeFile();
 	}
 
-	public String readTextFile(Directory currentDir, String path) {
-		TextFile tf= (TextFile) getFileByPath(currentDir, path);
+	public String readTextFile(Directory currentDir, String path) throws NotTextFileException{
+		AbstractFile af= getFileByPath(currentDir, path);
+		if (!(af instanceof TextFile)){
+			throw new NotTextFileException(af.getName());
+		}
 		return tf.getContent();
 	}
 }
