@@ -174,4 +174,8 @@ public class MyDriveFS extends MyDriveFS_Base {
 		af.removeFile();
 	}
 
+	public String readTextFile(Directory currentDir, String path) {
+		TextFile tf= (TextFile) getFileByPath(currentDir, path);
+		return tf.getContent();
+	}
 }

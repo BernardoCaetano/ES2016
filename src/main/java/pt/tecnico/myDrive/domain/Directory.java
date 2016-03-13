@@ -52,13 +52,6 @@ public class Directory extends Directory_Base {
 		return super.getPath() + "/";
 	}
 
-	public String readTextFile(String path) {
-
-		MyDriveFS mydrive = this.getOwner().getMyDrive();
-		TextFile tf = (TextFile) mydrive.getFileByPath(this, path);
-		return tf.getContent();
-	}
-
 	public void deleteFile(String path) {
 
 		MyDriveFS mydrive = this.getOwner().getMyDrive();
