@@ -16,12 +16,19 @@ public class User extends User_Base {
 
     public User(MyDriveFS mydrive, String username, String password, String name, String umask) {
         super();
-        init(mydrive, username, (password == null) ? username : password, 
+        try {
+            init(mydrive, username, (password == null) ? username : password, 
                                 (name == null) ? username : name, 
                                 (umask == null) ? "rwxd----" : umask);
+        } catch(InvalidUsernameException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public void init(MyDriveFS mydrive, String username, String password, String name, String umask) {
+        if(username == null) {
+            throw new InvalidUsernameException(null);
+        }
         setUsername(username);
         setPassword(password);
         setName(name);
