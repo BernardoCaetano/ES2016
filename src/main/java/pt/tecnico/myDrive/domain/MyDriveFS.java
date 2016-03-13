@@ -87,21 +87,21 @@ public class MyDriveFS extends MyDriveFS_Base {
 		}
 	}
 
-    public Document xmlExport() {
-        Element element = new Element("myDrive");
-        element.setAttribute("lastFileID", ""+getLastFileID());
-        Document doc = new Document(element);
+	public Document xmlExport() {
+		Element element = new Element("myDrive");
+		element.setAttribute("lastFileID", "" + getLastFileID());
+		Document doc = new Document(element);
 
-        element.addContent(getRootDirectory().xmlExport());
+		element.addContent(getRootDirectory().xmlExport());
 
-        Set<User> userSet = getUsersSet();
+		Set<User> userSet = getUsersSet();
 
-        for (User u: userSet) {
-            element.addContent(u.xmlExport());
-        }
+		for (User u : userSet) {
+			element.addContent(u.xmlExport());
+		}
 
-        return doc;
-    }
+		return doc;
+	}
 
 	public ArrayList<String> listDirectorySorted(Directory currentDir, String path) throws InvalidPathException {
 
@@ -121,6 +121,51 @@ public class MyDriveFS extends MyDriveFS_Base {
 
 		return filenames;
 
+	}
+
+	public Directory createIntermediatePath(Directory currentDir, String path) {
+
+		String[] parts = path.split("/", 2);
+		if (path.startsWith("/")) {
+			parts[0] = "/" + parts[0];
+		}
+
+		Directory d = (Directory) this.getFileByPath(currentDir, parts[0]);
+		if (d == null) {
+			d = new Directory(this, currentDir, this.getUserByUsername("root"),
+					(parts[0].startsWith("/") ? parts[0].substring(1) : parts[0]));
+		}
+
+		if (!parts[1].contains("/")) {
+			return d;
+		}
+
+		return createIntermediatePath(d, parts[1]);
+	}
+
+	public Directory createDirectoryFromPath(User owner, Directory currentDir, String path) {
+
+		Directory d = createIntermediatePath(currentDir, path);
+		Directory newDir = new Directory(this, d, owner, path.substring(path.lastIndexOf("/") + 1));
+		return newDir;
+	}
+
+	public TextFile createTextFileFromPath(User owner, Directory currentDir, String path, String content) {
+		Directory d = createIntermediatePath(currentDir, path);
+		TextFile t = new TextFile(this, d, owner, path.substring(path.lastIndexOf("/") + 1), content);
+		return t;
+	}
+
+	public Link createLinkFromPath(User owner, Directory currentDir, String path, String content) {
+		Directory d = createIntermediatePath(currentDir, path);
+		Link l = new Link(this, d, owner, path.substring(path.lastIndexOf("/") + 1), content);
+		return l;
+	}
+
+	public App createAppFromPath(User owner, Directory currentDir, String path, String content) {
+		Directory d = createIntermediatePath(currentDir, path);
+		App a = new App(this, d, owner, path.substring(path.lastIndexOf("/") + 1), content);
+		return a;
 	}
 
 }
