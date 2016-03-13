@@ -93,7 +93,9 @@ public class Directory extends Directory_Base {
 	public Element xmlExport() {
 		Element element = xmlAddFile();
 		
-		Set<AbstractFile> children = getFilesSet();
+		ArrayList<AbstractFile> children = new ArrayList<AbstractFile>();
+		children.addAll(getFilesSet());
+		Collections.sort(children);
 
 		for(AbstractFile c: children){
 			if (c != this && c != getParent())

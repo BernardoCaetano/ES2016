@@ -4,6 +4,8 @@ import org.joda.time.DateTime;
 
 import org.jdom2.Element;
 
+import org.apache.commons.lang.StringUtils;
+
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
     
     public AbstractFile() {
@@ -68,6 +70,18 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     public void removeFile(){};
     
     public int compareTo(AbstractFile f) {
-    	return this.getName().compareToIgnoreCase(f.getName());
-	}
+    	int thisDepth = StringUtils.countMatches(this.getPath(), "/");
+    	int otherDepth = StringUtils.countMatches(f.getPath(), "/");
+    	String thisPath = this.getPath().replaceAll("/", "");
+    	String otherPath = f.getPath().replaceAll("/", "");
+    	
+    	if (thisDepth > otherDepth)
+    		return 1;
+    	else if (thisDepth < otherDepth)
+    		return -1;
+    	else
+    		return thisPath.compareToIgnoreCase(otherPath);
+    }
+    
+    
 }
