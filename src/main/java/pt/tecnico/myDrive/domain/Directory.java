@@ -55,14 +55,8 @@ public class Directory extends Directory_Base {
 		return super.getPath() + "/";
 	}
 
-	public void deleteFile(String path) {
-
-		MyDriveFS mydrive = this.getOwner().getMyDrive();
-		AbstractFile f = mydrive.getFileByPath(null, path);
-		f.removeFile();
-	}
-
-	 @Override
+	
+	@Override
 	public void removeFile() throws HomeDirectoryException, DirectoryNotEmptyException {
         if (getHostUserSet().size()!=0){
             throw new HomeDirectoryException(this.getName());
