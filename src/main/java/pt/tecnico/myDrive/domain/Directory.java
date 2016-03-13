@@ -61,9 +61,11 @@ public class Directory extends Directory_Base {
 
 	@Override
 	public void removeFile() {
-		if (getFilesCount() == 0) {
-			setOwner(null);
-			deleteDomainObject();
+		if (getHostUserSet().size()==0){
+			if (getFilesSet().size() == 0) {
+				setOwner(null);
+				deleteDomainObject();
+			}
 		}
 	}
 
