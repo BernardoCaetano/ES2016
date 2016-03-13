@@ -91,10 +91,8 @@ public class Directory extends Directory_Base {
 		children.addAll(getFilesSet());
 		Collections.sort(children);
 
-		for(AbstractFile c: children){
-			if (c != this && c != getParent())
-				element.addContent(c.xmlExport());
-		}
+		for(AbstractFile c: children)
+			element.addContent(c.xmlExport());
 
 		return element;
 	}
