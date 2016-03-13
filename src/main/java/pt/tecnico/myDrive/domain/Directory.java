@@ -72,15 +72,11 @@ public class Directory extends Directory_Base {
 
 	public ArrayList<AbstractFile> getFilesSimpleSorted() {
 
-		Set<AbstractFile> fileSet = getFilesSet();
-		ArrayList<AbstractFile> fileList = new ArrayList<AbstractFile>();
-		for (AbstractFile f : fileSet) {
-			fileList.add(f);
-		}
+		ArrayList<AbstractFile> children = new ArrayList<AbstractFile>();
+		children.addAll(getFilesSet());
+		Collections.sort(children);
 
-		Collections.sort(fileList);
-
-		return fileList;
+		return children;
 
 	}
 	
