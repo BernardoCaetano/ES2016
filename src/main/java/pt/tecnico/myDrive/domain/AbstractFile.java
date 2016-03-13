@@ -57,7 +57,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		element.setAttribute("id", ""+getId());
 		element.setAttribute("name", getName());
 		element.setAttribute("permissions", getPermissions());
-		element.setAttribute("lastModified", getLastModified().toString());
+		element.setAttribute("lastModified", getLastModified().toString().substring(0, 10));
 		element.setAttribute("owner", getOwner().getName());
 
 		return element;
