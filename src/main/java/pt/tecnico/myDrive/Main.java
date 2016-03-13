@@ -27,13 +27,13 @@ public class Main {
         try {
             setup();
         } finally {
-            // ensure an orderly shutdown
+            
             FenixFramework.shutdown();
         }
     }
 
     @Atomic
-    public static void setup() { // phonebook with debug data
+    public static void setup() { 
         try {
         log.trace("Setup: " + FenixFramework.getDomainRoot());
         MyDriveFS mydrive = MyDriveFS.getInstance();
