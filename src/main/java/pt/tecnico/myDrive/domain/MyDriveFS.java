@@ -8,6 +8,7 @@ import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
+import pt.tecnico.myDrive.exception.NotDirectoryException;
 
 import org.jdom2.Element;
 import org.jdom2.Document;
@@ -90,6 +91,14 @@ public class MyDriveFS extends MyDriveFS_Base {
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException(path);
 		}
+	}
+
+	public Directory getDirectoryByPath(Directory currentDir, String path) throws NotDirectoryException{
+		AbstractFile af = getFileByPath(currentDir, path);
+		if (!(af instanceof Directory)){
+			throw new NotDirectoryException(af.getName());
+		}
+		return (Directory) af;
 	}
 
 	public Document xmlExport() {
@@ -184,7 +193,6 @@ public class MyDriveFS extends MyDriveFS_Base {
 		if (!(af instanceof TextFile)){
 			throw new NotTextFileException(af.getName());
 		}
-		TextFile tf = (TextFile) af;
-		return tf.getContent();
+		return ((TextFile)af).getContent();
 	}
 }
