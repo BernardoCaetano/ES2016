@@ -141,11 +141,17 @@ public class MyDriveFS extends MyDriveFS_Base {
 	}
 
 	public Directory createIntermediatePath(Directory currentDir, String path) {
+		
+		if (!path.contains("/")) {
+			return currentDir;
+		}
 
 		String[] parts = path.split("/", 2);
 		if (path.startsWith("/")) {
 			parts[0] = "/" + parts[0];
 		}
+		
+		
 		Directory d;
 		try {
 			d = (Directory) this.getFileByPath(currentDir, parts[0]);
@@ -162,7 +168,11 @@ public class MyDriveFS extends MyDriveFS_Base {
 	}
 
 	public Directory createDirectoryFromPath(User owner, Directory currentDir, String path) {
-
+		
+		if (path.endsWith("/")) {
+			path = path.substring(0, path.length() - 1);
+		}
+		
 		Directory d = createIntermediatePath(currentDir, path);
 		Directory newDir = new Directory(this, d, owner, path.substring(path.lastIndexOf("/") + 1));
 		return newDir;
