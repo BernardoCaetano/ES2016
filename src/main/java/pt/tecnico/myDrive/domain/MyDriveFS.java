@@ -202,15 +202,12 @@ public class MyDriveFS extends MyDriveFS_Base {
 	
 	public void xmlImport(Element myDriveElement) throws ImportDocumentException {
 		try {
-			setLastFileID(new Integer(myDriveElement.getAttribute("lastFileID").getValue()));
+			Directory rootDir = RootDirectory.getInstance(this);
+			rootDir.xmlImport(myDriveElement.getChild("directory"), rootDir);
 		} 
 		catch(Exception e) {
 			throw new ImportDocumentException();
 		}
 		
-		
-		Directory rootDir = RootDirectory.getInstance(this);
-		
-		rootDir.xmlImport(myDriveElement.getChild("directory"), rootDir);
     }	
 }

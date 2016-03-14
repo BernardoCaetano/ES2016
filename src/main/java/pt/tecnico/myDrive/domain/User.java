@@ -5,9 +5,14 @@ import org.apache.commons.lang.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import java.util.Set;
+import java.util.List;
+
 import org.jdom2.Element;
 
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
+import pt.tecnico.myDrive.exception.ImportDocumentException;
+
 
 public class User extends User_Base {
     
@@ -70,6 +75,30 @@ public class User extends User_Base {
             setHomeDirectory(userHomeDir);
         }
     }
+
+	public void xmlImport(Element userElement) throws ImportDocumentException {
+		try {
+            setUsername(userElement.getAttribute("username").getValue());
+            setPassword(userElement.getAttribute("password").getValue());
+            setName(userElement.getAttribute("name").getValue());
+            setUmask(userElement.getAttribute("umask").getValue());
+            Directory homeDirectory = getMyDrive().createDirectoryFromPath(this, getMyDrive().getRootDirectory().getInstance(getMyDrive()),userElement.getAttribute("homeDirectory").getValue());
+			setHomeDirectory(homeDirectory);
+		}
+		catch (Exception e) {
+            throw new ImportDocumentException();
+		}
+							
+		List<Element> filesList = userElement.getChildren("file");
+
+		for (Element fileElement : filesList){ 
+			String path =  fileElement.getAttribute("path").getValue();
+			Directory currentDir = getMyDrive().getRootDirectory().getInstance(getMyDrive());
+			
+			getMyDrive().getFileByPath( currentDir, path).setOwner(this);
+		} 
+	}
+
 
 
     public Element xmlExport() {
