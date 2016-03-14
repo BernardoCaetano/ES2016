@@ -24,30 +24,25 @@ import java.util.Collection;
 
 public class Main {
 
-    public static void main(String [] args) {
-        try {
-            setup();
-			firstDeliver();
-            for (String s: args) xmlScan(new File(s));
-            xmlPrint();
-        } finally {
-            FenixFramework.shutdown();
-        }
-    }
+	public static void main(String[] args) throws MyDriveException {
+		try {
+			for (String s : args)
+				xmlScan(new File(s));
+			firstDelivery();
+		} finally {
+			FenixFramework.shutdown();
+		}
+	}
 
     @Atomic
-    public static void setup() {
-        MyDriveFS mydrive = MyDriveFS.getInstance();
-    }
-
-    @Atomic
-    public static void firstDeliver() {
+    public static void firstDelivery() throws MyDriveException {
         MyDriveFS mydrive = MyDriveFS.getInstance();
         Directory rootDir = RootDirectory.getInstance(mydrive);
 
         mydrive.createTextFileFromPath(null, rootDir, "/home/README", "lista de utilizadores");
         mydrive.createDirectoryFromPath(null, rootDir, "/usr/local/bin");
         System.out.println(mydrive.readTextFile(rootDir, "/home/README"));
+        mydrive.removeFileGivenPath(rootDir, "/usr/local/bin");
         xmlPrint();
         mydrive.removeFileGivenPath(rootDir, "/home/README");
         printCollection(mydrive.listDirectorySorted(rootDir, "/home"));
@@ -69,7 +64,6 @@ public class Main {
 
     @Atomic
     public static void xmlScan(File file) {
-		//log.trace("xmlScan: " + FenixFramework.getDomainRoot());
 		MyDriveFS md = MyDriveFS.getInstance();		
 		SAXBuilder builder = new SAXBuilder();
 		try {

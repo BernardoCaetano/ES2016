@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
+import pt.tecnico.myDrive.exception.InvalidUsernameException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
@@ -18,7 +19,7 @@ import java.util.Set;
 
 public class MyDriveFS extends MyDriveFS_Base {
 
-	public static MyDriveFS getInstance() {
+	public static MyDriveFS getInstance() throws InvalidUsernameException{
 		MyDriveFS mydrive = FenixFramework.getDomainRoot().getMyDrive();
 		if (mydrive != null)
 			return mydrive;

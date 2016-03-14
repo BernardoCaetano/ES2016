@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
 
 import org.jdom2.Element;
 
@@ -16,18 +15,15 @@ public class User extends User_Base {
         super();
     }
 
-    public User(MyDriveFS mydrive, String username, String password, String name, String umask) {
-        super();
-        try {
-            init(mydrive, username, (password == null) ? username : password, 
-                                (name == null) ? username : name, 
-                                (umask == null) ? "rwxd----" : umask);
-        } catch(InvalidUsernameException e){
-            System.out.println(e.getMessage());
-        }
-    }
+	public User(MyDriveFS mydrive, String username, String password, String name, String umask)
+			throws InvalidUsernameException {
+		super();
+		init(mydrive, username, (password == null) ? username : password, (name == null) ? username : name,
+				(umask == null) ? "rwxd----" : umask);
+	}
 
-    public void init(MyDriveFS mydrive, String username, String password, String name, String umask) {
+    public void init(MyDriveFS mydrive, String username, String password, String name, String umask) 
+            throws InvalidUsernameException {
         if(username == null) {
             throw new InvalidUsernameException(null);
         }
@@ -63,8 +59,6 @@ public class User extends User_Base {
         if (!rootDir.hasFile("home")) {
             home = new Directory(mydrive, rootDir, null, "home");
         } else {
-            // check if home is a directory and thorw exception if not 
-            // "There is a file in /home/ with new User username"
             home = (Directory) rootDir.getFileByName("home");
         }
         Directory userHomeDir;
