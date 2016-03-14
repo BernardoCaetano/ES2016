@@ -59,7 +59,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		try {
             setName(element.getAttribute("name").getValue());
             setPermissions(element.getAttribute("permissions").getValue());
-            setLastModified(new DateTime()); //Placeholder
+            setLastModified(DateTime.parse(element.getAttribute("lastModified").getValue()));
 			setParent(par);
 						
 		}
@@ -73,7 +73,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		Element element = new Element(xmlTag());
 		element.setAttribute("name", getName());
 		element.setAttribute("permissions", getPermissions());
-		element.setAttribute("lastModified", getLastModified().toString().substring(0, 10));
+		element.setAttribute("lastModified", getLastModified().toString());
 
 		return element;
     }

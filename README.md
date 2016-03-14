@@ -19,7 +19,15 @@ mysql> \q
 ```
 $ git clone https://github.com/tecnico-softeng/es16tg_04-project
 $ cd es16tg_04-project
-$ mvn clean package exec:java
+```
+
+If there is an XML file to import:
+```
+$ mvn clean package site exec:java -Dexec.args=drive.xml
+```
+Otherwise:
+```
+$ mvn clean package site exec:java 
 ```
 
 =====
