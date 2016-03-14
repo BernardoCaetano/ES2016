@@ -105,7 +105,6 @@ public class MyDriveFS extends MyDriveFS_Base {
 
 	public Document xmlExport() {
 		Element element = new Element("myDrive");
-		element.setAttribute("lastFileID", "" + getLastFileID());
 		Document doc = new Document(element);
 
 		element.addContent(getRootDirectory().xmlExport());
