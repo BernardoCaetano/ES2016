@@ -93,7 +93,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		}
 	}
 
-	public Directory getDirectoryByPath(Directory currentDir, String path) throws NotDirectoryException{
+	public Directory getDirectoryByPath(Directory currentDir, String path) throws NotDirectoryException, FileNotFoundException, InvalidPathException {
 		AbstractFile af = getFileByPath(currentDir, path);
 		if (!(af instanceof Directory)){
 			throw new NotDirectoryException(af.getName());
@@ -182,13 +182,13 @@ public class MyDriveFS extends MyDriveFS_Base {
 		return a;
 	}
 
-	public void removeFileGivenPath(Directory currentDir, String path) {
+	public void removeFileGivenPath(Directory currentDir, String path) throws FileNotFoundException, InvalidPathException{
 
 		AbstractFile af = getFileByPath(currentDir, path);
 		af.removeFile();
 	}
 
-	public String readTextFile(Directory currentDir, String path) throws NotTextFileException{
+	public String readTextFile(Directory currentDir, String path) throws NotTextFileException, FileNotFoundException, InvalidPathException{
 		AbstractFile af= getFileByPath(currentDir, path);
 		if (!(af instanceof TextFile)){
 			throw new NotTextFileException(af.getName());
