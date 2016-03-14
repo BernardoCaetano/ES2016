@@ -32,7 +32,11 @@ public class Directory extends Directory_Base {
 	}
 
 	public boolean hasFile(String filename) {
-		return getFileByName(filename) != null;
+		try {
+			return getFileByName(filename) != null;
+		} catch (FileNotFoundException e) {
+			return false;
+		}
 	}
 
 	public AbstractFile getFileByName(String name) throws FileNotFoundException {
@@ -46,8 +50,8 @@ public class Directory extends Directory_Base {
 				return f;
 			}
 		}
-        return null;
-		//throw new FileNotFoundException(getPath() + "/" + name);
+        //return null;
+		throw new FileNotFoundException(getPath() + "/" + name);
 	}
 
 	@Override
