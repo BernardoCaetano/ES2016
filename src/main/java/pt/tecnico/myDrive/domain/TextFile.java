@@ -2,6 +2,8 @@ package pt.tecnico.myDrive.domain;
 
 import org.jdom2.Element;
 
+import pt.tecnico.myDrive.exception.ImportDocumentException;
+
 public class TextFile extends TextFile_Base {
     
     public TextFile() {
@@ -24,6 +26,16 @@ public class TextFile extends TextFile_Base {
         setOwner(null);
         deleteDomainObject();
     }
+    
+    public void xmlImport(Element element, Directory par) throws ImportDocumentException {
+		super.xmlImportFile(element, par);
+		try{
+			setContent(element.getAttribute("content").getValue());
+		}
+		catch(Exception e){
+			throw new ImportDocumentException();
+		}
+	}
     
     public Element xmlExport() {
 		Element element = xmlAddFile();
