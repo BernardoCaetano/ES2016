@@ -66,6 +66,7 @@ public class Directory extends Directory_Base {
            throw new DirectoryNotEmptyException(this.getName()); 
         }
 
+        setParent(null);
         setOwner(null);
         deleteDomainObject();		
 	}
