@@ -93,7 +93,8 @@ public class MyDriveFS extends MyDriveFS_Base {
 		}
 	}
 
-	public Directory getDirectoryByPath(Directory currentDir, String path) throws NotDirectoryException, FileNotFoundException, InvalidPathException {
+	public Directory getDirectoryByPath(Directory currentDir, String path) 
+			throws NotDirectoryException, FileNotFoundException, InvalidPathException {
 		AbstractFile af = getFileByPath(currentDir, path);
 		if (!(af instanceof Directory)){
 			throw new NotDirectoryException(af.getName());
@@ -117,11 +118,12 @@ public class MyDriveFS extends MyDriveFS_Base {
 		return doc;
 	}
 
-	public ArrayList<String> listDirectorySorted(Directory currentDir, String path) throws InvalidPathException {
+	public ArrayList<String> listDirectorySorted(Directory currentDir, String path) 
+			throws InvalidPathException, FileNotFoundException {
 
 		AbstractFile dir = getFileByPath(currentDir, path);
 		if (!(dir instanceof Directory)) {
-			throw new InvalidPathException(path);
+			throw new NotDirectoryException(path);
 		}
 
 		ArrayList<AbstractFile> files = ((Directory) dir).getFilesSimpleSorted();
@@ -143,9 +145,10 @@ public class MyDriveFS extends MyDriveFS_Base {
 		if (path.startsWith("/")) {
 			parts[0] = "/" + parts[0];
 		}
-
-		Directory d = (Directory) this.getFileByPath(currentDir, parts[0]);
-		if (d == null) {
+		Directory d;
+		try {
+			d = (Directory) this.getFileByPath(currentDir, parts[0]);
+		} catch (FileNotFoundException e) {
 			d = new Directory(this, currentDir, this.getUserByUsername("root"),
 					(parts[0].startsWith("/") ? parts[0].substring(1) : parts[0]));
 		}
