@@ -1,60 +1,74 @@
 package pt.tecnico.myDrive;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.File;
+
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.DomainRoot;
 import pt.ist.fenixframework.FenixFramework;
 
 import pt.tecnico.myDrive.domain.*;
-import pt.ist.fenixframework.Atomic;
-import pt.ist.fenixframework.FenixFramework;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import pt.tecnico.myDrive.exception.*;
 
 import java.io.PrintStream;
 import java.io.IOException;
 
-import org.jdom2.Document;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
+import java.util.Collection;
 
 public class Main {
-    static final Logger log = LogManager.getRootLogger();
 
     public static void main(String [] args) {
         try {
             setup();
+            firstDeliver();
+            for (String s: args) xmlScan(new File(s));
         } finally {
-            
             FenixFramework.shutdown();
         }
     }
 
     @Atomic
-    public static void setup() { 
-        try {
-        log.trace("Setup: " + FenixFramework.getDomainRoot());
+    public static void setup() {
+        MyDriveFS mydrive = MyDriveFS.getInstance();
+    }
+
+    @Atomic
+    public static void firstDeliver() {
         MyDriveFS mydrive = MyDriveFS.getInstance();
         Directory rootDir = RootDirectory.getInstance(mydrive);
-        new Directory(mydrive, RootDirectory.getInstance(mydrive), null, "oi");
-        new User(mydrive, "Bernardo", null, null, null);
-        new App(mydrive, rootDir, null, "AppExample", "This is my content");
-        new Directory(mydrive, (Directory) mydrive.getFileByPath(rootDir, "/home/root"), null, "Projecto de ES");
-        new TextFile(mydrive, (Directory) mydrive.getFileByPath(rootDir, "/home/root"), null, "Tese de mestrado", "Lorem ipsum dolor sit amet");
+
+        mydrive.createTextFileFromPath(null, rootDir, "/home/README", "lista de utilizadores");
+        mydrive.createDirectoryFromPath(null, rootDir, "/usr/local/bin");
+        System.out.println(mydrive.readTextFile(rootDir, "/home/README"));
         xmlPrint();
-        } catch(MyDriveException e){
-            System.out.println(e.getMessage());
-        }
+        mydrive.removeFileGivenPath(rootDir, "/home/README");
+        printCollection(mydrive.listDirectorySorted(rootDir, "/home"));
     }
 
     @Atomic
     public static void xmlPrint() {
-        log.trace("xmlPrint: " + FenixFramework.getDomainRoot());
         Document doc = MyDriveFS.getInstance().xmlExport();
         XMLOutputter xmlOutput = new XMLOutputter(Format.getPrettyFormat());
         try { xmlOutput.output(doc, new PrintStream(System.out));
         } catch (IOException e) { System.out.println(e); }
     }
+    
+    public static void printCollection(Collection<String> stringCollection) {
+        for(String s : stringCollection){
+            System.out.println(s);
+        }
+    }
+
+    @Atomic
+    public static void xmlScan(File file) {}
 }
