@@ -92,7 +92,7 @@ public class User extends User_Base {
 		Collections.sort(ownedFiles);
 
         for (AbstractFile f: ownedFiles) {
-            Element fileElement = f.xmlAddFile();
+            Element fileElement = new Element("file");
             fileElement.setAttribute("path", f.getPath());
             element.addContent(fileElement);
         }
