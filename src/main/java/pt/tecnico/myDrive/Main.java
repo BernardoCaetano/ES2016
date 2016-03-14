@@ -20,9 +20,6 @@ import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.myDrive.domain.*;
 import pt.tecnico.myDrive.exception.*;
 
-import java.io.PrintStream;
-import java.io.IOException;
-
 import java.util.Collection;
 
 public class Main {
@@ -30,8 +27,9 @@ public class Main {
     public static void main(String [] args) {
         try {
             setup();
-            firstDeliver();
+			firstDeliver();
             for (String s: args) xmlScan(new File(s));
+            xmlPrint();
         } finally {
             FenixFramework.shutdown();
         }
@@ -70,5 +68,16 @@ public class Main {
     }
 
     @Atomic
-    public static void xmlScan(File file) {}
+    public static void xmlScan(File file) {
+		//log.trace("xmlScan: " + FenixFramework.getDomainRoot());
+		MyDriveFS md = MyDriveFS.getInstance();		
+		SAXBuilder builder = new SAXBuilder();
+		try {
+			Document document = (Document)builder.build(file);	
+			md.xmlImport(document.getRootElement());
+		} catch (JDOMException | IOException e) {
+			e.printStackTrace();
+			
+		}
+	}
 }

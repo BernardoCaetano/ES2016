@@ -9,6 +9,7 @@ import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.NotDirectoryException;
+import pt.tecnico.myDrive.exception.ImportDocumentException;
 
 import org.jdom2.Element;
 import org.jdom2.Document;
@@ -195,4 +196,18 @@ public class MyDriveFS extends MyDriveFS_Base {
 		}
 		return ((TextFile)af).getContent();
 	}
+	
+	public void xmlImport(Element myDriveElement) throws ImportDocumentException {
+		try {
+			setLastFileID(new Integer(myDriveElement.getAttribute("lastFileID").getValue()));
+		} 
+		catch(Exception e) {
+			throw new ImportDocumentException();
+		}
+		
+		
+		Directory rootDir = RootDirectory.getInstance(this);
+		
+		rootDir.xmlImport(myDriveElement.getChild("directory"), rootDir);
+    }	
 }

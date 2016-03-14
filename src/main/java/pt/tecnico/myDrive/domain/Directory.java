@@ -8,7 +8,7 @@ import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.HomeDirectoryException;
 import pt.tecnico.myDrive.exception.DirectoryNotEmptyException;
-
+import pt.tecnico.myDrive.exception.ImportDocumentException;
 
 import org.jdom2.Element;
 
@@ -81,6 +81,17 @@ public class Directory extends Directory_Base {
 
 	}
 	
+	public void xmlImport(Element element, Directory par) throws ImportDocumentException{
+		try {
+            xmlImportFile(element, par);
+		}
+		catch (Exception e) {
+            throw new ImportDocumentException();
+		}
+							
+	}
+	
+	
 	public Element xmlExport() {
 		Element element = xmlAddFile();
 		
@@ -88,9 +99,10 @@ public class Directory extends Directory_Base {
 		children.addAll(getFilesSet());
 		Collections.sort(children);
 
-		for(AbstractFile c: children)
-			element.addContent(c.xmlExport());
-
+		for(AbstractFile c: children){
+			if (c!=this && c!= getParent())
+				element.addContent(c.xmlExport());
+		}
 		return element;
 	}
 	

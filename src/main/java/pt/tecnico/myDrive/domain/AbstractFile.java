@@ -4,6 +4,9 @@ import org.joda.time.DateTime;
 
 import org.jdom2.Element;
 
+import pt.tecnico.myDrive.exception.ImportDocumentException;
+import pt.tecnico.myDrive.exception.UserNotFoundException;
+
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
     
     public AbstractFile() {
@@ -51,6 +54,22 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     }
 
     public abstract Element xmlExport();
+    
+    public void xmlImportFile(Element element, Directory par) throws ImportDocumentException{
+		try {
+            int i = Integer.parseInt(element.getAttribute("id").getValue());
+            setId(i);
+            setName(element.getAttribute("name").getValue());
+            setPermissions(element.getAttribute("permissions").getValue());
+            setLastModified(new DateTime()); //Placeholder
+			setParent(par);
+						
+		}
+		catch (ImportDocumentException e) {
+            throw new ImportDocumentException();
+		} 		
+		
+	}
     
     public Element xmlAddFile() {
 		Element element = new Element(xmlTag());
