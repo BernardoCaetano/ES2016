@@ -57,8 +57,6 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     
     public void xmlImportFile(Element element, Directory par) throws ImportDocumentException{
 		try {
-            int i = Integer.parseInt(element.getAttribute("id").getValue());
-            setId(i);
             setName(element.getAttribute("name").getValue());
             setPermissions(element.getAttribute("permissions").getValue());
             setLastModified(new DateTime()); //Placeholder
