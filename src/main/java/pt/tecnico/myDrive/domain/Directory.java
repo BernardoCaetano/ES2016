@@ -109,19 +109,9 @@ public class Directory extends Directory_Base {
 	}
 	
 	
-	public Element xmlExport() {
-		Element element = xmlAddFile();
-		
-		ArrayList<AbstractFile> children = new ArrayList<AbstractFile>();
-		children.addAll(getFilesRecursive());
-		Collections.sort(children);
-
-		for(AbstractFile c: children){
-			if (c!=this && c!= getParent())
-				element.addContent(c.xmlExport());
-		}
-		return element;
-	}
+    public Element xmlExport() {
+		return xmlAddFile();
+    }
 	
 	public String xmlTag() {
 		return "directory";

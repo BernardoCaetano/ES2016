@@ -74,7 +74,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     
     public Element xmlAddFile() {
 		Element element = new Element(xmlTag());
-		element.setAttribute("name", getName());
+		element.setAttribute("path", getPath());
 		element.setAttribute("permissions", getPermissions());
 		element.setAttribute("lastModified", getLastModified().toString());
 
