@@ -2,6 +2,7 @@ package pt.tecnico.myDrive.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
@@ -15,8 +16,6 @@ import pt.tecnico.myDrive.exception.ImportDocumentException;
 
 import org.jdom2.Element;
 import org.jdom2.Document;
-
-import java.util.Set;
 
 public class MyDriveFS extends MyDriveFS_Base {
 
@@ -146,6 +145,22 @@ public class MyDriveFS extends MyDriveFS_Base {
 		return filenames;
 
 	}
+	
+	public String getNameByPath(String path) {
+		String[] parts = path.split("/");
+		return parts[parts.length-1];
+	}
+	
+	public Directory getParentByPath(String path) {
+		String[] parts = path.split("/");
+		String name = parts[parts.length-1];
+		
+		int lengthWithoutName = path.length() - name.length() - 1;
+		String pathWithoutName = path.substring(0, lengthWithoutName);
+		System.out.println("getParent: " + pathWithoutName);
+		
+		return getDirectoryByPath(RootDirectory.getInstance(this), pathWithoutName);
+	}
 
 	public Directory createIntermediatePath(Directory currentDir, String path) {
 		
@@ -206,6 +221,9 @@ public class MyDriveFS extends MyDriveFS_Base {
 	public void removeFileGivenPath(Directory currentDir, String path) throws FileNotFoundException, InvalidPathException{
 
 		AbstractFile af = getFileByPath(currentDir, path);
+		System.out.println("getFileByPath:" + currentDir.getName());
+		System.out.println("getFileByPath:" + path);
+		System.out.println("getFileByPath:" + af.getName());
 		af.removeFile();
 	}
 
