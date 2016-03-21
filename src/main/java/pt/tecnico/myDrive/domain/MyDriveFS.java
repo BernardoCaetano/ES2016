@@ -1,6 +1,7 @@
 package pt.tecnico.myDrive.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
@@ -107,9 +108,15 @@ public class MyDriveFS extends MyDriveFS_Base {
 	public Document xmlExport() {
 		Element element = new Element("myDrive");
 		Document doc = new Document(element);
-
-		element.addContent(getRootDirectory().xmlExport());
-
+		
+		ArrayList<AbstractFile> allFiles = getRootDirectory().getFilesRecursive();
+		Collections.sort(allFiles);
+		
+		for (AbstractFile f: allFiles){
+			element.addContent(f.xmlExport());
+		}
+		
+		
 		Set<User> userSet = getUsersSet();
 
 		for (User u : userSet) {
