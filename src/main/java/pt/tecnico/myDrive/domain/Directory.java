@@ -84,6 +84,19 @@ public class Directory extends Directory_Base {
 		return children;
 
 	}
+
+	public ArrayList<AbstractFile> getFilesRecursive() {
+		ArrayList<AbstractFile> children = new ArrayList<AbstractFile>();
+		
+		for (AbstractFile f: getFilesSet()){
+			if (f!=this && f!= getParent())
+				children.addAll(f.getFilesRecursive());
+		}
+
+		children.add(this);
+
+		return children;
+	}
 	
 	public void xmlImport(Element element, Directory par) throws ImportDocumentException{
 		try {
@@ -100,7 +113,7 @@ public class Directory extends Directory_Base {
 		Element element = xmlAddFile();
 		
 		ArrayList<AbstractFile> children = new ArrayList<AbstractFile>();
-		children.addAll(getFilesSet());
+		children.addAll(getFilesRecursive());
 		Collections.sort(children);
 
 		for(AbstractFile c: children){

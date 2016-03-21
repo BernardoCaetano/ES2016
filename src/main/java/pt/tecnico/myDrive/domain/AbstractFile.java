@@ -4,6 +4,9 @@ import org.joda.time.DateTime;
 
 import org.jdom2.Element;
 
+import java.util.Set;
+import java.util.ArrayList;
+
 import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 
@@ -79,6 +82,13 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     }
     
     public abstract String xmlTag();
+
+    public ArrayList<AbstractFile> getFilesRecursive() {
+    	ArrayList<AbstractFile> children = new ArrayList<AbstractFile>();
+        children.add(this);
+
+        return children;
+    }    
 
     public void removeFile(){};
     
