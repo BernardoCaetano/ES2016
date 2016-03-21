@@ -1,5 +1,7 @@
 package pt.tecnico.myDrive.domain;
 
+import org.jdom2.Element;
+
 public class App extends App_Base {
     
     public App() {
@@ -11,6 +13,11 @@ public class App extends App_Base {
     	initTextFile(mydrive, parentDir, owner, name, content);
     }
 
+	public App(MyDriveFS myDrive, Element appElement){
+		super();
+		xmlImport(myDrive, appElement);
+	}
+	
      public String xmlTag() {
     	 return "app";
      }

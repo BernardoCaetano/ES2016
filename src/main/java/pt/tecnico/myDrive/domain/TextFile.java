@@ -2,8 +2,6 @@ package pt.tecnico.myDrive.domain;
 
 import org.jdom2.Element;
 
-import pt.tecnico.myDrive.exception.ImportDocumentException;
-
 public class TextFile extends TextFile_Base {
     
     public TextFile() {
@@ -15,10 +13,16 @@ public class TextFile extends TextFile_Base {
     	initTextFile(mydrive, parentDir, owner, name, content);
     }
 
+	public TextFile(MyDriveFS myDrive, Element textFileElement){
+		super();
+		xmlImport(myDrive, textFileElement);
+	}
+
     public void initTextFile(MyDriveFS mydrive, Directory parentDir, User owner, String name, String content) {
     	initAbstractFile(mydrive, parentDir, owner, name);
     	setContent(content);
     }
+
 
     @Override
     public void removeFile(){
@@ -27,14 +31,11 @@ public class TextFile extends TextFile_Base {
         deleteDomainObject();
     }
     
-    public void xmlImport(Element element, Directory par) throws ImportDocumentException {
-		super.xmlImportFile(element, par);
-		try{
-			setContent(element.getAttribute("content").getValue());
-		}
-		catch(Exception e){
-			throw new ImportDocumentException();
-		}
+    @Override
+    public void xmlImport(MyDriveFS myDrive, Element element){
+		super.xmlImport(myDrive, element);
+		
+		setContent(element.getAttribute("content").getValue());
 	}
     
     public Element xmlExport() {

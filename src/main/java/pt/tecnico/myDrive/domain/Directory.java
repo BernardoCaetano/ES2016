@@ -8,7 +8,6 @@ import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.HomeDirectoryException;
 import pt.tecnico.myDrive.exception.DirectoryNotEmptyException;
-import pt.tecnico.myDrive.exception.ImportDocumentException;
 
 import org.jdom2.Element;
 
@@ -21,6 +20,11 @@ public class Directory extends Directory_Base {
 	public Directory(MyDriveFS mydrive, Directory parentDir, User owner, String name) {
 		super();
 		initAbstractFile(mydrive, parentDir, owner, name);
+	}
+	
+	public Directory(MyDriveFS myDrive, Element directoryElement){
+		super();
+		xmlImport(myDrive, directoryElement);
 	}
 
 	@Override
@@ -96,18 +100,7 @@ public class Directory extends Directory_Base {
 		children.add(this);
 
 		return children;
-	}
-	
-	public void xmlImport(Element element, Directory par) throws ImportDocumentException{
-		try {
-            xmlImportFile(element, par);
-		}
-		catch (Exception e) {
-            throw new ImportDocumentException();
-		}
-							
-	}
-	
+	}	
 	
     public Element xmlExport() {
 		return xmlAddFile();

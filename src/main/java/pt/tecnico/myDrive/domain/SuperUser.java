@@ -7,4 +7,8 @@ public class SuperUser extends SuperUser_Base {
     public SuperUser(MyDriveFS mydrive, String username, String password, String name, String umask) throws InvalidUsernameException {
         init(mydrive, username, password, name, umask);
     }
+    
+    public String xmlTag() {
+		return "superUser";
+    }
 }

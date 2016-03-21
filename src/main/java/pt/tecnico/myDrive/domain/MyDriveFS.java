@@ -11,7 +11,6 @@ import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.NotDirectoryException;
-import pt.tecnico.myDrive.exception.ImportDocumentException;
 
 import org.jdom2.Element;
 import org.jdom2.Document;
@@ -217,14 +216,24 @@ public class MyDriveFS extends MyDriveFS_Base {
 		return ((TextFile)af).getContent();
 	}
 	
-	public void xmlImport(Element myDriveElement) throws ImportDocumentException {
-		try {
-			Directory rootDir = RootDirectory.getInstance(this);
-			rootDir.xmlImport(myDriveElement.getChild("directory"), rootDir);
-		} 
-		catch(Exception e) {
-			throw new ImportDocumentException();
-		}
+	public void xmlImport(Element myDriveElement) {
 		
+		new RootDirectory(this, myDriveElement.getChild("rootDirectory"));
+				
+		for (Element directoryElement: myDriveElement.getChildren("directory"))
+			new Directory(this, directoryElement);
+		
+		for (Element textFileElement: myDriveElement.getChildren("textFile"))
+			new TextFile(this, textFileElement);
+			
+		for (Element appElement: myDriveElement.getChildren("app"))
+			new App(this, appElement);
+			
+		for (Element linkElement: myDriveElement.getChildren("link"))
+			new Link(this, linkElement);
+			
+		for (Element userElement: myDriveElement.getChildren("user")){
+			//new User(this, userElement);
+		}
     }	
 }

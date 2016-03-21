@@ -11,7 +11,6 @@ import java.util.List;
 import org.jdom2.Element;
 
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
-import pt.tecnico.myDrive.exception.ImportDocumentException;
 
 
 public class User extends User_Base {
@@ -26,6 +25,8 @@ public class User extends User_Base {
 		init(mydrive, username, (password == null) ? username : password, (name == null) ? username : name,
 				(umask == null) ? "rwxd----" : umask);
 	}
+
+	
 
     public void init(MyDriveFS mydrive, String username, String password, String name, String umask) 
             throws InvalidUsernameException {
@@ -76,26 +77,30 @@ public class User extends User_Base {
         }
     }
 
-	public void xmlImport(Element userElement) throws ImportDocumentException {
-		try {
-            setUsername(userElement.getAttribute("username").getValue());
-            setPassword(userElement.getAttribute("password").getValue());
-            setName(userElement.getAttribute("name").getValue());
-            setUmask(userElement.getAttribute("umask").getValue());
-            Directory homeDirectory = getMyDrive().createDirectoryFromPath(this, getMyDrive().getRootDirectory().getInstance(getMyDrive()),userElement.getAttribute("homeDirectory").getValue());
-			setHomeDirectory(homeDirectory);
-		}
-		catch (Exception e) {
-            throw new ImportDocumentException();
-		}
-							
-		List<Element> filesList = userElement.getChildren("file");
-
-		for (Element fileElement : filesList){ 
-			String path =  fileElement.getAttribute("path").getValue();
-			Directory currentDir = getMyDrive().getRootDirectory().getInstance(getMyDrive());
+	public void xmlImport(MyDriveFS myDrive, Element userElement) {
+		if(!myDrive.hasUser(userElement.getAttribute("username").getValue())){
 			
-			getMyDrive().getFileByPath( currentDir, path).setOwner(this);
+			setUsername(userElement.getAttribute("username").getValue());
+			setMyDrive(myDrive);
+		}
+		
+		setPassword(userElement.getAttribute("password").getValue());
+		setName(userElement.getAttribute("name").getValue());
+		setUmask(userElement.getAttribute("umask").getValue());
+		
+		Directory currentDirectory = myDrive.getRootDirectory();
+		String homeDirectoryPath = userElement.getAttribute("homeDirectory").getValue();
+		
+		Directory homeDirectory = myDrive.getDirectoryByPath(
+			currentDirectory, homeDirectoryPath);
+		
+		setHomeDirectory(homeDirectory);
+
+		for (Element fileElement : userElement.getChildren("file")){ 
+			String path = fileElement.getAttribute("path").getValue();
+			Directory currentDir = myDrive.getRootDirectory();
+			
+			myDrive.getFileByPath(currentDir, path).setOwner(this);
 		} 
 	}
 

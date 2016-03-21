@@ -7,7 +7,6 @@ import org.jdom2.Element;
 import java.util.Set;
 import java.util.ArrayList;
 
-import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
@@ -58,18 +57,18 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 
     public abstract Element xmlExport();
     
-    public void xmlImportFile(Element element, Directory par) throws ImportDocumentException{
-		try {
-            setName(element.getAttribute("name").getValue());
-            setPermissions(element.getAttribute("permissions").getValue());
-            setLastModified(DateTime.parse(element.getAttribute("lastModified").getValue()));
-			setParent(par);
-						
-		}
-		catch (ImportDocumentException e) {
-            throw new ImportDocumentException();
-		} 		
+    public void xmlImport(MyDriveFS myDrive, Element element) {
+		Directory parentDirectory = getParentFromPath(myDrive, element.getAttribute("path").getValue());
+		String nameOfFile = getNameOfFileFromPath(myDrive, element.getAttribute("path").getValue());
 		
+		if( !parentDirectory.hasFile(nameOfFile) ){
+			setName(nameOfFile);
+			setParent(parentDirectory);
+			setId(myDrive);
+		}
+		
+		setPermissions(element.getAttribute("permissions").getValue());
+		setLastModified(DateTime.parse(element.getAttribute("lastModified").getValue()));
 	}
     
     public Element xmlAddFile() {
@@ -99,5 +98,14 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     	return thisPath.compareToIgnoreCase(otherPath);
     }
     
+	public Directory getParentFromPath(MyDriveFS myDrive, String path){
+		//TODO: mockup example
+		return new Directory(myDrive, myDrive.getRootDirectory(), myDrive.getUserByUsername("root"), path);
+	}
+	
+	public String getNameOfFileFromPath(MyDriveFS myDrive, String path){
+		//TODO: mockup example
+		return path;
+	}
     
 }

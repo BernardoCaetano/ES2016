@@ -1,6 +1,7 @@
 package pt.tecnico.myDrive.domain;
 
 import org.joda.time.DateTime;
+import org.jdom2.Element;
 
 public class RootDirectory extends RootDirectory_Base {
     
@@ -22,6 +23,12 @@ public class RootDirectory extends RootDirectory_Base {
     	setPermissions("rwxdr-x-");
     }
     
+    public RootDirectory(MyDriveFS myDrive, Element rootElement){
+		super();
+		getInstance(myDrive);
+		xmlImport(rootElement);
+    }
+    
     @Override
     public Directory getParent() {
     	return this;
@@ -31,6 +38,14 @@ public class RootDirectory extends RootDirectory_Base {
     public String getPath(){
     	return "/";
     }
+    
+    public void xmlImport(Element rootElement){
+		setPermissions(rootElement.getAttribute("permissions").getValue());
+		setLastModified(DateTime.parse(rootElement.getAttribute("lastModified").getValue()));
+    }
+    
+    @Override
+    public String xmlTag() {
+		return "rootDirectory";
+	}    
 }
-
-
