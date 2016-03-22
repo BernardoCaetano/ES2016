@@ -54,12 +54,35 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     public String getPath() {
     	return getParent().getPath() + getName();
     }
+	
+	public String getNameOfFileFromPath(String path) {
+		String[] parts = path.split("/");
+		
+		if (parts.length > 0)
+			return parts[parts.length-1];
+		else
+			return "";
+	}
+	
+	public Directory getParentFromPath(String path) {
+		if (path.equals("/"))
+			return RootDirectory.getInstance(MyDriveFS.getInstance());
+		else {
+			String[] parts = path.split("/");
+			String name = parts[parts.length-1];
+			
+			int lengthWithoutName = path.length() - name.length() - 1;
+			String pathWithoutName = path.substring(0, lengthWithoutName);
+			
+			return MyDriveFS.getInstance().getDirectoryByPath(RootDirectory.getInstance(MyDriveFS.getInstance()), pathWithoutName);
+		}
+	}
 
     public abstract Element xmlExport();
     
     public void xmlImport(MyDriveFS myDrive, Element element) {
-		Directory parentDirectory = getParentFromPath(myDrive, element.getAttribute("path").getValue());
-		String nameOfFile = getNameOfFileFromPath(myDrive, element.getAttribute("path").getValue());
+		Directory parentDirectory = getParentFromPath(element.getAttribute("path").getValue());
+		String nameOfFile = getNameOfFileFromPath(element.getAttribute("path").getValue());
 		
 		if( !parentDirectory.hasFile(nameOfFile) ){
 			setName(nameOfFile);
@@ -97,15 +120,4 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     	
     	return thisPath.compareToIgnoreCase(otherPath);
     }
-    
-	public Directory getParentFromPath(MyDriveFS myDrive, String path){
-		//TODO: mockup example
-		return new Directory(myDrive, myDrive.getRootDirectory(), myDrive.getUserByUsername("root"), path);
-	}
-	
-	public String getNameOfFileFromPath(MyDriveFS myDrive, String path){
-		//TODO: mockup example
-		return path;
-	}
-    
 }

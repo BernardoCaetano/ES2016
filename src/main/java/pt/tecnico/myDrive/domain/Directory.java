@@ -6,6 +6,7 @@ import java.util.Set;
 
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
+import pt.tecnico.myDrive.exception.NotDirectoryException;
 import pt.tecnico.myDrive.exception.HomeDirectoryException;
 import pt.tecnico.myDrive.exception.DirectoryNotEmptyException;
 
@@ -54,7 +55,6 @@ public class Directory extends Directory_Base {
 				return f;
 			}
 		}
-        //return null;
 		throw new FileNotFoundException(getPath() + "/" + name);
 	}
 
@@ -100,8 +100,8 @@ public class Directory extends Directory_Base {
 		children.add(this);
 
 		return children;
-	}	
-	
+	}
+		
     public Element xmlExport() {
 		return xmlAddFile();
     }

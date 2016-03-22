@@ -26,7 +26,10 @@ public class User extends User_Base {
 				(umask == null) ? "rwxd----" : umask);
 	}
 
-	
+	public User(MyDriveFS myDrive, Element userElement){
+		super();	
+		xmlImport(myDrive, userElement);
+	}
 
     public void init(MyDriveFS mydrive, String username, String password, String name, String umask) 
             throws InvalidUsernameException {
@@ -99,8 +102,8 @@ public class User extends User_Base {
 		for (Element fileElement : userElement.getChildren("file")){ 
 			String path = fileElement.getAttribute("path").getValue();
 			Directory currentDir = myDrive.getRootDirectory();
-			
-			myDrive.getFileByPath(currentDir, path).setOwner(this);
+			System.out.println("Antes do setOwner" + myDrive.getFileByPath(currentDir, path).getName() + "   " + getName()); //donotforget to remove !!!
+			myDrive.getFileByPath(currentDir, path).setOwner(MyDriveFS.getInstance(), this);
 		} 
 	}
 

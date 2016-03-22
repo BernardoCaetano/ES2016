@@ -2,6 +2,7 @@ package pt.tecnico.myDrive.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
@@ -14,8 +15,6 @@ import pt.tecnico.myDrive.exception.NotDirectoryException;
 
 import org.jdom2.Element;
 import org.jdom2.Document;
-
-import java.util.Set;
 
 public class MyDriveFS extends MyDriveFS_Base {
 
@@ -72,6 +71,10 @@ public class MyDriveFS extends MyDriveFS_Base {
 		} else if (path.startsWith("/")) {
 			currentDir = getRootDirectory();
 			path = path.substring(1);
+		} 
+		
+		if (path.endsWith("/")) {
+			path = path.substring(0, path.length() - 1);
 		}
 
 		String[] parts = path.split("/", 2);
@@ -160,7 +163,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		
 		Directory d;
 		try {
-			d = (Directory) this.getFileByPath(currentDir, parts[0]);
+			d = getDirectoryByPath(currentDir, parts[0]);
 		} catch (FileNotFoundException e) {
 			d = new Directory(this, currentDir, this.getUserByUsername("root"),
 					(parts[0].startsWith("/") ? parts[0].substring(1) : parts[0]));
@@ -217,23 +220,68 @@ public class MyDriveFS extends MyDriveFS_Base {
 	}
 	
 	public void xmlImport(Element myDriveElement) {
-		
-		new RootDirectory(this, myDriveElement.getChild("rootDirectory"));
+		Directory parentDirectory;
+		String nameOfFile;
+		RootDirectory rootDir = RootDirectory.getInstance(this);
+			
+		rootDir.xmlImport(this, myDriveElement.getChild("rootDirectory"));
 				
-		for (Element directoryElement: myDriveElement.getChildren("directory"))
-			new Directory(this, directoryElement);
+		for (Element directoryElement: myDriveElement.getChildren("directory")){
+			parentDirectory = rootDir.getParentFromPath(directoryElement.getAttribute("path").getValue());
+			nameOfFile = rootDir.getNameOfFileFromPath(directoryElement.getAttribute("path").getValue());
+			
+			if( !parentDirectory.hasFile(nameOfFile) ){
+				new Directory(this, directoryElement);
+			}
+			else {
+				getFileByPath(rootDir, directoryElement.getAttribute("path").getValue()).xmlImport(this, directoryElement);
+			}
+		}
 		
-		for (Element textFileElement: myDriveElement.getChildren("textFile"))
-			new TextFile(this, textFileElement);
+		for (Element textFileElement: myDriveElement.getChildren("textFile")){
+			parentDirectory = rootDir.getParentFromPath(textFileElement.getAttribute("path").getValue());
+			nameOfFile = rootDir.getNameOfFileFromPath(textFileElement.getAttribute("path").getValue());
 			
-		for (Element appElement: myDriveElement.getChildren("app"))
-			new App(this, appElement);
+			if( !parentDirectory.hasFile(nameOfFile) ){
+				new TextFile(this, textFileElement);
+			}
+			else {
+				getFileByPath(rootDir, textFileElement.getAttribute("path").getValue()).xmlImport(this, textFileElement);
+			}
+		}
+		
+		for (Element appElement: myDriveElement.getChildren("app")){
+			parentDirectory = rootDir.getParentFromPath(appElement.getAttribute("path").getValue());
+			nameOfFile = rootDir.getNameOfFileFromPath(appElement.getAttribute("path").getValue());
 			
-		for (Element linkElement: myDriveElement.getChildren("link"))
-			new Link(this, linkElement);
+			if( !parentDirectory.hasFile(nameOfFile) ){
+				new App(this, appElement);
+			}
+			else {
+				getFileByPath(rootDir, appElement.getAttribute("path").getValue()).xmlImport(this, appElement);
+			}
+		}
+			
+		for (Element linkElement: myDriveElement.getChildren("link")){
+			parentDirectory = rootDir.getParentFromPath(linkElement.getAttribute("path").getValue());
+			nameOfFile = rootDir.getNameOfFileFromPath(linkElement.getAttribute("path").getValue());
+			
+			if( !parentDirectory.hasFile(nameOfFile) ){
+				new Link(this, linkElement);
+			}
+			else {
+				getFileByPath(rootDir, linkElement.getAttribute("path").getValue()).xmlImport(this, linkElement);
+			}
+		}
 			
 		for (Element userElement: myDriveElement.getChildren("user")){
-			//new User(this, userElement);
+			if (hasUser(userElement.getAttribute("username").getValue())){
+				getUserByUsername(userElement.getAttribute("username").getValue()).xmlImport(this, userElement);
+			} 
+			else {
+				new User(this, userElement);
+			}
+			
 		}
     }	
 }

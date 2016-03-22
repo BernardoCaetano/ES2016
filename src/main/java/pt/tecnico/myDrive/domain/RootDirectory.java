@@ -23,12 +23,6 @@ public class RootDirectory extends RootDirectory_Base {
     	setPermissions("rwxdr-x-");
     }
     
-    public RootDirectory(MyDriveFS myDrive, Element rootElement){
-		super();
-		getInstance(myDrive);
-		xmlImport(rootElement);
-    }
-    
     @Override
     public Directory getParent() {
     	return this;
