@@ -55,6 +55,33 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     public String getPath() {
     	return getParent().getPath() + getName();
     }
+	
+	public String getNameByPath(String path) {
+		String[] parts = path.split("/");
+		
+		if (parts.length > 0)
+			return parts[parts.length-1];
+		else
+			return "";
+	}
+	
+	public Directory getParentByPath(String path) {
+		if (path.equals("/"))
+			return getRootDirectory();
+		else {
+			String[] parts = path.split("/");
+			String name = parts[parts.length-1];
+			
+			int lengthWithoutName = path.length() - name.length() - 1;
+			String pathWithoutName = path.substring(0, lengthWithoutName);
+			
+			return MyDriveFS.getInstance().getDirectoryByPath(getRootDirectory(), pathWithoutName);
+		}
+	}
+	
+	public Directory getRootDirectory() {
+		return this.getParent().getRootDirectory();
+	}
 
     public abstract Element xmlExport();
     

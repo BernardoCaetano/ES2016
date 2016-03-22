@@ -145,22 +145,6 @@ public class MyDriveFS extends MyDriveFS_Base {
 		return filenames;
 
 	}
-	
-	public String getNameByPath(String path) {
-		String[] parts = path.split("/");
-		return parts[parts.length-1];
-	}
-	
-	public Directory getParentByPath(String path) {
-		String[] parts = path.split("/");
-		String name = parts[parts.length-1];
-		
-		int lengthWithoutName = path.length() - name.length() - 1;
-		String pathWithoutName = path.substring(0, lengthWithoutName);
-		System.out.println("getParent: " + pathWithoutName);
-		
-		return getDirectoryByPath(RootDirectory.getInstance(this), pathWithoutName);
-	}
 
 	public Directory createIntermediatePath(Directory currentDir, String path) {
 		
@@ -176,7 +160,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		
 		Directory d;
 		try {
-			d = (Directory) this.getFileByPath(currentDir, parts[0]);
+			d = getDirectoryByPath(currentDir, parts[0]);
 		} catch (FileNotFoundException e) {
 			d = new Directory(this, currentDir, this.getUserByUsername("root"),
 					(parts[0].startsWith("/") ? parts[0].substring(1) : parts[0]));
@@ -221,9 +205,6 @@ public class MyDriveFS extends MyDriveFS_Base {
 	public void removeFileGivenPath(Directory currentDir, String path) throws FileNotFoundException, InvalidPathException{
 
 		AbstractFile af = getFileByPath(currentDir, path);
-		System.out.println("getFileByPath:" + currentDir.getName());
-		System.out.println("getFileByPath:" + path);
-		System.out.println("getFileByPath:" + af.getName());
 		af.removeFile();
 	}
 

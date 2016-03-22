@@ -6,9 +6,11 @@ import java.util.Set;
 
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
+import pt.tecnico.myDrive.exception.NotDirectoryException;
 import pt.tecnico.myDrive.exception.HomeDirectoryException;
 import pt.tecnico.myDrive.exception.DirectoryNotEmptyException;
 import pt.tecnico.myDrive.exception.ImportDocumentException;
+import pt.tecnico.myDrive.exception.InvalidPathException;
 
 import org.jdom2.Element;
 
@@ -50,7 +52,6 @@ public class Directory extends Directory_Base {
 				return f;
 			}
 		}
-        //return null;
 		throw new FileNotFoundException(getPath() + "/" + name);
 	}
 
@@ -98,6 +99,13 @@ public class Directory extends Directory_Base {
 		return children;
 	}
 	
+	public Directory getRootDirectory() {		
+		if (this==this.getParent())
+			return this;
+		else
+			return this.getParent().getRootDirectory();
+	}
+	
 	public void xmlImport(Element element, Directory par) throws ImportDocumentException{
 		try {
             xmlImportFile(element, par);
@@ -107,7 +115,7 @@ public class Directory extends Directory_Base {
 		}
 							
 	}
-	
+
 	
     public Element xmlExport() {
 		return xmlAddFile();
