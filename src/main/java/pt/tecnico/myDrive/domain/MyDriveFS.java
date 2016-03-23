@@ -19,9 +19,9 @@ import org.jdom2.Document;
 public class MyDriveFS extends MyDriveFS_Base {
 
 	public static MyDriveFS getInstance() throws InvalidUsernameException{
-		MyDriveFS mydrive = FenixFramework.getDomainRoot().getMyDrive();
-		if (mydrive != null)
-			return mydrive;
+		MyDriveFS myDrive = FenixFramework.getDomainRoot().getMyDrive();
+		if (myDrive != null)
+			return myDrive;
 
 		MyDriveFS newMyDrive = new MyDriveFS();
 		RootDirectory rootDir = RootDirectory.getInstance(newMyDrive);
@@ -71,8 +71,8 @@ public class MyDriveFS extends MyDriveFS_Base {
 		} else if (path.startsWith("/")) {
 			currentDir = getRootDirectory();
 			path = path.substring(1);
-		} 
-		
+		}
+
 		if (path.endsWith("/")) {
 			path = path.substring(0, path.length() - 1);
 		}
@@ -126,97 +126,6 @@ public class MyDriveFS extends MyDriveFS_Base {
 		}
 
 		return doc;
-	}
-
-	public ArrayList<String> listDirectorySorted(Directory currentDir, String path) 
-			throws InvalidPathException, FileNotFoundException {
-
-		AbstractFile dir = getFileByPath(currentDir, path);
-		if (!(dir instanceof Directory)) {
-			throw new NotDirectoryException(path);
-		}
-
-		ArrayList<AbstractFile> files = ((Directory) dir).getFilesSimpleSorted();
-		ArrayList<String> filenames = new ArrayList<String>();
-		filenames.add(".");
-		filenames.add("..");
-
-		for (AbstractFile f : files) {
-			filenames.add(f.getName());
-		}
-
-		return filenames;
-
-	}
-
-	public Directory createIntermediatePath(Directory currentDir, String path) {
-		
-		if (!path.contains("/")) {
-			return currentDir;
-		}
-
-		String[] parts = path.split("/", 2);
-		if (path.startsWith("/")) {
-			parts[0] = "/" + parts[0];
-		}
-		
-		
-		Directory d;
-		try {
-			d = getDirectoryByPath(currentDir, parts[0]);
-		} catch (FileNotFoundException e) {
-			d = new Directory(this, currentDir, this.getUserByUsername("root"),
-					(parts[0].startsWith("/") ? parts[0].substring(1) : parts[0]));
-		}
-
-		if (!parts[1].contains("/")) {
-			return d;
-		}
-
-		return createIntermediatePath(d, parts[1]);
-	}
-
-	public Directory createDirectoryFromPath(User owner, Directory currentDir, String path) {
-		
-		if (path.endsWith("/")) {
-			path = path.substring(0, path.length() - 1);
-		}
-		
-		Directory d = createIntermediatePath(currentDir, path);
-		Directory newDir = new Directory(this, d, owner, path.substring(path.lastIndexOf("/") + 1));
-		return newDir;
-	}
-
-	public TextFile createTextFileFromPath(User owner, Directory currentDir, String path, String content) {
-		Directory d = createIntermediatePath(currentDir, path);
-		TextFile t = new TextFile(this, d, owner, path.substring(path.lastIndexOf("/") + 1), content);
-		return t;
-	}
-
-	public Link createLinkFromPath(User owner, Directory currentDir, String path, String content) {
-		Directory d = createIntermediatePath(currentDir, path);
-		Link l = new Link(this, d, owner, path.substring(path.lastIndexOf("/") + 1), content);
-		return l;
-	}
-
-	public App createAppFromPath(User owner, Directory currentDir, String path, String content) {
-		Directory d = createIntermediatePath(currentDir, path);
-		App a = new App(this, d, owner, path.substring(path.lastIndexOf("/") + 1), content);
-		return a;
-	}
-
-	public void removeFileGivenPath(Directory currentDir, String path) throws FileNotFoundException, InvalidPathException{
-
-		AbstractFile af = getFileByPath(currentDir, path);
-		af.removeFile();
-	}
-
-	public String readTextFile(Directory currentDir, String path) throws NotTextFileException, FileNotFoundException, InvalidPathException{
-		AbstractFile af= getFileByPath(currentDir, path);
-		if (!(af instanceof TextFile)){
-			throw new NotTextFileException(af.getName());
-		}
-		return ((TextFile)af).getContent();
 	}
 
 	public boolean elementExistsInMyDriveFS(Element xml) {
