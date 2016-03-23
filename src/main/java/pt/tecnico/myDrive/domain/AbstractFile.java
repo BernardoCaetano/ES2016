@@ -4,10 +4,8 @@ import org.joda.time.DateTime;
 
 import org.jdom2.Element;
 
-import java.util.Set;
 import java.util.ArrayList;
 
-import pt.tecnico.myDrive.exception.UserNotFoundException;
 
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
     

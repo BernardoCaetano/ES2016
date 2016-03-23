@@ -5,9 +5,6 @@ import org.apache.commons.lang.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import java.util.Set;
-import java.util.List;
-
 import org.jdom2.Element;
 
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
@@ -102,7 +99,6 @@ public class User extends User_Base {
 		for (Element fileElement : userElement.getChildren("file")){ 
 			String path = fileElement.getAttribute("path").getValue();
 			Directory currentDir = myDrive.getRootDirectory();
-			System.out.println("Antes do setOwner" + myDrive.getFileByPath(currentDir, path).getName() + "   " + getName()); //donotforget to remove !!!
 			myDrive.getFileByPath(currentDir, path).setOwner(MyDriveFS.getInstance(), this);
 		} 
 	}

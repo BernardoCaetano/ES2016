@@ -1,6 +1,5 @@
 package pt.tecnico.myDrive;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.File;
@@ -10,11 +9,8 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import pt.ist.fenixframework.Atomic;
-import pt.ist.fenixframework.DomainRoot;
 import pt.ist.fenixframework.FenixFramework;
 
 import pt.tecnico.myDrive.domain.*;
@@ -28,25 +24,11 @@ public class Main {
 		try {
 			for (String s : args)
 				xmlScan(new File(s));
-			firstDelivery();
+			xmlPrint();
 		} finally {
 			FenixFramework.shutdown();
 		}
 	}
-
-    @Atomic
-    public static void firstDelivery() throws MyDriveException {
-        MyDriveFS mydrive = MyDriveFS.getInstance();
-        Directory rootDir = RootDirectory.getInstance(mydrive);
-
-        mydrive.createTextFileFromPath(null, rootDir, "/home/README", "lista de utilizadores");
-        mydrive.createDirectoryFromPath(null, rootDir, "/usr/local/bin");
-        System.out.println(mydrive.readTextFile(rootDir, "/home/README"));
-        mydrive.removeFileGivenPath(rootDir, "/usr/local/bin");
-        xmlPrint();
-        mydrive.removeFileGivenPath(rootDir, "/home/README");
-        printCollection(mydrive.listDirectorySorted(rootDir, "/home"));
-    }
 
     @Atomic
     public static void xmlPrint() {

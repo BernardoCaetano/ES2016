@@ -218,70 +218,63 @@ public class MyDriveFS extends MyDriveFS_Base {
 		}
 		return ((TextFile)af).getContent();
 	}
+
+	public boolean elementExistsInMyDriveFS(Element xml) {
+		RootDirectory rootDir = RootDirectory.getInstance(this);
+		Directory parentDirectory = rootDir.getParentFromPath(xml.getAttribute("path").getValue());
+		String nameOfFile = rootDir.getNameOfFileFromPath(xml.getAttribute("path").getValue());
+		if (!parentDirectory.hasFile(nameOfFile)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	public void xmlImport(Element myDriveElement) {
-		Directory parentDirectory;
-		String nameOfFile;
 		RootDirectory rootDir = RootDirectory.getInstance(this);
-			
+
 		rootDir.xmlImport(this, myDriveElement.getChild("rootDirectory"));
-				
-		for (Element directoryElement: myDriveElement.getChildren("directory")){
-			parentDirectory = rootDir.getParentFromPath(directoryElement.getAttribute("path").getValue());
-			nameOfFile = rootDir.getNameOfFileFromPath(directoryElement.getAttribute("path").getValue());
-			
-			if( !parentDirectory.hasFile(nameOfFile) ){
+
+		for (Element directoryElement : myDriveElement.getChildren("directory")) {
+			if (elementExistsInMyDriveFS(directoryElement)) {
 				new Directory(this, directoryElement);
-			}
-			else {
-				getFileByPath(rootDir, directoryElement.getAttribute("path").getValue()).xmlImport(this, directoryElement);
+			} else {
+				getFileByPath(rootDir, directoryElement.getAttribute("path").getValue()).xmlImport(this,
+						directoryElement);
 			}
 		}
-		
-		for (Element textFileElement: myDriveElement.getChildren("textFile")){
-			parentDirectory = rootDir.getParentFromPath(textFileElement.getAttribute("path").getValue());
-			nameOfFile = rootDir.getNameOfFileFromPath(textFileElement.getAttribute("path").getValue());
-			
-			if( !parentDirectory.hasFile(nameOfFile) ){
+
+		for (Element textFileElement : myDriveElement.getChildren("textFile")) {
+			if (elementExistsInMyDriveFS(textFileElement)) {
 				new TextFile(this, textFileElement);
-			}
-			else {
-				getFileByPath(rootDir, textFileElement.getAttribute("path").getValue()).xmlImport(this, textFileElement);
+			} else {
+				getFileByPath(rootDir, textFileElement.getAttribute("path").getValue()).xmlImport(this,
+						textFileElement);
 			}
 		}
-		
-		for (Element appElement: myDriveElement.getChildren("app")){
-			parentDirectory = rootDir.getParentFromPath(appElement.getAttribute("path").getValue());
-			nameOfFile = rootDir.getNameOfFileFromPath(appElement.getAttribute("path").getValue());
-			
-			if( !parentDirectory.hasFile(nameOfFile) ){
+
+		for (Element appElement : myDriveElement.getChildren("app")) {
+			if (elementExistsInMyDriveFS(appElement)) {
 				new App(this, appElement);
-			}
-			else {
+			} else {
 				getFileByPath(rootDir, appElement.getAttribute("path").getValue()).xmlImport(this, appElement);
 			}
 		}
-			
-		for (Element linkElement: myDriveElement.getChildren("link")){
-			parentDirectory = rootDir.getParentFromPath(linkElement.getAttribute("path").getValue());
-			nameOfFile = rootDir.getNameOfFileFromPath(linkElement.getAttribute("path").getValue());
-			
-			if( !parentDirectory.hasFile(nameOfFile) ){
+
+		for (Element linkElement : myDriveElement.getChildren("link")) {
+			if (elementExistsInMyDriveFS(linkElement)) {
 				new Link(this, linkElement);
-			}
-			else {
+			} else {
 				getFileByPath(rootDir, linkElement.getAttribute("path").getValue()).xmlImport(this, linkElement);
 			}
 		}
-			
-		for (Element userElement: myDriveElement.getChildren("user")){
-			if (hasUser(userElement.getAttribute("username").getValue())){
+
+		for (Element userElement : myDriveElement.getChildren("user")) {
+			if (hasUser(userElement.getAttribute("username").getValue())) {
 				getUserByUsername(userElement.getAttribute("username").getValue()).xmlImport(this, userElement);
-			} 
-			else {
+			} else {
 				new User(this, userElement);
 			}
-			
 		}
-    }	
+	}
 }
