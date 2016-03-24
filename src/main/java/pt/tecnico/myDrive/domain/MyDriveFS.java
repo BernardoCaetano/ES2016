@@ -9,7 +9,6 @@ import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
-import pt.tecnico.myDrive.exception.NotTextFileException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.NotDirectoryException;
 

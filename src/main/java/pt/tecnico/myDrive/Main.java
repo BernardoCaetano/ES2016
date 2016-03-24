@@ -29,6 +29,11 @@ public class Main {
 			FenixFramework.shutdown();
 		}
 	}
+	
+	@Atomic
+    public static void init() { // empty myDrive
+		//MyDriveFS.getInstance().cleanup();
+    }
 
     @Atomic
     public static void xmlPrint() {

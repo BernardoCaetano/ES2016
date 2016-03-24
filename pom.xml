@@ -126,6 +126,10 @@
 
         <version.slf4j.api>1.7.7</version.slf4j.api>
         <version.ch.qos.logback.logback.classic>1.1.2</version.ch.qos.logback.logback.classic>
+        
+        <version.junit>4.12</version.junit>
+        <version.slf4j.api>1.7.7</version.slf4j.api>
+        <version.ch.qos.logback.logback.classic>1.1.2</version.ch.qos.logback.logback.classic>
 
 	<version.org.jdom.jdom>2.0.5</version.org.jdom.jdom>
     </properties>
@@ -252,6 +256,12 @@
           <groupId>joda-time</groupId>
           <artifactId>joda-time</artifactId>
           <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${version.junit}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
