@@ -23,12 +23,13 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     	setId(mydrive);
     	setName(name);
     	setLastModified(new DateTime());
-        setPermissions(owner.getUmask());
     	setParent(parentDir);
    		setOwner(mydrive, owner);
     	getOwner().addFiles(this);
+    	setPermissions(getOwner().getName());
     }
 
+    
     @Override
     public void setParent(Directory parentDir) {
         if (parentDir == null)
