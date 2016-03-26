@@ -6,6 +6,7 @@ import org.jdom2.Element;
 
 import java.util.ArrayList;
 
+import pt.tecnico.myDrive.exception.InvalidFileNameException;
 
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
     
@@ -13,12 +14,14 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
         super();
     }
 
-    public AbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name) {
+    public AbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name) 
+    		throws InvalidFileNameException {
     	super();
     	initAbstractFile(mydrive, parentDir, owner, name);
     }
 
-    public void initAbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name) {
+    public void initAbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name) 
+    		throws InvalidFileNameException {
 
     	setId(mydrive);
     	setName(name);
@@ -29,6 +32,15 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     	setPermissions(getOwner().getName());
     }
 
+    @Override
+    public void setName(String name) 
+    		throws InvalidFileNameException {
+    	if (name.contains("/") || name.contains("\0")) {
+    		throw new InvalidFileNameException(name);
+    	} else {
+    		super.setName(name);
+    	}
+    }
     
     @Override
     public void setParent(Directory parentDir) {

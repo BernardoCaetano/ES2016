@@ -6,6 +6,7 @@ import java.util.Collections;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.HomeDirectoryException;
+import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.DirectoryNotEmptyException;
 
 import org.jdom2.Element;
@@ -16,7 +17,8 @@ public class Directory extends Directory_Base {
 		super();
 	}
 
-	public Directory(MyDriveFS mydrive, Directory parentDir, User owner, String name) {
+	public Directory(MyDriveFS mydrive, Directory parentDir, User owner, String name) 
+			throws InvalidFileNameException {
 		super();
 		initAbstractFile(mydrive, parentDir, owner, name);
 	}

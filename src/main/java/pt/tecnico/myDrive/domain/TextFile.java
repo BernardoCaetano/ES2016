@@ -2,13 +2,16 @@ package pt.tecnico.myDrive.domain;
 
 import org.jdom2.Element;
 
+import pt.tecnico.myDrive.exception.InvalidFileNameException;
+
 public class TextFile extends TextFile_Base {
     
     public TextFile() {
         super();
     }
 
-    public TextFile(MyDriveFS mydrive, Directory parentDir, User owner, String name, String content) {
+    public TextFile(MyDriveFS mydrive, Directory parentDir, User owner, String name, String content) 
+    		throws InvalidFileNameException {
     	super();
     	initTextFile(mydrive, parentDir, owner, name, content);
     }
@@ -18,7 +21,8 @@ public class TextFile extends TextFile_Base {
 		xmlImport(myDrive, textFileElement);
 	}
 
-    public void initTextFile(MyDriveFS mydrive, Directory parentDir, User owner, String name, String content) {
+    public void initTextFile(MyDriveFS mydrive, Directory parentDir, User owner, String name, String content) 
+    		throws InvalidFileNameException {
     	initAbstractFile(mydrive, parentDir, owner, name);
     	setContent(content);
     }
