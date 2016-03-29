@@ -10,7 +10,7 @@ public class UserNotFoundException extends MyDriveException {
         _username = username;
     }
 
-    public String getUnknownPath() { return _username; }
+    public String getUnknownName() { return _username; }
 
     @Override
     public String getMessage() {
