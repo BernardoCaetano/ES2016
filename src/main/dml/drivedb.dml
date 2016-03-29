@@ -30,7 +30,10 @@ class App extends TextFile;
 
 class RootDirectory extends Directory;
 
-class Login;
+class Login {
+	Long token;
+	DateTime lastActivity;
+}
 
 relation MyDriveHasUsers {
 	MyDriveFS playsRole myDrive { multiplicity 1; }
