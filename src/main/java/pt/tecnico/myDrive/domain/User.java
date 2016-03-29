@@ -76,6 +76,15 @@ public class User extends User_Base {
             setHomeDirectory(userHomeDir);
         }
     }
+    
+    @Override
+    public String getPassword() {
+    	return null; //FIXME: define behaviour (throw exception/ log.warn() i don't know)
+    }
+    
+    public boolean checkPassword(String password) {
+    	return password.equals(super.getPassword());
+    }
 
 	public void xmlImport(MyDriveFS myDrive, Element userElement) {
 		if(!myDrive.hasUser(userElement.getAttribute("username").getValue())){
@@ -109,7 +118,7 @@ public class User extends User_Base {
         Element element = new Element("user");
         
         element.setAttribute("username", getUsername());
-        element.setAttribute("password", getPassword());
+        element.setAttribute("password", super.getPassword());
         element.setAttribute("name", getName());
         element.setAttribute("umask", getUmask());
         element.setAttribute("homeDirectory", getHomeDirectory().getPath());
