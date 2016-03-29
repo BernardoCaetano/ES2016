@@ -6,6 +6,7 @@ import java.util.Set;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
+import pt.tecnico.myDrive.exception.InvalidLoginException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
@@ -104,6 +105,23 @@ public class MyDriveFS extends MyDriveFS_Base {
 			throw new NotDirectoryException(af.getName());
 		}
 		return (Directory) af;
+	}
+	
+	public Login getLoginByToken(long token) {
+		for (Login l : this.getLoginSet()) {
+			if (token == l.getToken() && l.isValid()) {
+				return l;
+			}
+		}
+		throw new InvalidLoginException(token);
+	}
+	
+	public void deleteInvalidLogins() {
+		for (Login l : this.getLoginSet()) {
+			if (!l.isValid()) {
+				l.remove();
+			}
+		}
 	}
 
 	public Document xmlExport() {
