@@ -196,7 +196,7 @@
 	   <configuration>
 	     <names>false</names>
 	     <outputDirectory>info</outputDirectory>
-	     <url>http://yuml.me/diagram/scruffy;dir:lr/class/</url>
+	     <url>http://yuml.me/diagram/plain;dir:lr/class/</url>
 	   </configuration>
 	   <executions>
 	     <execution>

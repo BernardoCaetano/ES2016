@@ -30,6 +30,8 @@ class App extends TextFile;
 
 class RootDirectory extends Directory;
 
+class Login;
+
 relation MyDriveHasUsers {
 	MyDriveFS playsRole myDrive { multiplicity 1; }
 	User playsRole users { multiplicity *; }
@@ -59,4 +61,19 @@ relation DomainRootMyDriveApp {
 	.pt.ist.fenixframework.DomainRoot playsRole root;
 	MyDriveFS playsRole myDrive;
 	
+}
+
+relation MyDriveHasLogins {
+	MyDriveFS playsRole myDrive { multiplicity 1; }
+	Login playsRole login { multiplicity *; }
+}
+
+relation LoginHasUser {
+	User playsRole user { multiplicity 1; }
+	Login playsRole login { multiplicity *; }
+}
+
+relation LoginHasCurrentDirectory {
+	Directory playsRole currentDir { multiplicity 1; }
+	Login playsRole login { multiplicity *; }
 }
