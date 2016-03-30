@@ -5,8 +5,9 @@ import java.util.Collections;
 
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
-import pt.tecnico.myDrive.exception.HomeDirectoryException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
+import pt.tecnico.myDrive.exception.IsCurrentDirectoryException;
+import pt.tecnico.myDrive.exception.IsHomeDirectoryException;
 import pt.tecnico.myDrive.exception.DirectoryNotEmptyException;
 
 import org.jdom2.Element;
@@ -65,18 +66,24 @@ public class Directory extends Directory_Base {
 
 	
 	@Override
-	public void removeFile() throws HomeDirectoryException, DirectoryNotEmptyException {
+	public void removeFile() 
+			throws IsHomeDirectoryException, DirectoryNotEmptyException, IsCurrentDirectoryException {
         if (getHostUserSet().size()!=0){
-            throw new HomeDirectoryException(this.getName());
+            throw new IsHomeDirectoryException(this.getName());
         }
 
         if (getFilesSet().size()!=0) {
            throw new DirectoryNotEmptyException(this.getName()); 
         }
+        
+        if (getLoginSet().size()!=0) {
+        	throw new IsCurrentDirectoryException(this.getName());
+        }
 
         setParent(null);
         setOwner(null);
         deleteDomainObject();		
+       
 	}
 
 	public ArrayList<AbstractFile> getFilesSimpleSorted() {

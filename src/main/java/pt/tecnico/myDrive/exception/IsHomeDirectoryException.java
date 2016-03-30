@@ -1,12 +1,12 @@
 package pt.tecnico.myDrive.exception;
 
-public class HomeDirectoryException extends MyDriveException {
+public class IsHomeDirectoryException extends MyDriveException {
 
 	private static final long serialVersionUID = 1L;
 	
 	private String homeDirName;
 
-	public HomeDirectoryException(String homeDirName) {
+	public IsHomeDirectoryException(String homeDirName) {
         this.homeDirName = homeDirName;
     }
 
