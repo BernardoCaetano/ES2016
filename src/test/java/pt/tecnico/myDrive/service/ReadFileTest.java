@@ -19,8 +19,6 @@ import pt.tecnico.myDrive.exception.InvalidLoginException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
 
 public class ReadFileTest extends TokenReceivingTest {
-	
-	private long maryToken;
 
 	@Override
 	protected void populate() {
@@ -30,58 +28,58 @@ public class ReadFileTest extends TokenReceivingTest {
 		new TextFile(md, mary.getHomeDirectory(), mary, "exampleTxt", "/home/mary/exampleApp 1 2");
 		new Directory(md, mary.getHomeDirectory(), mary, "exampleDir");
 		new App(md, mary.getHomeDirectory(), john, "exampleApp", "pt.tecnico.myDrive.Main.main");
-		
-		LoginService svc = new LoginService("mary", "5678");
-		svc.execute();
-		maryToken = svc.result();
+
+		super.populate("mary", "5678");
 	}
-	
+
 	@Test
 	public void success() {
-		ReadFileService service = new ReadFileService(maryToken, "exampleTxt");
+		ReadFileService service = new ReadFileService(validToken, "exampleTxt");
 		service.execute();
 		String res = service.result();
-		
+
 		assertEquals("Content not is the same", "/home/mary/exampleApp 1 2", res);
 	}
-	
+
 	@Test(expected = NotTextFileException.class)
 	public void notTextFileTest() {
-		ReadFileService service = new ReadFileService(maryToken, "exampleDir");
+		ReadFileService service = new ReadFileService(validToken, "exampleDir");
 		service.execute();
 	}
-	
+
 	@Test(expected = FileNotFoundException.class)
 	public void nonExistentFileTest() {
-		ReadFileService service = new ReadFileService(maryToken, "void");
+		ReadFileService service = new ReadFileService(validToken, "void");
 		service.execute();
 	}
-	
+
 	@Test(expected = AccessDeniedException.class)
 	public void permissionDeniedTest() {
-		ReadFileService service = new ReadFileService(maryToken, "exampleApp");
+		ReadFileService service = new ReadFileService(validToken, "exampleApp");
 		service.execute();
 	}
-	
+
 	@Test(expected = InvalidLoginException.class)
-	public void expiredSessionTest3h() {
-		super.sessionExpired3hAgo(maryToken);
+	public void expiredSessionTest2h05minAgo() {
+		super.setLastActivity2h05minAgo();
+		ReadFileService service = new ReadFileService(validToken, "someTxt");
+		service.execute();
 	}
-	
-	@Test(expected = InvalidLoginException.class)
-	public void expiredSessionTest2h01minAgo() {
-		super.sessionExpired2h01minAgo(maryToken);
-	}
-	
+
 	@Test
-	public void sessionStillValidTest1h59min() {
-		super.setLastActivity1h59minAgo(maryToken);
-		ReadFileService service = new ReadFileService(maryToken, "exampleTxt");
+	public void sessionStillValidTest1h55min() {
+		super.setLastActivity1h55minAgo();
+		ReadFileService service = new ReadFileService(validToken, "exampleTxt");
 		service.execute();
 		String res = service.result();
-		
+
 		assertEquals("Content not is the same", "/home/mary/exampleApp 1 2", res);
 
 	}
-	
+
+	@Test(expected = InvalidLoginException.class)
+	public void nonExistentTokenTest() {
+		ReadFileService service = new ReadFileService(invalidToken, "exampleTxt");
+		service.execute();
+	}
 }
