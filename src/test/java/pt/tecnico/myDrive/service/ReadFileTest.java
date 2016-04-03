@@ -23,11 +23,11 @@ public class ReadFileTest extends TokenReceivingTest {
 	@Override
 	protected void populate() {
 		MyDriveFS md = MyDriveFS.getInstance();
-		User john = new User(md, "john", "1234", "Johnny", "rwxd----");
+		User john = new User(md, "john", "1234", "Johnny", "rwxd-w--");
 		User mary = new User(md, "mary", "5678", "Mary", "rwxdr-x-");
 		new TextFile(md, mary.getHomeDirectory(), mary, "exampleTxt", "/home/mary/exampleApp 1 2");
-		new Directory(md, mary.getHomeDirectory(), mary, "exampleDir");
-		new App(md, mary.getHomeDirectory(), john, "exampleApp", "pt.tecnico.myDrive.Main.main");
+		(new Directory(md, mary.getHomeDirectory(), mary, "exampleDir")).setPermissions("rwxdrw--");
+		(new App(md, mary.getHomeDirectory(), john, "exampleApp", "pt.tecnico.myDrive.Main.main")).setPermissions("rwxd----");
 
 		super.populate("mary", "5678");
 	}
