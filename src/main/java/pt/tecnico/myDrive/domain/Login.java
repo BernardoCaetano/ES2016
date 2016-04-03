@@ -7,10 +7,6 @@ import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.WrongPasswordException;
 
 public class Login extends Login_Base {
-    
-	public Login() {
-		super();
-	}
 	
     public Login(MyDriveFS myDrive, String username, String password) 
     		throws UserNotFoundException, WrongPasswordException {
@@ -44,8 +40,5 @@ public class Login extends Login_Base {
     	this.setMyDrive(null);
     	deleteDomainObject();
     }
-    
-    
-    
     
 }
