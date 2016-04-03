@@ -20,7 +20,8 @@ public class App extends App_Base {
 		super();
 		xmlImport(myDrive, appElement);
 	}
-	
+
+    @Override
      public String xmlTag() {
     	 return "app";
      }

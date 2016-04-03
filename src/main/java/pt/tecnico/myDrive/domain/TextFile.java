@@ -41,7 +41,8 @@ public class TextFile extends TextFile_Base {
 		
 		setContent(element.getAttribute("content").getValue());
 	}
-    
+
+    @Override
     public Element xmlExport() {
 		Element element = xmlAddFile();
 		element.setAttribute("content", getContent());
@@ -49,6 +50,7 @@ public class TextFile extends TextFile_Base {
 		return element;
     }
     
+    @Override
     public String xmlTag() {
     	return "textFile";
     }

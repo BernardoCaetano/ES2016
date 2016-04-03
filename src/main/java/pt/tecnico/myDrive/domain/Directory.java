@@ -108,15 +108,18 @@ public class Directory extends Directory_Base {
 
 		return children;
 	}
-	
+
+    @Override
     public boolean isHomeDirectory() {
     	return !getHostUserSet().isEmpty();
     }
-		
+
+    @Override
     public Element xmlExport() {
 		return xmlAddFile();
     }
-	
+
+    @Override
 	public String xmlTag() {
 		return "directory";
 	}
