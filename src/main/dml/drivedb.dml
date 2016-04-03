@@ -35,6 +35,11 @@ class Login {
 	DateTime lastActivity;
 }
 
+class Variable {
+	String name;
+	String value;
+}
+
 relation MyDriveHasUsers {
 	MyDriveFS playsRole myDrive { multiplicity 1; }
 	User playsRole users { multiplicity *; }
@@ -79,4 +84,9 @@ relation LoginHasUser {
 relation LoginHasCurrentDirectory {
 	Directory playsRole currentDir { multiplicity 1; }
 	Login playsRole login { multiplicity *; }
+}
+
+relation LoginHasVariables {
+	Login playsRole login {multiplicity 1; }
+	Variable playsRole variable { multiplicity *; }
 }
