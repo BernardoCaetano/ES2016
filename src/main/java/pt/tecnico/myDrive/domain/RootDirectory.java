@@ -36,10 +36,5 @@ public class RootDirectory extends RootDirectory_Base {
     public void xmlImport(Element rootElement){
 		setPermissions(rootElement.getAttribute("permissions").getValue());
 		setLastModified(DateTime.parse(rootElement.getAttribute("lastModified").getValue()));
-    }
-    
-    @Override
-    public String xmlTag() {
-		return "rootDirectory";
-	}    
+    } 
 }

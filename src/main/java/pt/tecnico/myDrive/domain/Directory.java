@@ -108,6 +108,10 @@ public class Directory extends Directory_Base {
 
 		return children;
 	}
+	
+    public boolean isHomeDirectory() {
+    	return !getHostUserSet().isEmpty();
+    }
 		
     public Element xmlExport() {
 		return xmlAddFile();

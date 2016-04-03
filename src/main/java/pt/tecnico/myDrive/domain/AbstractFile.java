@@ -131,4 +131,8 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     	
     	return thisPath.compareToIgnoreCase(otherPath);
     }
+    
+    public boolean isHomeDirectory() {
+    	return false;
+    }
 }

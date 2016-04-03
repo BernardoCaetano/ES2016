@@ -132,14 +132,16 @@ public class MyDriveFS extends MyDriveFS_Base {
 		Collections.sort(allFiles);
 		
 		for (AbstractFile f: allFiles){
-			element.addContent(f.xmlExport());
+			if (!f.getPath().equals("/") && !f.getPath().equals("/home/") && !f.isHomeDirectory())
+				element.addContent(f.xmlExport());
 		}
 		
 		
 		Set<User> userSet = getUsersSet();
 
 		for (User u : userSet) {
-			element.addContent(u.xmlExport());
+			if (!u.getUsername().equals("root"))
+				element.addContent(u.xmlExport());
 		}
 
 		return doc;
@@ -158,8 +160,6 @@ public class MyDriveFS extends MyDriveFS_Base {
 	
 	public void xmlImport(Element myDriveElement) {
 		RootDirectory rootDir = RootDirectory.getInstance(this);
-
-		rootDir.xmlImport(this, myDriveElement.getChild("rootDirectory"));
 
 		for (Element directoryElement : myDriveElement.getChildren("directory")) {
 			if (elementExistsInMyDriveFS(directoryElement)) {
