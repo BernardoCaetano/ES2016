@@ -10,6 +10,6 @@ public class PathMaximumLengthException extends MyDriveException {
 	
 	@Override
 	public String getMessage() {
-		return "The length of an Absolute path has a maximum of 1024 characters.";
+		return "The length of an absolute path must be at most 1024 characters.";
 	}
 }

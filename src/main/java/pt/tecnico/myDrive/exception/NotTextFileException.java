@@ -16,6 +16,6 @@ public class NotTextFileException extends MyDriveException {
 
 	@Override
 	public String getMessage() {
-		return "File '" + fileName + "' does not support content-reading operation";
+		return "The file '" + fileName + "' does not support content reading nor writing";
 	}
 }

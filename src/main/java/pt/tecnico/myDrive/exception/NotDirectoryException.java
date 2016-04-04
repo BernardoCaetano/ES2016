@@ -16,6 +16,6 @@ public class NotDirectoryException extends MyDriveException {
 
 	@Override
 	public String getMessage() {
-		return "File '" + dirName + "' is not a directory";
+		return "The file '" + dirName + "' is not a directory";
 	}
 }
