@@ -30,9 +30,7 @@ public class User extends User_Base {
 
     public void init(MyDriveFS mydrive, String username, String password, String name, String umask) 
             throws InvalidUsernameException {
-        if(username == null) {
-            throw new InvalidUsernameException(null);
-        }
+    	
         setUsername(username);
         setPassword(password);
         setName(name);
@@ -51,12 +49,12 @@ public class User extends User_Base {
     }
 
     @Override
-    public void setUsername(String username) throws InvalidUsernameException{
-        if(username.equals("") || !StringUtils.isAlphanumeric(username)) {
-            throw new InvalidUsernameException(username);
-        }
-        super.setUsername(username);
-    }
+	public void setUsername(String username) throws InvalidUsernameException {
+		if (username.equals("") || !StringUtils.isAlphanumeric(username) || (username == null) || (username.length() < 3)) {
+			throw new InvalidUsernameException(username);
+		}
+		super.setUsername(username);
+	}
 
     public void setHomeDirectory(MyDriveFS mydrive) {
         Directory rootDir = (Directory) mydrive.getRootDirectory();
