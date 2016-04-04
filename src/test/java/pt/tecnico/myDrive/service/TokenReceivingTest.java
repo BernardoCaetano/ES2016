@@ -1,15 +1,11 @@
 package pt.tecnico.myDrive.service;
 
 import java.math.BigInteger;
-import java.sql.Date;
 import java.util.Random;
 
 import org.joda.time.DateTime;
-import org.junit.Test;
-
 import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
-import pt.tecnico.myDrive.exception.InvalidLoginException;
 
 public abstract class TokenReceivingTest extends AbstractServiceTest implements TokenReceivingInterface {
 
@@ -17,12 +13,8 @@ public abstract class TokenReceivingTest extends AbstractServiceTest implements 
 	protected long invalidToken;
 
 	protected void populate(String username, String password) {
-
-		LoginService svc = new LoginService(username, password);
-		svc.execute();
-		validToken = svc.result();
+		validToken = (new Login(MyDriveFS.getInstance(), username, password)).getToken();
 		invalidToken = new BigInteger(64, new Random()).longValue();
-
 	}
 
 	protected void setLastActivity2h05minAgo() {
