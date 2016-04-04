@@ -8,18 +8,16 @@ import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.IsCurrentDirectoryException;
 import pt.tecnico.myDrive.exception.IsHomeDirectoryException;
-import pt.tecnico.myDrive.exception.DirectoryNotEmptyException;
-
 import org.jdom2.Element;
 
 public class Directory extends Directory_Base {
-
+	
 	public Directory() {
 		super();
 	}
 
 	public Directory(MyDriveFS mydrive, Directory parentDir, User owner, String name) 
-			throws InvalidFileNameException {
+			throws InvalidFileNameException, NameAlreadyExistsException {
 		super();
 		initAbstractFile(mydrive, parentDir, owner, name);
 	}
@@ -66,19 +64,21 @@ public class Directory extends Directory_Base {
 
 	
 	@Override
-	public void removeFile() 
-			throws IsHomeDirectoryException, DirectoryNotEmptyException, IsCurrentDirectoryException {
+	public void remove() 
+			throws IsHomeDirectoryException, IsCurrentDirectoryException {
         if (getHostUserSet().size()!=0){
             throw new IsHomeDirectoryException(this.getName());
         }
 
-        if (getFilesSet().size()!=0) {
-           throw new DirectoryNotEmptyException(this.getName()); 
-        }
-        
         if (getLoginSet().size()!=0) {
         	throw new IsCurrentDirectoryException(this.getName());
         }
+        
+        if (getFilesSet().size()!=0) {
+            for (AbstractFile child : this.getFilesSet()) {
+            	child.remove();
+            }
+         }
 
         setParent(null);
         setOwner(null);

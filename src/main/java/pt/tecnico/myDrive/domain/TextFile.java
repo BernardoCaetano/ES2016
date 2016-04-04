@@ -26,15 +26,7 @@ public class TextFile extends TextFile_Base {
     	initAbstractFile(mydrive, parentDir, owner, name);
     	setContent(content);
     }
-
-
-    @Override
-    public void removeFile(){
-        setParent(null);
-        setOwner(null);
-        deleteDomainObject();
-    }
-    
+ 
     @Override
     public void xmlImport(MyDriveFS myDrive, Element element){
 		super.xmlImport(myDrive, element);

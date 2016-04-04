@@ -7,28 +7,18 @@ import org.jdom2.Element;
 import java.util.ArrayList;
 
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
+import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
     
-    public AbstractFile() {
-        super();
-    }
-
-    public AbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name) 
-    		throws InvalidFileNameException {
-    	super();
-    	initAbstractFile(mydrive, parentDir, owner, name);
-    }
-
-    public void initAbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name) 
-    		throws InvalidFileNameException {
+   public void initAbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name) 
+    		throws InvalidFileNameException, NameAlreadyExistsException {
 
     	setId(mydrive);
     	setName(name);
     	setLastModified(new DateTime());
     	setParent(parentDir);
    		setOwner(mydrive, owner);
-    	getOwner().addFiles(this);
     	setPermissions(getOwner().getUmask());
     }
 
@@ -43,7 +33,8 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     }
     
     @Override
-    public void setParent(Directory parentDir) {
+    public void setParent(Directory parentDir) 
+    		throws NameAlreadyExistsException {
         if (parentDir == null)
             super.setParent(null);
         else
@@ -123,7 +114,11 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
         return children;
     }    
 
-    public void removeFile(){};
+    public void remove(){
+    	setParent(null);
+        setOwner(null);
+        deleteDomainObject();
+    };
     
     public int compareTo(AbstractFile f) {
     	String thisPath = this.getPath().replaceAll("/", "");

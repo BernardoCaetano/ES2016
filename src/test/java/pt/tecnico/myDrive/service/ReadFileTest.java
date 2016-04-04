@@ -38,7 +38,7 @@ public class ReadFileTest extends TokenReceivingTest {
 		service.execute();
 		String res = service.result();
 
-		assertEquals("Content not is the same", "/home/mary/exampleApp 1 2", res);
+		assertEquals("Content is not the same -", "/home/mary/exampleApp 1 2", res);
 	}
 
 	@Test(expected = NotTextFileException.class)
@@ -73,7 +73,7 @@ public class ReadFileTest extends TokenReceivingTest {
 		service.execute();
 		String res = service.result();
 
-		assertEquals("Content not is the same", "/home/mary/exampleApp 1 2", res);
+		assertEquals("Content is not the same -", "/home/mary/exampleApp 1 2", res);
 
 	}
 
