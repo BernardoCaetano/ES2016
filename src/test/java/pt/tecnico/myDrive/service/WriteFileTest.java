@@ -94,7 +94,7 @@ public class WriteFileTest extends TokenReceivingTest {
 	
 	@Test(expected = InvalidTextFileContentException.class)
 	public void failTextFileInvalidContentTest() {
-		WriteFileService service = new WriteFileService(validToken, "exampleApp", "this content is invalid");
+		WriteFileService service = new WriteFileService(validToken, "marysTxt", "this content is invalid");
 		service.execute();
 	}
 
