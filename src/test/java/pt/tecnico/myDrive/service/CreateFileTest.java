@@ -37,23 +37,18 @@ public class CreateFileTest extends TokenReceivingTest {
 	protected void populate() {
 		mD = MyDriveFS.getInstance();
 
-		new User(mD, "Wololo", "password", "April Fool", "rwxdrwxd");
+		User newUser = new User(mD, "Wololo", "password", "April Fool", "rwxdrwxd");
 		super.populate("Wololo", "password");
 
 		Login login = new Login(mD, "root", "***");
 		rootToken = login.getToken();
+		Directory currentDir = login.getCurrentDir();
 
-		CreateFileService serviceDir = new CreateFileService(validToken, "existingDir", "Directory");
-		serviceDir.execute();
+		new Directory(mD, currentDir, newUser, "existingDir");
+		new App(mD, currentDir, newUser, "newApp", "pt.tecnico.myDrive.Main.main");
+		new Link(mD, currentDir, newUser, "existingLink", "/home/root");
+		new TextFile(mD, currentDir, newUser, "newTextFile", "/home/Wololo/existingApp");
 
-		CreateFileService serviceApp = new CreateFileService(validToken, "existingApp", "App");
-		serviceApp.execute();
-
-		CreateFileService serviceLink = new CreateFileService(validToken, "existingLink", "Link");
-		serviceLink.execute();
-
-		CreateFileService serviceTextFile = new CreateFileService(validToken, "existingTextFile", "TextFile");
-		serviceTextFile.execute();
 	}
 
 	private AbstractFile getAbstractFile(long token, String fileName) {
