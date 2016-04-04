@@ -13,9 +13,11 @@ import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.User;
 import pt.tecnico.myDrive.exception.AccessDeniedException;
+import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.ImmutableLinkContentException;
 import pt.tecnico.myDrive.exception.InvalidAppContentException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
+import pt.tecnico.myDrive.exception.InvalidTextFileContentException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
 
 public class WriteFileTest extends TokenReceivingTest {
@@ -89,6 +91,12 @@ public class WriteFileTest extends TokenReceivingTest {
 		WriteFileService service = new WriteFileService(validToken, "johnsTxt", "/home/mary/exampleApp 23 11");
 		service.execute();
 	}
+	
+	@Test(expected = InvalidTextFileContentException.class)
+	public void failTextFileInvalidContentTest() {
+		WriteFileService service = new WriteFileService(validToken, "exampleApp", "this content is invalid");
+		service.execute();
+	}
 
 	@Test(expected = ImmutableLinkContentException.class)
 	public void failLinkTest() {
@@ -114,6 +122,12 @@ public class WriteFileTest extends TokenReceivingTest {
 	@Test(expected = NotTextFileException.class)
 	public void failDirectoryTest() {
 		WriteFileService service = new WriteFileService(validToken, "exampleDir", "some text");
+		service.execute();
+	}
+	
+	@Test(expected = FileNotFoundException.class)
+	public void failFileNotFoundTest() {
+		WriteFileService service = new WriteFileService(validToken, "someTxt", "some text");
 		service.execute();
 	}
 
