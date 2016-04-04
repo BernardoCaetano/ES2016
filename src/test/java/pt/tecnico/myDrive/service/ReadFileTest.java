@@ -2,13 +2,9 @@ package pt.tecnico.myDrive.service;
 
 import static org.junit.Assert.*;
 
-import java.math.BigInteger;
-import java.util.Random;
-
 import org.junit.Test;
 
 import pt.tecnico.myDrive.domain.Directory;
-import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.User;
