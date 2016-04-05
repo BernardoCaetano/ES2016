@@ -150,7 +150,7 @@ public class WriteFileTest extends TokenReceivingTest {
 
 	@Test(expected = InvalidLoginException.class)
 	public void nonExistentTokenTest() {
-		WriteFileService service = new WriteFileService(validToken, "someTxt", "some text");
+		WriteFileService service = new WriteFileService(invalidToken, "someTxt", "some text");
 		service.execute();
 	}
 
