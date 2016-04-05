@@ -25,7 +25,9 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     @Override
     public void setName(String name) 
     		throws InvalidFileNameException {
-    	if (name.contains("/") || name.contains("\0")) {
+    	if (name.equals(".") || name.equals("..")) {
+    		throw new InvalidFileNameException(name);
+    	}else if (name.contains("/") || name.contains("\0")) {
     		throw new InvalidFileNameException(name);
     	} else {
     		super.setName(name);
