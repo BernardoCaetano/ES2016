@@ -20,6 +20,7 @@ public class DeleteFileTest extends TokenReceivingTest {
 	
 	private long rootToken;
 	private Login rootLogin;
+	private Login jadeLogin;
 	MyDriveFS md ;
 	User jade ;
 	User roxy;
@@ -38,6 +39,7 @@ public class DeleteFileTest extends TokenReceivingTest {
         rootToken= rootLogin.getToken();
             
         super.populate("jade", "passjade"); 
+        jadeLogin = md.getLoginByToken(validToken);
     }
     
     
@@ -118,7 +120,10 @@ public class DeleteFileTest extends TokenReceivingTest {
 
     @Test(expected = IsCurrentDirectoryException.class )
     public void failParentDirectory(){
-    	    	
+    	
+    	Directory newDir = new Directory(md, jadeHomeDir, jade, "newDir");
+    	jadeLogin.setCurrentDir(newDir);
+    	
     	DeleteFileService service = new DeleteFileService(validToken, "..");
     	service.execute();	   	
     }
@@ -126,6 +131,9 @@ public class DeleteFileTest extends TokenReceivingTest {
     
     @Test(expected= IsCurrentDirectoryException.class )
     public void failCurrentDir(){
+    	
+    	Directory newDir = new Directory(md, jadeHomeDir, jade, "newDir");
+    	jadeLogin.setCurrentDir(newDir);
     	
     	DeleteFileService service = new DeleteFileService(validToken, ".");
     	service.execute();		
@@ -195,7 +203,7 @@ public class DeleteFileTest extends TokenReceivingTest {
 	@Override
 	@Test
 	public void sessionStillValidTest1h55min() {
-		super.setLastActivity2h05minAgo();
+		super.setLastActivity1h55minAgo();
 		DeleteFileService service = new DeleteFileService(validToken, "tf1");
 		service.execute();
 		
