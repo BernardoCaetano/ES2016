@@ -78,11 +78,9 @@ public class Directory extends Directory_Base {
             for (AbstractFile child : this.getFilesSet()) {
             	child.remove();
             }
-         }
+        }
 
-        setParent(null);
-        setOwner(null);
-        deleteDomainObject();		
+       super.remove();		
        
 	}
 
