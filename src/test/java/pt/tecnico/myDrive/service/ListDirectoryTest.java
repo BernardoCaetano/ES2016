@@ -14,5 +14,8 @@ public class ListDirectoryTest extends TokenReceivingTest {
 	public void populate() {
 	}
 	
-	
+	@Test(expected = InvalidLoginException.class)
+	public void nonExistentTokenTest() {
+		ListDirectoryService service = new ListDirectoryService(invalidToken);
+		service.execute();
 }
