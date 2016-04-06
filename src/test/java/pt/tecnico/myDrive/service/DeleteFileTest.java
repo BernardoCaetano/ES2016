@@ -187,7 +187,7 @@ public class DeleteFileTest extends TokenReceivingTest {
 	@Test(expected = InvalidLoginException.class)
 	public void expiredSessionTest2h05minAgo() throws InvalidLoginException {
 		super.setLastActivity2h05minAgo();
-		ReadFileService service = new ReadFileService(validToken, "tf1");
+		DeleteFileService service = new DeleteFileService(validToken, "tf1");
 		service.execute();	
 	}
 
@@ -196,7 +196,7 @@ public class DeleteFileTest extends TokenReceivingTest {
 	@Test
 	public void sessionStillValidTest1h55min() {
 		super.setLastActivity2h05minAgo();
-		ReadFileService service = new ReadFileService(validToken, "tf1");
+		DeleteFileService service = new DeleteFileService(validToken, "tf1");
 		service.execute();
 		
 		assertFalse("File was not deleted", (jadeHomeDir.hasFile("tf1")));	
@@ -206,7 +206,7 @@ public class DeleteFileTest extends TokenReceivingTest {
 	@Override
 	@Test(expected= InvalidLoginException.class)
 	public void nonExistentTokenTest() throws InvalidLoginException {
-		ReadFileService service = new ReadFileService(invalidToken, "tf1");
+		DeleteFileService service = new DeleteFileService(invalidToken, "tf1");
 		service.execute();
 		
 	}
