@@ -1,7 +1,5 @@
 package pt.tecnico.myDrive.service;
 
-import java.nio.file.AccessDeniedException;
-
 import pt.tecnico.myDrive.domain.AbstractFile;
 import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.exception.MyDriveException;
