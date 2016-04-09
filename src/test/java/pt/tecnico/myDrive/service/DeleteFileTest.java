@@ -122,7 +122,8 @@ public class DeleteFileTest extends TokenReceivingTest {
     public void failParentDirectory(){
     	
     	Directory newDir = new Directory(md, jadeHomeDir, jade, "newDir");
-    	jadeLogin.setCurrentDir(newDir);
+    	Directory newDirI = new Directory(md, newDir, jade, "newDirI");
+    	jadeLogin.setCurrentDir(newDirI);
     	
     	DeleteFileService service = new DeleteFileService(validToken, "..");
     	service.execute();	   	
@@ -171,7 +172,7 @@ public class DeleteFileTest extends TokenReceivingTest {
     	
     	Directory dirContainsCurrentDir = new Directory(md, jadeHomeDir, jade, "dirContainsCurrentDir");
         Directory dirCurrentDirRoxy = new Directory(md, dirContainsCurrentDir, jade, "dirAux");      
-        Login roxyLogin= new Login(md, "roxy", "roxy");
+        Login roxyLogin= new Login(md, "roxy", "passroxy");
         roxyLogin.setCurrentDir(dirCurrentDirRoxy); 
         
     	DeleteFileService service = new DeleteFileService(validToken, "dirContainsCurrentDir");
