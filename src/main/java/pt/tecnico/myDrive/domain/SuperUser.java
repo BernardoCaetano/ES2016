@@ -12,8 +12,4 @@ public class SuperUser extends SuperUser_Base {
     public boolean canAccess(AbstractFile file, char type) {
     	return true;
     }
-    
-    public String xmlTag() {
-		return "superUser";
-    }
 }
