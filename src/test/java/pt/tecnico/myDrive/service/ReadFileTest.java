@@ -13,7 +13,7 @@ import pt.tecnico.myDrive.domain.App;
 import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
-import pt.tecnico.myDrive.exception.MaximumRecursionReachedException;
+import pt.tecnico.myDrive.exception.CyclicLinkException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
 
 public class ReadFileTest extends TokenReceivingTest {
@@ -71,7 +71,7 @@ public class ReadFileTest extends TokenReceivingTest {
 		service.execute();
 	}
 	
-	@Test(expected = MaximumRecursionReachedException.class)
+	@Test(expected = CyclicLinkException.class)
 	public void linkLoopfail() {
 		ReadFileService service = new ReadFileService(validToken, "loopLink1");
 		service.execute();
