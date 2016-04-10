@@ -20,6 +20,11 @@ public class Link extends Link_Base {
 		super();
 		xmlImport(myDrive, linkElement);
 	}
+    
+    public boolean hasValidContent() {
+    	String path = getContent();
+    	return !path.contains("\0");
+    }
 	
     @Override
     public String xmlTag() {

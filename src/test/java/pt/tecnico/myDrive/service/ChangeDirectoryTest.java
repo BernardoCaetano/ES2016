@@ -5,25 +5,21 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.file.AccessDeniedException;
+
 import org.junit.Test;
 
 import pt.tecnico.myDrive.domain.*;
-import pt.tecnico.myDrive.exception.InvalidAppContentException;
-import pt.tecnico.myDrive.exception.InvalidDirectoryContentException;
-import pt.tecnico.myDrive.exception.InvalidFileNameException;
-import pt.tecnico.myDrive.exception.InvalidLinkContentException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
-import pt.tecnico.myDrive.exception.InvalidTextFileContentException;
-import pt.tecnico.myDrive.exception.InvalidTypeOfFileException;
-import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
-import pt.tecnico.myDrive.exception.PathMaximumLengthException;
-import pt.tecnico.myDrive.exception.CreateDeniedException;
-import pt.tecnico.myDrive.exception.FileNotFoundException;;
+import pt.tecnico.myDrive.exception.FileNotFoundException;
+import pt.tecnico.myDrive.exception.NotDirectoryException;
 
 public class ChangeDirectoryTest extends TokenReceivingTest {
 
 	MyDriveFS mD;
 	RootDirectory rootDir;
+	User rootUser;
+	User otherUser;
 	Login rootLogin;
 	long rootToken;
 	Login otherLogin;
@@ -32,8 +28,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	Directory testDir;
 	Directory subDir;
 	Directory mannyDir;
-	TextFile textFile;
-	Directory notMineDir;
+	Directory otherDir;
 	
 	
 	protected void populate() {
@@ -41,8 +36,10 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		mD = MyDriveFS.getInstance();
 		rootDir = mD.getRootDirectory();
 		
-		User rootUser = mD.getUserByUsername("root");
-		User otherUser = new User(mD, "other", "smallerthanthree", "Other Woman", "rwxdrwxd");
+		rootUser = mD.getUserByUsername("root");
+		otherUser = new User(mD, "other", "smallerthanthree", "Other Woman", "rwxdrwxd");
+		rootUser.setUmask("rwxdrwxd");
+		otherUser.setUmask("rwxdrwxd");
 		
 		otherLogin = new Login(mD, "other", "smallerthanthree");
 		otherToken = otherLogin.getToken();
@@ -53,15 +50,13 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		
 		testDir = new Directory(mD, rootDir, rootUser, "testDir");
 		subDir = new Directory(mD, testDir, rootUser, "subDir");
-		mannyDir = new Directory(mD, subDir, rootUser, "manny");	
-		textFile = new TextFile(mD, testDir, rootUser, "textFile", "Lorem ipsum dolor sit amet");
-		notMineDir = new Directory(mD, subDir, otherUser, "notMine");
+		mannyDir = new Directory(mD, subDir, rootUser, "mannyDir");
+		otherDir = new Directory(mD, rootDir, otherUser, "notMine");
 		
 		testDir.setPermissions("rwxdrwxd");
 		subDir.setPermissions("rwxdrwxd");
 		mannyDir.setPermissions("rwxdrwxd");
-		textFile.setPermissions("rwxdrwxd");
-		notMineDir.setPermissions("rwxdrwxd");
+		otherDir.setPermissions("rwxdrwxd");
 	}
 	
 	@Test
@@ -76,7 +71,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 
 	@Test
 	public void goTospace() {
-		Directory spaceDir = new Directory(mD, rootDir, rootLogin.getUser(), " ");
+		Directory spaceDir = new Directory(mD, rootDir, rootUser, " ");
 		spaceDir.setPermissions("rwxdrwxd");
 		
 		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, " ");
@@ -109,7 +104,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	
 	@Test
 	public void goToAbsolutePath() {
-		Directory alternativeDir = new Directory(mD, testDir, rootLogin.getUser(), "alternativeDir");
+		Directory alternativeDir = new Directory(mD, testDir, rootUser, "alternativeDir");
 		alternativeDir.setPermissions("rwxdrwxd");
 		rootLogin.setCurrentDir(alternativeDir);
 		
@@ -142,7 +137,6 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
 	}
 	
-	
 	@Test
 	public void stay() {
 		rootLogin.setCurrentDir(mannyDir);
@@ -166,7 +160,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	
 	@Test
 	public void goToGreatGrandparent() {
-		Directory greatGrandchildDir = new Directory(mD, mannyDir, rootLogin.getUser(), "greatGrandchildDir");
+		Directory greatGrandchildDir = new Directory(mD, mannyDir, rootUser, "greatGrandchildDir");
 		greatGrandchildDir.setPermissions("rwxdrwxd");
 		rootLogin.setCurrentDir(greatGrandchildDir);
 		
@@ -219,6 +213,96 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		
 		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "fourOhFour");
 		service.execute();
+	}
+	
+	@Test(expected = NotDirectoryException.class)
+	public void textFile() throws NotDirectoryException{
+		rootLogin.setCurrentDir(testDir);
+		TextFile textFile = new TextFile(mD, testDir, rootUser, "textFile", "Lorem ipsum dolor sit amet");
+		textFile.setPermissions("rwxdrwxd");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "textFile");
+		service.execute();
+	}
+	
+	@Test
+	public void linkFile() throws NotDirectoryException{
+		rootLogin.setCurrentDir(testDir);
+		TextFile textFile = new Link(mD, testDir, rootUser, "linkFile", "/testDir/subDir/mannyDir");
+		textFile.setPermissions("rwxdrwxd");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "linkFile");
+		service.execute();
+
+		Directory properDir = mannyDir;
+		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+	}
+	
+	
+	@Test(expected = AccessDeniedException.class)
+	public void otherWithoutPermission() throws AccessDeniedException{
+		testDir.setPermissions("rwxd----");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "testDir");
+		service.execute();
+	}
+	
+	@Test
+	public void otherWithPermission() {
+		testDir.setPermissions("rwxd--x-");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "testDir");
+		service.execute();
+		
+		Directory properDir = testDir;
+		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void mineWithoutPermission() throws AccessDeniedException{
+		otherDir.setPermissions("rw-drwxd");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "otherDir");
+		service.execute();
+	}
+	
+	@Test
+	public void mineWithPermission() {
+		otherDir.setPermissions("--x-----");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "otherDir");
+		service.execute();
+		
+		Directory properDir = otherDir;
+		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void permissionPath() throws AccessDeniedException{
+		testDir.setPermissions("--------");
+		subDir.setPermissions("--x---x-");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "testDir/subDir");
+		service.execute();
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void otherWithoutMask() throws AccessDeniedException{
+		otherUser.setUmask("--------");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "testDir");
+		service.execute();
+	}
+	
+	@Test
+	public void rootWithoutMask() {
+		rootUser.setUmask("--------");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "otherDir");
+		service.execute();
+		
+		Directory properDir = otherDir;
+		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
 	}
 	
 	
