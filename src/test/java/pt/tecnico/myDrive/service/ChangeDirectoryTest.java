@@ -264,7 +264,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	
 	@Test
 	public void otherCanRead() {
-		testDir.setPermissions("rwxdr---");
+		testDir.setPermissions("rwxd--x-");
 		
 		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "testDir");
 		service.execute();
@@ -275,7 +275,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	
 	@Test(expected = AccessDeniedException.class)
 	public void mineNoRead() throws AccessDeniedException{
-		otherDir.setPermissions("-wxdrwxd");
+		otherDir.setPermissions("rw-drwxd");
 		
 		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "otherDir");
 		service.execute();
@@ -283,7 +283,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	
 	@Test
 	public void mineCanRead() {
-		otherDir.setPermissions("r-------");
+		otherDir.setPermissions("--x-----");
 		
 		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "otherDir");
 		service.execute();
@@ -291,6 +291,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		Directory properDir = otherDir;
 		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
 	}
+	
 	
 	
 	
