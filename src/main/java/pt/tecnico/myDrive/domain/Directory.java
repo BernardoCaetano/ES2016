@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
+import pt.tecnico.myDrive.exception.NotTextFileException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.IsCurrentDirectoryException;
@@ -56,6 +57,15 @@ public class Directory extends Directory_Base {
 			}
 		}
 		throw new FileNotFoundException(getPath() + name);
+	}
+	
+	public TextFile getTextFileByName(String name) throws NotTextFileException {
+		try {
+			TextFile f = (TextFile) getFileByName(name);
+			return f;
+		} catch (ClassCastException e){
+			throw new NotTextFileException(name);
+		}
 	}
 
 	@Override

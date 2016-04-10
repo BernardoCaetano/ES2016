@@ -27,8 +27,8 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	
 	Directory testDir;
 	Directory subDir;
-	Directory mannyDir;
 	Directory otherDir;
+	Directory mannyDir;
 	
 	
 	protected void populate() {
