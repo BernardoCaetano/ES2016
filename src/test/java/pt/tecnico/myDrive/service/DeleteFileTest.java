@@ -30,8 +30,8 @@ public class DeleteFileTest extends TokenReceivingTest {
     protected void populate() {
     	
     	md = MyDriveFS.getInstance();
-    	jade = new User(md, "jade", "passjade", "jade", "rwxd--x-");
-    	roxy = new User(md, "roxy", "passroxy", "roxy", "rwxd--x-");
+    	jade = new User(md, "jade", "passjade", "jade", "rwxd--x-", null);
+    	roxy = new User(md, "roxy", "passroxy", "roxy", "rwxd--x-", null);
     	jadeHomeDir= jade.getHomeDirectory();
     	new TextFile(md, jadeHomeDir, jade, "tf1", "blah delete me");
 		

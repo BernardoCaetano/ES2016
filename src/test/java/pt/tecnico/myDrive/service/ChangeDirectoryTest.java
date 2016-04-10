@@ -35,9 +35,9 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		super.populate("root", "***");
 		mD = MyDriveFS.getInstance();
 		rootDir = mD.getRootDirectory();
-		
+
 		rootUser = mD.getUserByUsername("root");
-		otherUser = new User(mD, "other", "smallerthanthree", "Other Woman", "rwxdrwxd");
+		otherUser = new User(mD, "other", "smallerthanthree", "Other Woman", "rwxdrwxd", null);
 		rootUser.setUmask("rwxdrwxd");
 		otherUser.setUmask("rwxdrwxd");
 		

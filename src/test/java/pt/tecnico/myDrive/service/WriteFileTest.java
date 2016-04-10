@@ -28,8 +28,8 @@ public class WriteFileTest extends TokenReceivingTest {
 	@Override
 	protected void populate() {
 		MyDriveFS md = MyDriveFS.getInstance();
-		User john = new User(md, "john", "1234", "Johnny", "rwxdrwx-");
-		User mary = new User(md, "mary", "5678", "Mary", "rwxdrwx-");
+		User john = new User(md, "john", "1234", "Johnny", "rwxdrwx-", null);
+		User mary = new User(md, "mary", "5678", "Mary", "rwxdrwx-", null);
 		currentDir = mary.getHomeDirectory();
 		new Directory(md, currentDir, mary, "exampleDir");
 		new TextFile(md, currentDir, mary, "marysTxt", "/home/mary/exampleApp 1 2");
