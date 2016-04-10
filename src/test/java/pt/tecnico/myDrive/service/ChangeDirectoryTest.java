@@ -138,16 +138,6 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	}
 	
 	@Test
-	public void goToRelativePathEndSlash() {		
-		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "/testDir/");
-		service.execute();
-		
-		Directory properDir = testDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
-	}
-	
-	
-	@Test
 	public void stay() {
 		rootLogin.setCurrentDir(mannyDir);
 		
