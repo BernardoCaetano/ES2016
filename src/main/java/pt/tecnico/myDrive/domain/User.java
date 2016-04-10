@@ -83,6 +83,39 @@ public class User extends User_Base {
     public boolean checkPassword(String password) {
     	return password.equals(super.getPassword());
     }
+    
+    public boolean canAccess(AbstractFile file, char type) {
+    	int pos;
+    	
+    	switch (type) {
+    		case 'r' : pos = 0; break;
+    		case 'w' : pos = 1; break;
+    		case 'x' : pos = 2; break;
+    		case 'd' : pos = 3; break;
+    		default  : return false;
+    	}
+    	
+    	if (file.getOwner() != this)
+    		 pos += 4;
+    	
+    	return getUmask().charAt(pos) == type && file.getPermissions().charAt(pos) == type;
+    }
+    
+    public boolean canRead(AbstractFile file) {
+    	return canAccess(file, 'r');
+    }
+    
+    public boolean canWrite(AbstractFile file) {
+    	return canAccess(file, 'w');
+    }
+    
+    public boolean canExecute(AbstractFile file) {
+    	return canAccess(file, 'x');
+    }
+    
+    public boolean canDelete(AbstractFile file) {
+    	return canAccess(file, 'd');
+    }
 
 	public void xmlImport(MyDriveFS myDrive, Element userElement) {
 		if(!myDrive.hasUser(userElement.getAttribute("username").getValue())){

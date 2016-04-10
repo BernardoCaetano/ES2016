@@ -8,6 +8,11 @@ public class SuperUser extends SuperUser_Base {
         init(mydrive, username, password, name, umask);
     }
     
+    @Override
+    public boolean canAccess(AbstractFile file, char type) {
+    	return true;
+    }
+    
     public String xmlTag() {
 		return "superUser";
     }
