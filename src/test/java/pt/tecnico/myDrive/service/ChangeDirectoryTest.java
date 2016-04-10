@@ -5,6 +5,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.file.AccessDeniedException;
+
 import org.junit.Test;
 
 import pt.tecnico.myDrive.domain.*;
@@ -18,7 +20,8 @@ import pt.tecnico.myDrive.exception.InvalidTypeOfFileException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.PathMaximumLengthException;
 import pt.tecnico.myDrive.exception.CreateDeniedException;
-import pt.tecnico.myDrive.exception.FileNotFoundException;;
+import pt.tecnico.myDrive.exception.FileNotFoundException;
+import pt.tecnico.myDrive.exception.NotDirectoryException;
 
 public class ChangeDirectoryTest extends TokenReceivingTest {
 
@@ -32,8 +35,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	Directory testDir;
 	Directory subDir;
 	Directory mannyDir;
-	TextFile textFile;
-	Directory notMineDir;
+	Directory otherDir;
 	
 	
 	protected void populate() {
@@ -53,15 +55,13 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		
 		testDir = new Directory(mD, rootDir, rootUser, "testDir");
 		subDir = new Directory(mD, testDir, rootUser, "subDir");
-		mannyDir = new Directory(mD, subDir, rootUser, "manny");	
-		textFile = new TextFile(mD, testDir, rootUser, "textFile", "Lorem ipsum dolor sit amet");
-		notMineDir = new Directory(mD, subDir, otherUser, "notMine");
+		mannyDir = new Directory(mD, subDir, rootUser, "mannyDir");
+		otherDir = new Directory(mD, rootDir, otherUser, "notMine");
 		
 		testDir.setPermissions("rwxdrwxd");
 		subDir.setPermissions("rwxdrwxd");
 		mannyDir.setPermissions("rwxdrwxd");
-		textFile.setPermissions("rwxdrwxd");
-		notMineDir.setPermissions("rwxdrwxd");
+		otherDir.setPermissions("rwxdrwxd");
 	}
 	
 	@Test
@@ -139,6 +139,15 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = mannyDir;
+		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+	}
+	
+	@Test
+	public void goToRelativePathEndSlash() {		
+		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "/testDir/");
+		service.execute();
+		
+		Directory properDir = testDir;
 		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
 	}
 	
@@ -220,6 +229,69 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "fourOhFour");
 		service.execute();
 	}
+	
+	@Test(expected = NotDirectoryException.class)
+	public void textFile() throws NotDirectoryException{
+		rootLogin.setCurrentDir(testDir);
+		TextFile textFile = new TextFile(mD, testDir, rootLogin.getUser(), "textFile", "Lorem ipsum dolor sit amet");
+		textFile.setPermissions("rwxdrwxd");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "textFile");
+		service.execute();
+	}
+	
+	@Test
+	public void linkFile() throws NotDirectoryException{
+		rootLogin.setCurrentDir(testDir);
+		TextFile textFile = new Link(mD, testDir, rootLogin.getUser(), "linkFile", "/testDir/subDir/mannyDir");
+		textFile.setPermissions("rwxdrwxd");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "linkFile");
+		service.execute();
+
+		Directory properDir = mannyDir;
+		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+	}
+	
+	
+	@Test(expected = AccessDeniedException.class)
+	public void otherNoRead() throws AccessDeniedException{
+		testDir.setPermissions("rwxd----");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "testDir");
+		service.execute();
+	}
+	
+	@Test
+	public void otherCanRead() {
+		testDir.setPermissions("rwxdr---");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "testDir");
+		service.execute();
+		
+		Directory properDir = testDir;
+		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void mineNoRead() throws AccessDeniedException{
+		otherDir.setPermissions("-wxdrwxd");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "otherDir");
+		service.execute();
+	}
+	
+	@Test
+	public void mineCanRead() {
+		otherDir.setPermissions("r-------");
+		
+		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "otherDir");
+		service.execute();
+		
+		Directory properDir = otherDir;
+		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+	}
+	
 	
 	
 
