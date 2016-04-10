@@ -37,7 +37,7 @@ public class CreateFileTest extends TokenReceivingTest {
 	protected void populate() {
 		mD = MyDriveFS.getInstance();
 
-		User newUser = new User(mD, "Wololo", "password", "April Fool", "rwxdrwxd");
+		User newUser = new User(mD, "Wololo", "password", "April Fool", "rwxdrwxd", null);
 		super.populate("Wololo", "password");
 
 		Login login = new Login(mD, "root", "***");

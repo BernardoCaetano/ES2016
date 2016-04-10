@@ -15,8 +15,8 @@ public class LoginTest extends AbstractServiceTest {
 	protected void populate() {
 		MyDriveFS md = MyDriveFS.getInstance();
 
-		new User(md, "jane", "sp1der", "Mary Jane", null);
-		new User(md, "camoes", "lus1adas", "Luís de Camões", null);
+		new User(md, "jane", "sp1der", "Mary Jane", null, null);
+		new User(md, "camoes", "lus1adas", "Luís de Camões", null, null);
 	}
 
 	@Test

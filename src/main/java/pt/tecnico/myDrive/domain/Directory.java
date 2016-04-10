@@ -2,12 +2,18 @@ package pt.tecnico.myDrive.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
+import pt.tecnico.myDrive.exception.NotTextFileException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
+import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.IsCurrentDirectoryException;
 import pt.tecnico.myDrive.exception.IsHomeDirectoryException;
+import pt.tecnico.myDrive.exception.MaximumRecursionReachedException;
+
 import org.jdom2.Element;
 
 public class Directory extends Directory_Base {
@@ -55,6 +61,30 @@ public class Directory extends Directory_Base {
 			}
 		}
 		throw new FileNotFoundException(getPath() + name);
+	}
+	
+	public TextFile getTextFileByName(String name) throws NotTextFileException {
+		try {
+			Set<String> visitedPaths = new TreeSet<String>();
+			
+			TextFile f = (TextFile) getFileByName(name);
+
+			while (f instanceof Link) {
+				String dstPath = f.getContent();
+				
+				if(visitedPaths.contains(dstPath)){
+					throw new MaximumRecursionReachedException();
+				}else{
+					visitedPaths.add(dstPath);
+				}
+				
+				MyDriveFS md = MyDriveFS.getInstance();
+				f = (TextFile) md.getFileByPath(f.getParent(), dstPath);
+			}
+			return f;
+		} catch (ClassCastException e) {
+			throw new NotTextFileException(name);
+		}
 	}
 
 	@Override
@@ -120,5 +150,34 @@ public class Directory extends Directory_Base {
     @Override
 	public String xmlTag() {
 		return "directory";
+	}
+
+	public Directory createDirectoryByPath(MyDriveFS myDrive, String path) throws InvalidPathException {
+		
+		if (path.equals("")){
+			return this;
+		}
+		
+		String dirName = path.split("/")[0];
+		AbstractFile dir;
+		
+		try {
+			dir = getFileByName(dirName);  
+		} catch (FileNotFoundException e) {
+			dir = new Directory(myDrive, this, null, dirName);
+		}
+		
+		if (!(dir instanceof Directory)){
+			throw new InvalidPathException(path);
+		}
+		
+		String newPath;
+		if (path.indexOf("/") == -1) {
+			newPath = path.substring(path.indexOf(dirName)+ dirName.length());
+		} else {
+			newPath = path.substring(path.indexOf("/") + 1);
+		}
+		
+		return ((Directory) dir).createDirectoryByPath(myDrive, newPath);
 	}
 }

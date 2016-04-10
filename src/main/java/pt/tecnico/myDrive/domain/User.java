@@ -7,6 +7,7 @@ import java.util.Collections;
 
 import org.jdom2.Element;
 
+import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
 
 
@@ -16,11 +17,11 @@ public class User extends User_Base {
         super();
     }
 
-	public User(MyDriveFS mydrive, String username, String password, String name, String umask)
-			throws InvalidUsernameException {
+	public User(MyDriveFS mydrive, String username, String password, String name, String umask, String homeDirPath)
+			throws InvalidUsernameException, InvalidPathException {
 		super();
 		init(mydrive, username, (password == null) ? username : password, (name == null) ? username : name,
-				(umask == null) ? "rwxd----" : umask);
+				(umask == null) ? "rwxd----" : umask, (homeDirPath == null) ? ("/home/" + username) : homeDirPath);
 	}
 
 	public User(MyDriveFS myDrive, Element userElement){
@@ -28,15 +29,15 @@ public class User extends User_Base {
 		xmlImport(myDrive, userElement);
 	}
 
-    public void init(MyDriveFS mydrive, String username, String password, String name, String umask) 
-            throws InvalidUsernameException {
-    	
+    public void init(MyDriveFS mydrive, String username, String password, String name, String umask, String homeDirPath) 
+            throws InvalidUsernameException, InvalidPathException {
+    	//TODO make sure that path is a valid path
         setUsername(username);
         setPassword(password);
         setName(name);
         setUmask(umask);
         setMyDrive(mydrive);
-        setHomeDirectory(mydrive);
+        setHomeDirectory(mydrive, homeDirPath);
     }
 
     @Override
@@ -48,32 +49,25 @@ public class User extends User_Base {
         }
     }
 
-    @Override
+	@Override
 	public void setUsername(String username) throws InvalidUsernameException {
-		if (username.equals("") || !StringUtils.isAlphanumeric(username) || (username == null) || (username.length() < 3)) {
+		if (username.equals("") || !StringUtils.isAlphanumeric(username) || (username == null)
+				|| (username.length() < 3)) {
 			throw new InvalidUsernameException(username);
 		}
 		super.setUsername(username);
 	}
 
-    public void setHomeDirectory(MyDriveFS mydrive) {
-        Directory rootDir = (Directory) mydrive.getRootDirectory();
-        Directory home;
-
-        if (!rootDir.hasFile("home")) {
-            home = new Directory(mydrive, rootDir, null, "home");
-        } else {
-            home = (Directory) rootDir.getFileByName("home");
-        }
-        Directory userHomeDir;
-        if (!home.hasFile(this.getUsername())) {
-            userHomeDir = new Directory(mydrive, home, this, this.getUsername());
-            setHomeDirectory(userHomeDir);
-        } else {
-            userHomeDir = (Directory) home.getFileByName(this.getUsername());
-            setHomeDirectory(userHomeDir);
-        }
-    }
+	public void setHomeDirectory(MyDriveFS myDrive, String homeDirPath) throws InvalidPathException {
+		//TODO add exceptions throwing
+		try {
+			Directory rootDir = (Directory) myDrive.getRootDirectory();
+			Directory homeDir = rootDir.createDirectoryByPath(myDrive, homeDirPath);
+			setHomeDirectory(homeDir);
+		} catch (InvalidPathException e) {
+			throw new InvalidPathException(homeDirPath);
+		}
+	}
     
     @Override
     public String getPassword() {
@@ -131,10 +125,8 @@ public class User extends User_Base {
 		Directory currentDirectory = myDrive.getRootDirectory();
 		String homeDirectoryPath = userElement.getAttribute("homeDirectory").getValue();
 		
-		Directory homeDirectory = myDrive.getDirectoryByPath(
-			currentDirectory, homeDirectoryPath);
 		
-		setHomeDirectory(homeDirectory);
+		setHomeDirectory(myDrive, homeDirectoryPath);
 
 		for (Element fileElement : userElement.getChildren("file")){ 
 			String path = fileElement.getAttribute("path").getValue();
@@ -142,8 +134,6 @@ public class User extends User_Base {
 			myDrive.getFileByPath(currentDir, path).setOwner(MyDriveFS.getInstance(), this);
 		} 
 	}
-
-
 
     public Element xmlExport() {
         Element element = new Element("user");

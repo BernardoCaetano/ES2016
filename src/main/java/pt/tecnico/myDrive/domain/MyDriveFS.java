@@ -18,7 +18,7 @@ import org.jdom2.Document;
 
 public class MyDriveFS extends MyDriveFS_Base {
 
-	public static MyDriveFS getInstance() throws InvalidUsernameException{
+	public static MyDriveFS getInstance() throws InvalidUsernameException, InvalidPathException{
 		MyDriveFS myDrive = FenixFramework.getDomainRoot().getMyDrive();
 		if (myDrive != null)
 			return myDrive;
@@ -26,7 +26,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		MyDriveFS newMyDrive = new MyDriveFS();
 		RootDirectory rootDir = RootDirectory.getInstance(newMyDrive);
 		newMyDrive.setRootDirectory(rootDir);
-		User root = new SuperUser(newMyDrive, "root", "***", "Super User", "rwxdr-x-");
+		User root = new SuperUser(newMyDrive, "root", "***", "Super User", "rwxdr-x-", "/home/root");
 		rootDir.setOwner(root);
 		return newMyDrive;
 	}

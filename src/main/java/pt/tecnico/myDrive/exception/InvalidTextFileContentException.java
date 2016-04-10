@@ -3,13 +3,13 @@ package pt.tecnico.myDrive.exception;
 public class InvalidTextFileContentException extends MyDriveException {
 
 	private static final long serialVersionUID = 1L;
-	private long content;
+	private String content;
 
-	public InvalidTextFileContentException(long content) {
+	public InvalidTextFileContentException(String content) {
 		this.content = content;
 	}
 	
-	public long getContent() { return content; }
+	public String getContent() { return content; }
 	
 	@Override
 	public String getMessage() {
