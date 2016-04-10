@@ -2,6 +2,8 @@ package pt.tecnico.myDrive.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
@@ -10,6 +12,8 @@ import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.IsCurrentDirectoryException;
 import pt.tecnico.myDrive.exception.IsHomeDirectoryException;
+import pt.tecnico.myDrive.exception.MaximumRecursionReachedException;
+
 import org.jdom2.Element;
 
 public class Directory extends Directory_Base {
@@ -61,9 +65,24 @@ public class Directory extends Directory_Base {
 	
 	public TextFile getTextFileByName(String name) throws NotTextFileException {
 		try {
+			Set<String> visitedPaths = new TreeSet<String>();
+			
 			TextFile f = (TextFile) getFileByName(name);
+
+			while (f instanceof Link) {
+				String dstPath = f.getContent();
+				
+				if(visitedPaths.contains(dstPath)){
+					throw new MaximumRecursionReachedException();
+				}else{
+					visitedPaths.add(dstPath);
+				}
+				
+				MyDriveFS md = MyDriveFS.getInstance();
+				f = (TextFile) md.getFileByPath(f.getParent(), dstPath);
+			}
 			return f;
-		} catch (ClassCastException e){
+		} catch (ClassCastException e) {
 			throw new NotTextFileException(name);
 		}
 	}
