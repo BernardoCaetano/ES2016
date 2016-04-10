@@ -8,18 +8,21 @@ import java.util.ArrayList;
 
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
+import pt.tecnico.myDrive.exception.PathMaximumLengthException;;
+
 
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
     
    public void initAbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name) 
-    		throws InvalidFileNameException, NameAlreadyExistsException {
-
+    		throws InvalidFileNameException, NameAlreadyExistsException, PathMaximumLengthException {
+	   
+	    setName(name);
     	setId(mydrive);
-    	setName(name);
     	setLastModified(new DateTime());
     	setParent(parentDir);
    		setOwner(mydrive, owner);
     	setPermissions(getOwner().getUmask());
+    	checkPathLength();
     }
 
     @Override
@@ -38,7 +41,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     public void setParent(Directory parentDir) 
     		throws NameAlreadyExistsException {
         if (parentDir == null)
-            super.setParent(null);
+            super.setParent(null); //FIXME better to throw exception? 
         else
             parentDir.addFiles(this);
     }
@@ -57,6 +60,12 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     
     public String getPath() {
     	return getParent().getPath() + getName();
+    }
+    
+    public void checkPathLength(){
+    	if ((getPath().length() > 1024)){
+    		throw new PathMaximumLengthException();
+    	}
     }
 	
 	public String getNameOfFileFromPath(String path) {

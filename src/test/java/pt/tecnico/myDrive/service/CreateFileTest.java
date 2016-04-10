@@ -22,7 +22,7 @@ public class CreateFileTest extends TokenReceivingTest {
 
 	MyDriveFS mD;
 	long rootToken;
-	String auxFileName = "/home/Wololo/o7NqcaiGU9HhSPgnE9m8kwpsT9DPgaNtC5hSFTxWzqPMcqCKwjUn3lAjhy1TlMmuctvmWwpj8O"
+	String auxFileName = "o7NqcaiGU9HhSPgnE9m8kwpsT9DPgaNtC5hSFTxWzqPMcqCKwjUn3lAjhy1TlMmuctvmWwpj8O"
 			+ "NKmxCfPsMhLJsj8C79zHmDkDMnGvZbDmBj8RD6CssCnxSlRAli8qCoPxgKE1f1Pxal0DI7clW1egZTEnl5ok1lYybs26Hg1"
 			+ "jT1GnXgSqcZO5WElNFGSrtJ88nOJkJ000i5bcJ3gFiPwULpZGT1OhNSEY4p9Bob0jAC4COO5sbqNHhI4qVDs6gXE8GMSiy6"
 			+ "O4Lt2RAGYaJRxsgSjcSIM7NTxkXgqMTpMNgJZ4FMnUNefRA1SCrG2JBGkNu9lvII6HuKCiNA2qtgXCLQlRHy7VzLRoLoSN7"
