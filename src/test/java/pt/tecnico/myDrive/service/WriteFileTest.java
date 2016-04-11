@@ -13,8 +13,8 @@ import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.User;
 import pt.tecnico.myDrive.exception.AccessDeniedException;
+import pt.tecnico.myDrive.exception.CyclicLinkException;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
-import pt.tecnico.myDrive.exception.ImmutableLinkContentException;
 import pt.tecnico.myDrive.exception.InvalidAppContentException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 import pt.tecnico.myDrive.exception.InvalidTextFileContentException;
@@ -36,6 +36,14 @@ public class WriteFileTest extends TokenReceivingTest {
 		(new TextFile(md, currentDir, john, "johnsTxt", "/home/mary/exampleApp 20 9")).setPermissions("rwxdr-x-");
 		new App(md, currentDir, mary, "exampleApp", "pt.tecnico.myDrive.Main.main");
 		new Link(md, currentDir, mary, "exampleLink", "/home/john");
+
+		new Link(md, currentDir, mary, "absoluteLink", "/home/mary/marysTxt");
+		new Link(md, currentDir, mary, "relativeLink", "./marysTxt");
+		new Link(md, currentDir, mary, "Link To Nowhere", "./exampleDir/nothing");
+		new Link(md, currentDir, mary, "linkToDir", "/home/mary/exampleDir");
+
+		new Link(md, currentDir, mary, "loopLink1", "/home/mary/loopLink2");
+		new Link(md, currentDir, mary, "loopLink2", "/home/mary/loopLink1");
 
 		populate("mary", "5678");
 
@@ -91,16 +99,48 @@ public class WriteFileTest extends TokenReceivingTest {
 		WriteFileService service = new WriteFileService(validToken, "johnsTxt", "/home/mary/exampleApp 23 11");
 		service.execute();
 	}
-	
+
 	@Test(expected = InvalidTextFileContentException.class)
 	public void failTextFileInvalidContentTest() {
 		WriteFileService service = new WriteFileService(validToken, "marysTxt", "this content is invalid");
 		service.execute();
 	}
 
-	@Test(expected = ImmutableLinkContentException.class)
-	public void failLinkTest() {
-		WriteFileService service = new WriteFileService(validToken, "exampleLink", "/home/mary/exampleDir");
+	@Test
+	public void successAbsolutePathLink() {
+		WriteFileService service = new WriteFileService(validToken, "absoluteLink", "/home/mary/exampleApp 23 11");
+		service.execute();
+
+		TextFile t = (TextFile) getFile("marysTxt");
+
+		assertEquals("The content of the text file is not as expected", t.getContent(), "/home/mary/exampleApp 23 11");
+	}
+
+	@Test
+	public void successRelativePathLink() {
+		WriteFileService service = new WriteFileService(validToken, "relativeLink", "/home/mary/exampleApp 23 11");
+		service.execute();
+
+		TextFile t = (TextFile) getFile("marysTxt");
+
+		assertEquals("The content of the text file is not as expected", t.getContent(), "/home/mary/exampleApp 23 11");
+	}
+
+	@Test(expected = FileNotFoundException.class)
+	public void nonExistentLinkTarget() {
+		WriteFileService service = new WriteFileService(validToken, "Link To Nowhere", "some text");
+		service.execute();
+	}
+
+	@Test(expected = CyclicLinkException.class)
+	public void failLinkLoop() {
+		WriteFileService service = new WriteFileService(validToken, "loopLink1", "some text");
+		service.execute();
+	}
+
+	@Test(expected = NotTextFileException.class)
+	public void failLinkToDirectory() {
+		WriteFileService service = new WriteFileService(validToken, "linkToDir", "some text");
 		service.execute();
 	}
 
@@ -124,7 +164,7 @@ public class WriteFileTest extends TokenReceivingTest {
 		WriteFileService service = new WriteFileService(validToken, "exampleDir", "some text");
 		service.execute();
 	}
-	
+
 	@Test(expected = FileNotFoundException.class)
 	public void failFileNotFoundTest() {
 		WriteFileService service = new WriteFileService(validToken, "someTxt", "some text");
