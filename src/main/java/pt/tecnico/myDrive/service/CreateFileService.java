@@ -1,6 +1,9 @@
 package pt.tecnico.myDrive.service;
 
 import pt.tecnico.myDrive.domain.TextFile;
+import pt.tecnico.myDrive.exception.InvalidDirectoryContentException;
+import pt.tecnico.myDrive.exception.InvalidTypeOfFileException;
+import pt.tecnico.myDrive.exception.MyDriveException;
 import pt.tecnico.myDrive.domain.Directory;
 import pt.tecnico.myDrive.domain.Link;
 import pt.tecnico.myDrive.domain.App;
@@ -26,17 +29,24 @@ public class CreateFileService extends MyDriveService {
 	}
 
 	@Override
-	public final void dispatch() {
+	public final void dispatch()throws MyDriveException, InvalidDirectoryContentException, InvalidTypeOfFileException{
 		Login login = getMyDrive().getLoginByToken(token);
 
 		if (typeOfFile == "TextFile") {
 			new TextFile(login.getMyDrive(), login.getCurrentDir(), login.getUser(), fileName, content);
 		} else if (typeOfFile == "Directory") {
-			new Directory(login.getMyDrive(), login.getCurrentDir(), login.getUser(), fileName);
+			if (content!=""){
+				new Directory(login.getMyDrive(), login.getCurrentDir(), login.getUser(), fileName);
+			}else{
+				throw new InvalidDirectoryContentException();
+			}
 		} else if (typeOfFile == "Link") {
 			new Link(login.getMyDrive(), login.getCurrentDir(), login.getUser(), fileName, content);
 		} else if (typeOfFile == "App") {
 			new App(login.getMyDrive(), login.getCurrentDir(), login.getUser(), fileName, content);
+		}
+		else{
+			throw new InvalidTypeOfFileException(typeOfFile);
 		}
 	}
 }
