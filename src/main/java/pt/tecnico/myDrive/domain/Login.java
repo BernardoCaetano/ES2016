@@ -21,7 +21,7 @@ public class Login extends Login_Base {
     	this.setUser(user);
         this.setCurrentDir(user.getHomeDirectory());
         this.setToken(new BigInteger(64, new Random()).longValue());
-        this.setLastActivity(new DateTime());  
+        super.setLastActivity(DateTime.now());  
         
         myDrive.deleteInvalidLogins();
     }
@@ -32,7 +32,7 @@ public class Login extends Login_Base {
     
     public void updateLastActivity() {
     	if (this.isValid()) {
-    		this.setLastActivity(DateTime.now());
+    		super.setLastActivity(DateTime.now());
     	}
     }
     
