@@ -31,7 +31,8 @@ public class ReadFileTest extends TokenReceivingTest {
 		new Link(md, maryHome, mary, "absoluteLink", "/home/mary/exampleTxt");
 		new Link(md, maryHome, mary, "relativeLink", "./exampleTxt");
 		new Link(md, maryHome, mary, "Link To Nowhere", "./exampleDir/nothing");
-		
+		new Link(md, maryHome, mary, "linkToDir", "/home/mary/exampleDir");
+
 		new Link(md, maryHome, mary, "loopLink1", "/home/mary/loopLink2");
 		new Link(md, maryHome, mary, "loopLink2", "/home/mary/loopLink1");
 		
@@ -72,8 +73,14 @@ public class ReadFileTest extends TokenReceivingTest {
 	}
 	
 	@Test(expected = CyclicLinkException.class)
-	public void linkLoopfail() {
+	public void failLinkLoop() {
 		ReadFileService service = new ReadFileService(validToken, "loopLink1");
+		service.execute();
+	}
+	
+	@Test(expected = NotTextFileException.class) 
+	public void failLinkToDirectory() {
+		ReadFileService service = new ReadFileService(validToken, "linkToDir");
 		service.execute();
 	}
 
