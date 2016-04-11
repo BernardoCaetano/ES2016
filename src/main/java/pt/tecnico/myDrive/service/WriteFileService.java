@@ -1,16 +1,33 @@
 package pt.tecnico.myDrive.service;
 
+import pt.tecnico.myDrive.domain.TextFile;
+import pt.tecnico.myDrive.domain.Link;
+import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.exception.MyDriveException;
+import pt.tecnico.myDrive.exception.ImmutableLinkContentException;
 
 public class WriteFileService extends MyDriveService {
 
-	public WriteFileService(long token, String filename, String content) {
-		// TODO Auto-generated constructor stub
+	long token;
+	String fileName;
+	String content;
+
+	public WriteFileService(long token, String fileName, String content) {
+		this.token = token;
+		this.fileName = fileName;
+		this.content = content;
 	}
-	
+
 	@Override
 	protected void dispatch() throws MyDriveException {
-		// TODO Auto-generated method stub
+		Login login = getMyDrive().getLoginByToken(token);
+		TextFile file = login.getCurrentDir().getTextFileByName(fileName);
+
+		if (file instanceof Link) {
+			throw new ImmutableLinkContentException();
+		}
+
+		file.setContent(content);
 
 	}
 
