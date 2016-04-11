@@ -29,23 +29,22 @@ public class CreateFileService extends MyDriveService {
 	}
 
 	@Override
-	public final void dispatch()throws MyDriveException, InvalidDirectoryContentException, InvalidTypeOfFileException{
+	public final void dispatch() throws MyDriveException {
 		Login login = getMyDrive().getLoginByToken(token);
 
 		if (typeOfFile == "TextFile") {
 			new TextFile(login.getMyDrive(), login.getCurrentDir(), login.getUser(), fileName, content);
 		} else if (typeOfFile == "Directory") {
-			if (content!=""){
+			if (content != "") {
 				new Directory(login.getMyDrive(), login.getCurrentDir(), login.getUser(), fileName);
-			}else{
+			} else {
 				throw new InvalidDirectoryContentException();
 			}
 		} else if (typeOfFile == "Link") {
 			new Link(login.getMyDrive(), login.getCurrentDir(), login.getUser(), fileName, content);
 		} else if (typeOfFile == "App") {
 			new App(login.getMyDrive(), login.getCurrentDir(), login.getUser(), fileName, content);
-		}
-		else{
+		} else {
 			throw new InvalidTypeOfFileException(typeOfFile);
 		}
 	}
