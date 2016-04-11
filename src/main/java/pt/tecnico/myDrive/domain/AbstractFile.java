@@ -141,4 +141,6 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     public boolean isHomeDirectory() {
     	return false;
     }
+    
+    public abstract int dimension();
 }
