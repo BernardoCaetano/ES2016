@@ -41,12 +41,13 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		rootUser.setUmask("rwxdrwxd");
 		otherUser.setUmask("rwxdrwxd");
 		
-		otherLogin = new Login(mD, "other", "smallerthanthree");
-		otherToken = otherLogin.getToken();
 		rootLogin = new Login(mD, "root", "***");
 		rootToken = rootLogin.getToken();
+		otherLogin = new Login(mD, "other", "smallerthanthree");
+		otherToken = otherLogin.getToken();
 		
 		rootLogin.setCurrentDir(rootDir);
+		otherLogin.setCurrentDir(rootDir);
 		
 		testDir = new Directory(mD, rootDir, rootUser, "testDir");
 		subDir = new Directory(mD, testDir, rootUser, "subDir");
