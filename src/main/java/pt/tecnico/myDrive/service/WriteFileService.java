@@ -1,10 +1,8 @@
 package pt.tecnico.myDrive.service;
 
 import pt.tecnico.myDrive.domain.TextFile;
-import pt.tecnico.myDrive.domain.Link;
 import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.exception.MyDriveException;
-import pt.tecnico.myDrive.exception.ImmutableLinkContentException;
 
 public class WriteFileService extends MyDriveService {
 
@@ -22,11 +20,6 @@ public class WriteFileService extends MyDriveService {
 	protected void dispatch() throws MyDriveException {
 		Login login = getMyDrive().getLoginByToken(token);
 		TextFile file = login.getCurrentDir().getTextFileByName(fileName);
-
-		if (file instanceof Link) {
-			throw new ImmutableLinkContentException();
-		}
-
 		file.setContent(content);
 
 	}
