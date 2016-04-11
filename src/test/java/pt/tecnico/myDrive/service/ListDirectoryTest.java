@@ -128,6 +128,94 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		assertEquals("Name of .. is correct", "..", lds.get(1).getName());
 	}
 	
+	@Test
+	public void filledDirectory() {
+		manelLogin.setCurrentDir(manelHome);
+		ListDirectoryService service = new ListDirectoryService(validToken);
+        service.execute();
+        
+        List<AbstractFileDTO> lds = service.result();
+
+		assertEquals("Right number of Files in manel Home Directory",6, lds.size());
+		
+		assertEquals("Type of . is correct", "Directory", lds.get(0).getType());
+		assertEquals("Permissions of . are correct", "rwxdr-x-", lds.get(0).getPermissions());
+		assertEquals("Dimension of . is correct", 0x8, lds.get(0).getSize());
+		assertEquals("Username of Owner is correct", "root", lds.get(0).getOwner());
+		assertEquals("Id of . is correct", 8, lds.get(0).getId());
+		assertEquals("Last Modified date of . is correct", 8, lds.get(0).getLastModified());
+		assertEquals("Name of . is correct", ".", lds.get(0).getName());
+		
+		assertEquals("Type of .. is correct", "Directory", lds.get(1).getType());
+		assertEquals("Permissions of .. are correct","rwxdr-x-", lds.get(1).getPermissions());
+		assertEquals("Size of .. is correct", 0x8, lds.get(1).getSize());
+		assertEquals("Username of Owner is correct", "root", lds.get(1).getOwner());
+		assertEquals("Id of .. is correct", 8, lds.get(1).getId());
+		assertEquals("Last Modified date of .. is correct", new DateTime(), lds.get(1).getLastModified());
+		assertEquals("Name of .. is correct", "..", lds.get(1).getName());
+		
+		assertEquals("Type of emptyDirectory is correct", "Directory", lds.get(2).getType());
+		assertEquals("Permissions of emptyDirectory are correct", "rwxdr----", lds.get(2).getPermissions());
+		assertEquals("Dimension of emptyDirectory is correct", 0x8, lds.get(2).getSize());
+		assertEquals("Username of Owner is correct", "manel", lds.get(2).getOwner());
+		assertEquals("Id of emptyDirectory is correct", 8, lds.get(2).getId());
+		assertEquals("Last Modified date of emptyDirectory is correct", 8, lds.get(2).getLastModified());
+		assertEquals("Name of emptyDirectory is correct", "emptyDirectory", lds.get(2).getName());
+		
+		assertEquals("Type of MyApp is correct", "App", lds.get(3).getType());
+		assertEquals("Permissions of MyApp are correct","rwxdr----", lds.get(3).getPermissions());
+		assertEquals("Size of MyApp is correct", 0x8, lds.get(3).getSize());
+		assertEquals("Username of Owner is correct", "manel", lds.get(3).getOwner());
+		assertEquals("Id of MyApp is correct", 8, lds.get(3).getId());
+		assertEquals("Last Modified date of MyApp is correct", new DateTime(), lds.get(3).getLastModified());
+		assertEquals("Name of MyApp is correct", "MyApp", lds.get(3).getName());
+		
+		assertEquals("Type of MyLink is correct", "Link", lds.get(4).getType());
+		assertEquals("Permissions of MyLink are correct", "rwxdr----", lds.get(4).getPermissions());
+		assertEquals("Dimension of MyLink is correct", 0x8, lds.get(4).getSize());
+		assertEquals("Username of Owner is correct", "manel", lds.get(4).getOwner());
+		assertEquals("Id of MyLink is correct", 8, lds.get(4).getId());
+		assertEquals("Last Modified date of MyLink is correct", 8, lds.get(4).getLastModified());
+		assertEquals("Name of MyLink is correct", "MyLink", lds.get(4).getName());
+		
+		assertEquals("Type of MyTextFile is correct", "TextFile", lds.get(5).getType());
+		assertEquals("Permissions of MyTextFile are correct","rwxdr----", lds.get(5).getPermissions());
+		assertEquals("Size of MyTextFile is correct", 0x8, lds.get(5).getSize());
+		assertEquals("Username of Owner is correct", "manel", lds.get(5).getOwner());
+		assertEquals("Id of MyTextFile is correct", 8, lds.get(5).getId());
+		assertEquals("Last Modified date of MyTextFile is correct", new DateTime(), lds.get(5).getLastModified());
+		assertEquals("Name of MyTextFile is correct", "MyTextFile", lds.get(5).getName());
+	}
+	
+	@Test
+	public void emptyDirectory(){
+		manelLogin.setCurrentDir(emptyDirectory);
+		
+		ListDirectoryService service = new ListDirectoryService(validToken);
+        service.execute();
+        
+        List<AbstractFileDTO> lds = service.result();
+        
+        assertEquals("Right number of Files in Root Home Directory", 2, lds.size());
+		
+		assertEquals("Type of . is correct", "Directory", lds.get(0).getType());
+		assertEquals("Permissions of . are correct", "rwxdr----", lds.get(0).getPermissions());
+		assertEquals(" of . is correct", 0x8, lds.get(0).getSize());
+		assertEquals("Username of Owner is correct", "manel", lds.get(0).getOwner());
+		assertEquals("Id of . is correct", 8, lds.get(0).getId());
+		assertEquals("Last Modified date of . is correct", 8, lds.get(0).getLastModified());
+		assertEquals("Name of . is correct", ".", lds.get(0).getName());
+		
+		assertEquals("Type of .. is correct", "Directory", lds.get(1).getType());
+		assertEquals("Permissions of .. are correct", "rwxdr-x-", lds.get(1).getPermissions());
+		assertEquals("Size of .. is correct", 0x8, lds.get(1).getSize());
+		assertEquals("Username of Owner is correct", "root", lds.get(1).getOwner());
+		assertEquals("Id of .. is correct", 8, lds.get(1).getId());
+		assertEquals("Last Modified date of .. is correct", 8, lds.get(1).getLastModified());
+		assertEquals("Name of .. is correct", "..", lds.get(1).getName());
+		
+	}
+
 	@Test(expected = InvalidLoginException.class)
 	public void expiredSessionTest2h05minAgo() {
 		super.setLastActivity2h05minAgo();
