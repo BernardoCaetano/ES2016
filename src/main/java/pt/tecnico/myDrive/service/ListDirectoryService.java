@@ -2,25 +2,38 @@ package pt.tecnico.myDrive.service;
 
 import pt.tecnico.myDrive.service.dto.AbstractFileDTO;
 
+import java.io.ObjectInputStream.GetField;
+import java.util.ArrayList;
 import java.util.List;
 
+import pt.tecnico.myDrive.domain.AbstractFile;
+import pt.tecnico.myDrive.domain.Directory;
+import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.exception.MyDriveException;
 
 public class ListDirectoryService extends MyDriveService {
-	List<AbstractFileDTO> result;
+	long loginToken;
+	ArrayList<AbstractFileDTO> result;
 
 	public ListDirectoryService(long token) {
-		// TODO 
+		loginToken = token;
 	}
 
 	@Override
 	protected void dispatch() throws MyDriveException {
-		// TODO
-
+		Login login = getMyDrive().getLoginByToken(loginToken);
+		Directory directory = login.getCurrentDir();
+		ArrayList<AbstractFile> files = directory.getFilesSimpleSorted();
+		
+		result.add(new AbstractFileDTO(directory, "."));
+		result.add(new AbstractFileDTO(directory.getParent(), ".."));
+		
+		for (AbstractFile file : files) {
+			result.add(new AbstractFileDTO(file));
+		}		
 	}
-
+	
 	public final List<AbstractFileDTO> result() {
-		// TODO
-		return result; // FIXME
+		return result;
 	}
 }

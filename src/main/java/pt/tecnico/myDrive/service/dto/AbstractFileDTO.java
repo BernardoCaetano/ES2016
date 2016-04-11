@@ -2,6 +2,8 @@ package pt.tecnico.myDrive.service.dto;
 
 import org.joda.time.DateTime;
 
+import pt.tecnico.myDrive.domain.AbstractFile;
+
 public class AbstractFileDTO {
 	private String _type;
 	private String _permissions;
@@ -11,15 +13,18 @@ public class AbstractFileDTO {
 	private DateTime _lastModified;
 	private String _name;
 	
-	public AbstractFileDTO(String type, String permissions, byte size, 
-			String owner, int id, DateTime lastModified, String name) {
-		this._type = type;
-		this._permissions = permissions;
-		this._size = size;
-		this._owner = owner;
-		this._id = id;
-		this._lastModified = lastModified;
-		this._name = name;
+	public AbstractFileDTO(AbstractFile file, String name) {
+		_type = file.xmlTag();
+		_permissions = file.getPermissions();
+		_size = 42;
+		_owner = file.getOwner().getUsername();
+		_id = file.getId();
+		_lastModified = file.getLastModified();
+		_name = name;
+	}
+	
+	public AbstractFileDTO(AbstractFile file) {		
+		this(file, file.getName());
 	}
 	
 	public final String getType() {
