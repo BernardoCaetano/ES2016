@@ -1,9 +1,6 @@
 package pt.tecnico.myDrive.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.nio.file.AccessDeniedException;
 
@@ -52,7 +49,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		testDir = new Directory(mD, rootDir, rootUser, "testDir");
 		subDir = new Directory(mD, testDir, rootUser, "subDir");
 		mannyDir = new Directory(mD, subDir, rootUser, "mannyDir");
-		otherDir = new Directory(mD, rootDir, otherUser, "notMine");
+		otherDir = new Directory(mD, rootDir, otherUser, "otherDir");
 		
 		testDir.setPermissions("rwxdrwxd");
 		subDir.setPermissions("rwxdrwxd");
@@ -60,16 +57,6 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		otherDir.setPermissions("rwxdrwxd");
 	}
 	
-	@Test
-	public void stayEmptyPath() {
-		Directory oldCurrentDir = rootLogin.getCurrentDir();
-		
-		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "");
-		service.execute();
-		
-		assertEquals("Did not stay in the same directory", rootLogin.getCurrentDir(), oldCurrentDir);
-	}
-
 	@Test
 	public void goTospace() {
 		Directory spaceDir = new Directory(mD, rootDir, rootUser, " ");
