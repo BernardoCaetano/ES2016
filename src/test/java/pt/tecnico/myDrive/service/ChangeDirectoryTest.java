@@ -318,7 +318,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	@Test
 	public void sessionStillValidTest1h55min() {
 		super.setLastActivity2h05minAgo();
-		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "aOne");
+		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "testDir");
 		service.execute();
 		
 		assertEquals(rootLogin.getCurrentDir(), mD.getDirectoryByPath(rootDir, "testDir"));		
