@@ -2,7 +2,7 @@ package pt.tecnico.myDrive.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.nio.file.AccessDeniedException;
+import pt.tecnico.myDrive.exception.AccessDeniedException;
 
 import org.junit.Test;
 
