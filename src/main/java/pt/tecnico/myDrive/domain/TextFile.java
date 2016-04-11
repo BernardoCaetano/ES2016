@@ -24,14 +24,14 @@ public class TextFile extends TextFile_Base {
     public void initTextFile(MyDriveFS mydrive, Directory parentDir, User owner, String name, String content) 
     		throws InvalidFileNameException {
     	initAbstractFile(mydrive, parentDir, owner, name);
-    	setContent(content);
+    	super.setContent(content);
     }
  
     @Override
     public void xmlImport(MyDriveFS myDrive, Element element){
 		super.xmlImport(myDrive, element);
 		
-		setContent(element.getAttribute("content").getValue());
+		super.setContent(element.getAttribute("content").getValue());
 	}
 
     @Override
