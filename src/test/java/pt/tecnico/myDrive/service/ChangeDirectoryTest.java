@@ -180,21 +180,6 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		assertEquals("Did not stay in same directory", rootLogin.getCurrentDir(), testDir);
 	}
 	
-	
-	@Test(expected = FileNotFoundException.class)
-	public void doubleSlashPath() throws FileNotFoundException{		
-		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "testDir//");
-		service.execute();
-	}
-	
-	@Test(expected = FileNotFoundException.class)
-	public void doubleSlash() throws FileNotFoundException{		
-		rootLogin.setCurrentDir(mannyDir);
-		
-		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "//");
-		service.execute();
-	}
-	
 	@Test(expected = FileNotFoundException.class)
 	public void fourOhFour() throws FileNotFoundException{
 		rootLogin.setCurrentDir(mannyDir);
