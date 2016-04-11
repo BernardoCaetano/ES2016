@@ -16,19 +16,19 @@ import pt.tecnico.myDrive.exception.NotDirectoryException;
 
 public class ChangeDirectoryTest extends TokenReceivingTest {
 
-	MyDriveFS mD;
-	RootDirectory rootDir;
-	User rootUser;
-	User otherUser;
-	Login rootLogin;
-	long rootToken;
-	Login otherLogin;
-	long otherToken;
-	
-	Directory testDir;
-	Directory subDir;
-	Directory otherDir;
-	Directory mannyDir;
+	private	MyDriveFS mD;
+	private	RootDirectory rootDir;
+	private	User rootUser;
+	private	User otherUser;
+	private	Login rootLogin;
+	private	long rootToken;
+	private	Login otherLogin;
+	private	long otherToken;
+		
+	private	Directory testDir;
+	private	Directory subDir;
+	private	Directory otherDir;
+	private	Directory mannyDir;
 	
 	
 	protected void populate() {
