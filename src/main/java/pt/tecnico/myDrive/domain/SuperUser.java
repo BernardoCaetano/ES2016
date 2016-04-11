@@ -10,8 +10,7 @@ public class SuperUser extends SuperUser_Base {
 		init(mydrive, username, password, name, umask, homeDirPath);
 	}
 
-	@Override
-	public boolean canAccess(AbstractFile file, char type) {
+	private boolean canAccess(AbstractFile file, char type) {
 		return true;
 	}
 }

@@ -78,7 +78,7 @@ public class User extends User_Base {
     	return password.equals(super.getPassword());
     }
     
-    public boolean canAccess(AbstractFile file, char type) {
+    private boolean canAccess(AbstractFile file, char type) {
     	int pos;
     	
     	switch (type) {
