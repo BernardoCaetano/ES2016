@@ -1,22 +1,40 @@
 package pt.tecnico.myDrive.service;
 
+import pt.tecnico.myDrive.domain.Directory;
+import pt.tecnico.myDrive.domain.Login;
+import pt.tecnico.myDrive.domain.MyDriveFS;
+import pt.tecnico.myDrive.domain.TextFile;
+import pt.tecnico.myDrive.domain.User;
+import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.MyDriveException;
 
 public class ReadFileService extends MyDriveService {
 
+	private long _token;
+	private String _name;
+	private String result;
+	
 	public ReadFileService(long token, String name) {
-		// TODO 
+		_token = token;
+		_name = name;
 	}
 
 	@Override
 	protected void dispatch() throws MyDriveException {
-		// TODO
-
+		MyDriveFS md = MyDriveFS.getInstance();
+		Login login = md.getLoginByToken(_token);
+		Directory dir = login.getCurrentDir();
+		User user = login.getUser();
+		TextFile file = dir.getTextFileByName(_name);
+		if(login.getUser().canRead(file)){
+			result = file.getContent();
+		}else{
+			throw new AccessDeniedException(user.getUsername(), _name);
+		}
 	}
 
 	public final String result() {
-		// TODO 
-		return null; //FIXME
+		return result;
 	}
 
 }
