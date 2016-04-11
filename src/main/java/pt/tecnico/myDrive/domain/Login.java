@@ -3,6 +3,8 @@ package pt.tecnico.myDrive.domain;
 import java.math.BigInteger;
 import java.util.Random;
 import org.joda.time.DateTime;
+
+import pt.tecnico.myDrive.exception.CannotExtendSessionTimeException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.WrongPasswordException;
 
@@ -32,6 +34,14 @@ public class Login extends Login_Base {
     	if (this.isValid()) {
     		this.setLastActivity(DateTime.now());
     	}
+    }
+    
+    @Override
+    public void setLastActivity(DateTime newTime) throws CannotExtendSessionTimeException {
+    	if (newTime.isAfter(this.getLastActivity())) {
+    		throw new CannotExtendSessionTimeException();
+    	}
+    	super.setLastActivity(newTime);
     }
     
     public void remove() {
