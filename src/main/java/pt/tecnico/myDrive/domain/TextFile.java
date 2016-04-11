@@ -46,4 +46,17 @@ public class TextFile extends TextFile_Base {
     public String xmlTag() {
     	return "textFile";
     }
+    
+    @Override
+    public int dimension(){
+    	int result;
+    	
+    	if(this.getContent() != null){
+			result = this.getContent().length();
+    	} 
+    	else {
+    		result = 0;
+    	}
+    	return result;
+    }
 }

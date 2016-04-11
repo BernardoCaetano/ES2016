@@ -180,4 +180,10 @@ public class Directory extends Directory_Base {
 		
 		return ((Directory) dir).createDirectoryByPath(myDrive, newPath);
 	}
+	
+	@Override
+	public int dimension(){
+		return 2 + this.getFilesCount(); 
+	
+	}
 }
