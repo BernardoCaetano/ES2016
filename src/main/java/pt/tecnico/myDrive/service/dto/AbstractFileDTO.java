@@ -7,7 +7,7 @@ import pt.tecnico.myDrive.domain.AbstractFile;
 public class AbstractFileDTO {
 	private String _type;
 	private String _permissions;
-	private byte _size;
+	private int _dimension;
 	private String _owner;
 	private Integer _id;
 	private DateTime _lastModified;
@@ -16,7 +16,7 @@ public class AbstractFileDTO {
 	public AbstractFileDTO(AbstractFile file, String name) {
 		_type = file.xmlTag();
 		_permissions = file.getPermissions();
-		_size = 42;
+		_dimension = 42;
 		_owner = file.getOwner().getUsername();
 		_id = file.getId();
 		_lastModified = file.getLastModified();
@@ -35,8 +35,8 @@ public class AbstractFileDTO {
 		return this._permissions;
 	}
 	
-	public final byte getSize() {
-		return this._size;
+	public final int getDimension() {
+		return this._dimension;
 	}
 	
 	public final String getOwner() {
