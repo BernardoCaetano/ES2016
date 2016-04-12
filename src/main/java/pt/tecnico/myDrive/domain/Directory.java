@@ -50,7 +50,7 @@ public class Directory extends Directory_Base {
 		}
 	}
 
-	public AbstractFile getFileByName(String name) throws FileNotFoundException {
+	public AbstractFile getFileByNameNoFollow(String name) throws FileNotFoundException {
 		if (name.equals(".")) {
 			return this;
 		} else if (name.equals("..")) {
@@ -63,25 +63,30 @@ public class Directory extends Directory_Base {
 		}
 		throw new FileNotFoundException(getPath() + name);
 	}
-	
+
+	public AbstractFile getFileByName(String name) throws FileNotFoundException {
+		Set<String> visitedPaths = new TreeSet<String>();
+		AbstractFile f = getFileByNameNoFollow(name);
+
+		while (f instanceof Link) {
+			String dstPath = ((Link) f).getContent();
+
+			if (visitedPaths.contains(dstPath)) {
+				throw new CyclicLinkException();
+			} else {
+				visitedPaths.add(dstPath);
+			}
+
+			MyDriveFS md = MyDriveFS.getInstance();
+			f = (TextFile) md.getFileByPathNoFollow(f.getParent(), dstPath);
+		}
+
+		return f;
+	}
+
 	public TextFile getTextFileByName(String name) throws NotTextFileException {
 		try {
-			Set<String> visitedPaths = new TreeSet<String>();
-
 			TextFile f = (TextFile) getFileByName(name);
-
-			while (f instanceof Link) {
-				String dstPath = f.getContent();
-
-				if (visitedPaths.contains(dstPath)) {
-					throw new CyclicLinkException();
-				} else {
-					visitedPaths.add(dstPath);
-				}
-
-				MyDriveFS md = MyDriveFS.getInstance();
-				f = (TextFile) md.getFileByPath(f.getParent(), dstPath);
-			}
 			return f;
 		} catch (ClassCastException e) {
 			throw new NotTextFileException(name);

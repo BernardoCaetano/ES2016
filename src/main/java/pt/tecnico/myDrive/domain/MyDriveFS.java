@@ -64,7 +64,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		super.setLastFileID(getLastFileID() + 1);
 	}
 
-	public AbstractFile getFileByPath(Directory currentDir, String path)
+	private AbstractFile getFileByPathAux(Directory currentDir, String path, boolean follow)
 			throws FileNotFoundException, InvalidPathException {
 		if (path.equals("/")) {
 			return getRootDirectory();
@@ -83,19 +83,28 @@ public class MyDriveFS extends MyDriveFS_Base {
 			throw new InvalidPathException(path);
 		}
 
-		AbstractFile f = currentDir.getFileByName(parts[0]);
+		AbstractFile f = follow	? currentDir.getFileByName(parts[0])
+								: currentDir.getFileByNameNoFollow(parts[0]);
 
 		if (parts.length < 2) {
 			return f;
 		}
 
 		try {
-			return getFileByPath((Directory) f, parts[1]);
+			return getFileByPathAux((Directory) f, parts[1], follow);
 		} catch (InvalidPathException e) {
 			throw new InvalidPathException(path);
 		} catch (FileNotFoundException e) {
 			throw new FileNotFoundException(path);
 		}
+	}
+	
+	public AbstractFile getFileByPath(Directory currentDir, String path){
+		return getFileByPathAux(currentDir, path, true);
+	}
+	
+	public AbstractFile getFileByPathNoFollow(Directory currentDir, String path){
+		return getFileByPathAux(currentDir, path, false);
 	}
 
 	public Directory getDirectoryByPath(Directory currentDir, String path) 
