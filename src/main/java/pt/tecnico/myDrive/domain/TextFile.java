@@ -2,6 +2,7 @@ package pt.tecnico.myDrive.domain;
 
 import org.jdom2.Element;
 
+import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 
 public class TextFile extends TextFile_Base {
@@ -59,4 +60,13 @@ public class TextFile extends TextFile_Base {
     	}
     	return result;
     }
+
+	public String getContent(User user) {
+		if (user.canRead(this)) {
+			return getContent();
+		} else {
+			throw new AccessDeniedException(user.getUsername(), getName());
+		}
+	}
+
 }

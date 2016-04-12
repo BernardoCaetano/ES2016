@@ -26,11 +26,7 @@ public class ReadFileService extends MyDriveService {
 		Directory dir = login.getCurrentDir();
 		User user = login.getUser();
 		TextFile file = dir.getTextFileByName(_name);
-		if(login.getUser().canRead(file)){
-			result = file.getContent();
-		}else{
-			throw new AccessDeniedException(user.getUsername(), _name);
-		}
+		result = file.getContent(user);
 	}
 
 	public final String result() {
