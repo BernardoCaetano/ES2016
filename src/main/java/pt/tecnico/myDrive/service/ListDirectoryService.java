@@ -2,8 +2,8 @@ package pt.tecnico.myDrive.service;
 
 import pt.tecnico.myDrive.service.dto.AbstractFileDTO;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import pt.tecnico.myDrive.domain.AbstractFile;
@@ -30,7 +30,9 @@ public class ListDirectoryService extends MyDriveService {
 		
 		for (AbstractFile file : files) {
 			result.add(new AbstractFileDTO(file));
-		}		
+		}
+		
+		Collections.sort(files);
 	}
 	
 	public final List<AbstractFileDTO> result() {
