@@ -37,7 +37,6 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		rootUser = mD.getUserByUsername("root");
 		otherUser = new User(mD, "other", "smallerthanthree", "Other Woman", "rwxdrwxd", null);
 		rootUser.setUmask("rwxdrwxd");
-		otherUser.setUmask("rwxdrwxd");
 		
 		rootLogin = new Login(mD, "root", "***");
 		rootToken = rootLogin.getToken();
