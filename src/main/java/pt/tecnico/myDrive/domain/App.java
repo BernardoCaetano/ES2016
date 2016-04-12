@@ -27,6 +27,14 @@ public class App extends App_Base {
 		xmlImport(myDrive, appElement);
 	}
 	
+	@Override
+	public void setContent(String content) {
+		if(!isValidPackageName(content)){
+			throw new InvalidAppContentException(content);
+		}
+		super.setContent(content);
+	}
+	
     public boolean isValidPackageName(String packageName) {
     	
     	String packageParts[] = packageName.split("\\.");
