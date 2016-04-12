@@ -186,7 +186,7 @@ public class Directory extends Directory_Base {
 	
 	@Override
 	public int dimension(){
-		return 2 + this.getFilesCount(); 
+		return 2 + this.getFilesSet().size(); 
 	
 	}
 }
