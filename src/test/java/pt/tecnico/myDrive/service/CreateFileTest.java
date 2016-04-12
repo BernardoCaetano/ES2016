@@ -100,8 +100,6 @@ public class CreateFileTest extends TokenReceivingTest {
 		assertNotNull("App wasn't created", f);
 		assertTrue("File created is not a App", (f instanceof App));
 		BasicFileTest(f, "newApp", "App");
-		App app = (App) f;
-		assertEquals("App has not the Default Content", "pt.tecnico.myDrive.Main.main", app.getContent());
 	}
 
 	@Test
@@ -167,12 +165,6 @@ public class CreateFileTest extends TokenReceivingTest {
 		service.execute();
 	}
 
-	@Test(expected = InvalidTextFileContentException.class)
-	public void invalidTextFileCreationWithInvalidContent() {
-		CreateFileService service = new CreateFileService(validToken, "newLink", "Link", "invalidPathToApp//;-)");
-		service.execute();
-	}
-
 	@Test(expected = InvalidAppContentException.class)
 	public void invalidAppCreationWithInvalidContent() {
 		CreateFileService service = new CreateFileService(validToken, "newApp", "App", "invalid method");
@@ -209,7 +201,7 @@ public class CreateFileTest extends TokenReceivingTest {
 	}
 
 	@Test(expected = PathMaximumLengthException.class)
-	public void invalidFileCreationWithAbsoutePathBiggerThan1024Characters() {
+	public void invalidFileCreationWithAbsoutePathEqualTo1025Characters() {
 
 		CreateFileService service = new CreateFileService(validToken, auxFileName + "1", "TextFile");
 		service.execute();
