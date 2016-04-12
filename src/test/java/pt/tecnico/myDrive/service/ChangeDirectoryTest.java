@@ -228,7 +228,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = testDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, otherLogin.getCurrentDir());
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -247,7 +247,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = otherDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, otherLogin.getCurrentDir());
 	}
 	
 	@Test(expected = AccessDeniedException.class)
