@@ -201,8 +201,8 @@ public class CreateFileTest extends TokenReceivingTest {
 	public void FileCreationWithAbsoutePathEqualTo1024Characters() {
 		CreateFileService service = new CreateFileService(validToken, auxFileName, "TextFile");
 		service.execute();
-
 		AbstractFile f = getAbstractFile(validToken, auxFileName);
+
 		assertNotNull("TextFile wasn't created", f);
 		assertTrue("File created is not a TextFile", (f instanceof TextFile));
 		BasicFileTest(f, auxFileName, "TextFile");
@@ -217,7 +217,7 @@ public class CreateFileTest extends TokenReceivingTest {
 
 	@Test(expected = CreateDeniedException.class)
 	public void permissionDeniedTest() {
-		mD.getLoginByToken(validToken).setCurrentDir(mD.getRootDirectory());
+		mD.getLoginByToken(validToken).getCurrentDir().setPermissions("r-xd----");
 
 		CreateFileService service = new CreateFileService(validToken, "Teste", "Directory");
 		service.execute();
