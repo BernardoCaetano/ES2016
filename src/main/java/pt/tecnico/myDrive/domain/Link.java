@@ -27,8 +27,7 @@ public class Link extends Link_Base {
 		xmlImport(myDrive, linkElement);
 	}
     
-    public boolean hasValidContent() {
-    	String path = getContent();
+    public boolean isValidPath(String path) {
     	return !path.contains("\0");
     }
 	
