@@ -9,8 +9,9 @@ public class SuperUser extends SuperUser_Base {
 			throws InvalidUsernameException, InvalidPathException {
 		init(mydrive, username, password, name, umask, homeDirPath);
 	}
-
-	private boolean canAccess(AbstractFile file, char type) {
+	
+	@Override
+	protected boolean canAccess(AbstractFile file, char type) {
 		return true;
 	}
 }
