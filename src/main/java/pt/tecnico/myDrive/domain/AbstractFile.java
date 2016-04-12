@@ -127,12 +127,12 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
     }    
 
     public void remove(User user) throws AccessDeniedException {
-    	if(user.canWrite(getParent()) || user.canDelete(this) ){
-    		setParent(null);
-            setOwner(null);
-            deleteDomainObject();
+    	if(!user.canWrite(getParent()) || !user.canDelete(this)){
+    		throw new AccessDeniedException(user.getUsername(), this.getName());    		
 		} else {
-			throw new AccessDeniedException(user.getUsername(), this.getName());
+			setParent(null);
+            setOwner(null);
+            deleteDomainObject();			
 		}
     };
     
