@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.Random;
 import org.joda.time.DateTime;
 
+import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.CannotExtendSessionTimeException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.WrongPasswordException;
@@ -34,6 +35,25 @@ public class Login extends Login_Base {
     	if (this.isValid()) {
     		super.setLastActivity(DateTime.now());
     	}
+    }
+    
+    @Override 
+    public void setCurrentDir(Directory currentDir) throws AccessDeniedException {
+    	if (!canChangeToDirectory(currentDir)) {
+    		throw new AccessDeniedException(getUser().getUsername(), currentDir.getName());
+    	}
+		super.setCurrentDir(currentDir);
+    }
+    
+    private boolean canChangeToDirectory(Directory newDir) {
+    	do {
+    		if(!this.getUser().canExecute(newDir)) {
+    			return false;
+    		}
+    		newDir = newDir.getParent();
+    	} while (!newDir.getPath().equals("/"));
+    	
+    	return true;
     }
     
     @Override
