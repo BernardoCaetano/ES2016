@@ -9,6 +9,7 @@ import org.junit.Test;
 import pt.tecnico.myDrive.domain.*;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
+import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.NotDirectoryException;
 
 public class ChangeDirectoryTest extends TokenReceivingTest {
@@ -189,7 +190,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	}
 	
 	@Test(expected = NotDirectoryException.class)
-	public void textFile() throws NotDirectoryException{
+	public void textFile() throws NotDirectoryException, InvalidFileNameException{
 		rootLogin.setCurrentDir(testDir);
 		TextFile textFile = new TextFile(mD, testDir, rootUser, "textFile", "Lorem ipsum dolor sit amet");
 		textFile.setPermissions("rwxdrwxd");
