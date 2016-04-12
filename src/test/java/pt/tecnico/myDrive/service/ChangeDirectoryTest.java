@@ -271,7 +271,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	public void rootWithoutMask() {
 		rootUser.setUmask("--------");
 		
-		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "otherDir");
+		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "otherDir");
 		service.execute();
 		
 		Directory properDir = otherDir;
