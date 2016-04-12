@@ -16,7 +16,8 @@ import pt.tecnico.myDrive.exception.InvalidTextFileContentException;
 import pt.tecnico.myDrive.exception.InvalidTypeOfFileException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.PathMaximumLengthException;
-import pt.tecnico.myDrive.exception.CreateDeniedException;;
+import pt.tecnico.myDrive.exception.CreateDeniedException;
+import pt.tecnico.myDrive.exception.FileNotFoundException;;
 
 public class CreateFileTest extends TokenReceivingTest {
 
@@ -52,7 +53,13 @@ public class CreateFileTest extends TokenReceivingTest {
 	}
 
 	private AbstractFile getAbstractFile(long token, String fileName) {
-		return mD.getLoginByToken(token).getCurrentDir().getFileByName(fileName);
+		try {
+			AbstractFile file = mD.getLoginByToken(token).getCurrentDir().getFileByName(fileName);
+			return file;
+		} catch (FileNotFoundException e) {
+			return null;
+		}
+		
 	}
 
 	private void BasicFileTest(AbstractFile f, String fileName, String typeOfFile) {
@@ -100,8 +107,6 @@ public class CreateFileTest extends TokenReceivingTest {
 		assertNotNull("App wasn't created", f);
 		assertTrue("File created is not a App", (f instanceof App));
 		BasicFileTest(f, "newApp", "App");
-		App app = (App) f;
-		assertEquals("App has not the Default Content", "pt.tecnico.myDrive.Main.main", app.getContent());
 	}
 
 	@Test
@@ -167,12 +172,6 @@ public class CreateFileTest extends TokenReceivingTest {
 		service.execute();
 	}
 
-	@Test(expected = InvalidTextFileContentException.class)
-	public void invalidTextFileCreationWithInvalidContent() {
-		CreateFileService service = new CreateFileService(validToken, "newLink", "Link", "invalidPathToApp//;-)");
-		service.execute();
-	}
-
 	@Test(expected = InvalidAppContentException.class)
 	public void invalidAppCreationWithInvalidContent() {
 		CreateFileService service = new CreateFileService(validToken, "newApp", "App", "invalid method");
@@ -201,15 +200,15 @@ public class CreateFileTest extends TokenReceivingTest {
 	public void FileCreationWithAbsoutePathEqualTo1024Characters() {
 		CreateFileService service = new CreateFileService(validToken, auxFileName, "TextFile");
 		service.execute();
+		AbstractFile f = getAbstractFile(validToken, auxFileName);
 
-		AbstractFile f = getAbstractFile(validToken, "newDir");
 		assertNotNull("TextFile wasn't created", f);
 		assertTrue("File created is not a TextFile", (f instanceof TextFile));
-		BasicFileTest(f, "newTextFile", "TextFile");
+		BasicFileTest(f, auxFileName, "TextFile");
 	}
 
 	@Test(expected = PathMaximumLengthException.class)
-	public void invalidFileCreationWithAbsoutePathBiggerThan1024Characters() {
+	public void invalidFileCreationWithAbsoutePathEqualTo1025Characters() {
 
 		CreateFileService service = new CreateFileService(validToken, auxFileName + "1", "TextFile");
 		service.execute();
@@ -217,7 +216,7 @@ public class CreateFileTest extends TokenReceivingTest {
 
 	@Test(expected = CreateDeniedException.class)
 	public void permissionDeniedTest() {
-		mD.getLoginByToken(validToken).setCurrentDir(mD.getRootDirectory());
+		mD.getLoginByToken(validToken).getCurrentDir().setPermissions("r-xd----");
 
 		CreateFileService service = new CreateFileService(validToken, "Teste", "Directory");
 		service.execute();

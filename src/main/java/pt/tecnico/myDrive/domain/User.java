@@ -31,7 +31,9 @@ public class User extends User_Base {
 
     public void init(MyDriveFS mydrive, String username, String password, String name, String umask, String homeDirPath) 
             throws InvalidUsernameException, InvalidPathException {
-    	//TODO make sure that path is a valid path
+    	if (homeDirPath.contains("\0") || !homeDirPath.startsWith("/")){
+    		throw new InvalidPathException(homeDirPath);
+    	}
         setUsername(username);
         setPassword(password);
         setName(name);
@@ -59,10 +61,13 @@ public class User extends User_Base {
 	}
 
 	public void setHomeDirectory(MyDriveFS myDrive, String homeDirPath) throws InvalidPathException {
-		//TODO add exceptions throwing
 		try {
+			homeDirPath = homeDirPath.substring(1);
 			Directory rootDir = (Directory) myDrive.getRootDirectory();
-			Directory homeDir = rootDir.createDirectoryByPath(myDrive, homeDirPath);
+			String homeDirName = homeDirPath.substring(homeDirPath.lastIndexOf("/") + 1);
+			Directory parentDir = rootDir.createDirectoryByPath(myDrive, homeDirPath.substring(0, homeDirPath.lastIndexOf("/")));
+			Directory homeDir = new Directory(myDrive, parentDir, this, homeDirName);
+			
 			setHomeDirectory(homeDir);
 		} catch (InvalidPathException e) {
 			throw new InvalidPathException(homeDirPath);

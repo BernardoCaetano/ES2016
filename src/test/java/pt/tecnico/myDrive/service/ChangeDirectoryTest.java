@@ -1,11 +1,8 @@
 package pt.tecnico.myDrive.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
-import java.nio.file.AccessDeniedException;
+import pt.tecnico.myDrive.exception.AccessDeniedException;
 
 import org.junit.Test;
 
@@ -41,17 +38,18 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		rootUser.setUmask("rwxdrwxd");
 		otherUser.setUmask("rwxdrwxd");
 		
-		otherLogin = new Login(mD, "other", "smallerthanthree");
-		otherToken = otherLogin.getToken();
 		rootLogin = new Login(mD, "root", "***");
 		rootToken = rootLogin.getToken();
+		otherLogin = new Login(mD, "other", "smallerthanthree");
+		otherToken = otherLogin.getToken();
 		
 		rootLogin.setCurrentDir(rootDir);
+		otherLogin.setCurrentDir(rootDir);
 		
 		testDir = new Directory(mD, rootDir, rootUser, "testDir");
 		subDir = new Directory(mD, testDir, rootUser, "subDir");
 		mannyDir = new Directory(mD, subDir, rootUser, "mannyDir");
-		otherDir = new Directory(mD, rootDir, otherUser, "notMine");
+		otherDir = new Directory(mD, rootDir, otherUser, "otherDir");
 		
 		testDir.setPermissions("rwxdrwxd");
 		subDir.setPermissions("rwxdrwxd");
@@ -59,16 +57,6 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		otherDir.setPermissions("rwxdrwxd");
 	}
 	
-	@Test
-	public void stayEmptyPath() {
-		Directory oldCurrentDir = rootLogin.getCurrentDir();
-		
-		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "");
-		service.execute();
-		
-		assertEquals("Did not stay in the same directory", rootLogin.getCurrentDir(), oldCurrentDir);
-	}
-
 	@Test
 	public void goTospace() {
 		Directory spaceDir = new Directory(mD, rootDir, rootUser, " ");
@@ -192,21 +180,6 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		assertEquals("Did not stay in same directory", rootLogin.getCurrentDir(), testDir);
 	}
 	
-	
-	@Test(expected = FileNotFoundException.class)
-	public void doubleSlashPath() throws FileNotFoundException{		
-		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "testDir//");
-		service.execute();
-	}
-	
-	@Test(expected = FileNotFoundException.class)
-	public void doubleSlash() throws FileNotFoundException{		
-		rootLogin.setCurrentDir(mannyDir);
-		
-		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "//");
-		service.execute();
-	}
-	
 	@Test(expected = FileNotFoundException.class)
 	public void fourOhFour() throws FileNotFoundException{
 		rootLogin.setCurrentDir(mannyDir);
@@ -318,7 +291,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	@Test
 	public void sessionStillValidTest1h55min() {
 		super.setLastActivity2h05minAgo();
-		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "aOne");
+		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "testDir");
 		service.execute();
 		
 		assertEquals(rootLogin.getCurrentDir(), mD.getDirectoryByPath(rootDir, "testDir"));		

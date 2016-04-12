@@ -28,42 +28,6 @@ public class RootDirectory extends RootDirectory_Base {
     }
     
     @Override
-    public Directory createDirectoryByPath(MyDriveFS myDrive, String path) throws InvalidPathException{
-				
-		if (path.startsWith("/")) {
-			path = path.substring(1);
-		} else {
-			throw new InvalidPathException(path);
-		}
-		
-		if (path.equals("")){
-			return this;
-		}
-		
-		String dirName = path.split("/")[0];
-		AbstractFile dir;
-		
-		try {
-			dir = getFileByName(dirName);  
-		} catch (FileNotFoundException e) {
-			dir = new Directory(myDrive, this, null, dirName);
-		}
-		
-		if (!(dir instanceof Directory)){
-			throw new InvalidPathException(path);
-		}
-		
-		String newPath;
-		if (path.indexOf("/") == -1) {
-			newPath = path.substring(path.indexOf(dirName)+ dirName.length());
-		} else {
-			newPath = path.substring(path.indexOf("/") + 1);
-		}
-		
-		return ((Directory) dir).createDirectoryByPath(myDrive, newPath);
-	}
-    
-    @Override
     public Directory getParent() {
     	return this;
     }
