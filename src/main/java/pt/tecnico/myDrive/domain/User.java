@@ -1,6 +1,7 @@
 package pt.tecnico.myDrive.domain;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -108,7 +109,7 @@ public class User extends User_Base {
     	if (file.getOwner() != this)
     		 pos += 4;
     	
-    	return getUmask().charAt(pos) == type && file.getPermissions().charAt(pos) == type;
+    	return file.getPermissions().charAt(pos) == type;
     }
     
     public boolean canRead(AbstractFile file) {
