@@ -4,6 +4,7 @@ import org.jdom2.Element;
 
 import pt.tecnico.myDrive.exception.ImmutableLinkContentException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
+import pt.tecnico.myDrive.exception.InvalidLinkContentException;
 
 public class Link extends Link_Base {
     
@@ -11,9 +12,14 @@ public class Link extends Link_Base {
         super();
     }
 
-    public Link(MyDriveFS mydrive, Directory parentDir, User owner, String name, String content) 
+	public Link(MyDriveFS mydrive, Directory parentDir, User owner, String name, String content) 
     		throws InvalidFileNameException {
     	super();
+    	
+    	if(!isValidPath(content)){
+    		throw new InvalidLinkContentException();
+    	}
+    	
     	initTextFile(mydrive, parentDir, owner, name, content);
     }
     
@@ -28,6 +34,9 @@ public class Link extends Link_Base {
 	}
     
     public boolean isValidPath(String path) {
+    	if(path == null || path.length() < 1){
+    		return false;
+    	}
     	return !path.contains("\0");
     }
 	
