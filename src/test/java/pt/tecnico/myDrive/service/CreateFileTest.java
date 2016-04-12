@@ -16,7 +16,8 @@ import pt.tecnico.myDrive.exception.InvalidTextFileContentException;
 import pt.tecnico.myDrive.exception.InvalidTypeOfFileException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.PathMaximumLengthException;
-import pt.tecnico.myDrive.exception.CreateDeniedException;;
+import pt.tecnico.myDrive.exception.CreateDeniedException;
+import pt.tecnico.myDrive.exception.FileNotFoundException;;
 
 public class CreateFileTest extends TokenReceivingTest {
 
@@ -52,7 +53,13 @@ public class CreateFileTest extends TokenReceivingTest {
 	}
 
 	private AbstractFile getAbstractFile(long token, String fileName) {
-		return mD.getLoginByToken(token).getCurrentDir().getFileByName(fileName);
+		try {
+			AbstractFile file = mD.getLoginByToken(token).getCurrentDir().getFileByName(fileName);
+			return file;
+		} catch (FileNotFoundException e) {
+			return null;
+		}
+		
 	}
 
 	private void BasicFileTest(AbstractFile f, String fileName, String typeOfFile) {
