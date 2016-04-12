@@ -66,7 +66,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = spaceDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test
@@ -77,7 +77,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = rootDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'",  rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'",  properDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test
@@ -87,7 +87,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "/testDir/subDir/mannyDir");
 		service.execute();
 		
-		assertEquals("Did not stay in same directory", rootLogin.getCurrentDir(), mannyDir);
+		assertEquals("Did not stay in same directory", mannyDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test
@@ -100,7 +100,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = mannyDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test
@@ -111,7 +111,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = mannyDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test
@@ -122,7 +122,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = mannyDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test
@@ -132,7 +132,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, ".");
 		service.execute();
 		
-		assertEquals("Did not stay in same directory", rootLogin.getCurrentDir(), mannyDir);
+		assertEquals("Did not stay in same directory", mannyDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test
@@ -143,7 +143,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = mannyDir.getParent();
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test
@@ -156,7 +156,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = testDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test
@@ -167,7 +167,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = rootDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test
@@ -177,7 +177,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "subDir/./..");
 		service.execute();
 		
-		assertEquals("Did not stay in same directory", rootLogin.getCurrentDir(), testDir);
+		assertEquals("Did not stay in same directory", testDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test(expected = FileNotFoundException.class)
@@ -208,7 +208,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 
 		Directory properDir = mannyDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
 	}
 	
 	
@@ -228,7 +228,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = testDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -247,7 +247,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = otherDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -275,7 +275,7 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 		
 		Directory properDir = otherDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", rootLogin.getCurrentDir(), properDir);
+		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
 	}
 	
 	
