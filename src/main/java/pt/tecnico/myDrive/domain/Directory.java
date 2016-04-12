@@ -78,7 +78,7 @@ public class Directory extends Directory_Base {
 			}
 
 			MyDriveFS md = MyDriveFS.getInstance();
-			f = (TextFile) md.getFileByPathNoFollow(f.getParent(), dstPath);
+			f = md.getFileByPathNoFollow(f.getParent(), dstPath);
 		}
 
 		return f;
