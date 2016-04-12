@@ -16,7 +16,7 @@ public class AbstractFileDTO {
 	public AbstractFileDTO(AbstractFile file, String name) {
 		_type = file.xmlTag();
 		_permissions = file.getPermissions();
-		_dimension = 42;
+		_dimension = file.dimension();
 		_owner = file.getOwner().getUsername();
 		_id = file.getId();
 		_lastModified = file.getLastModified();
