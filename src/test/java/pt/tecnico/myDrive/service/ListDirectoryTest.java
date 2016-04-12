@@ -76,25 +76,25 @@ public class ListDirectoryTest extends TokenReceivingTest {
 
 		assertEquals("Right number of Files in RootDirectory", 3, lds.size());
 		
-		assertEquals("Type of . is correct", "Directory", lds.get(0).getType());
+		assertEquals("Type of . is correct", "directory", lds.get(0).getType());
 		assertEquals("Permissions of . are correct", "rwxdr-x-", lds.get(0).getPermissions());
-		assertEquals(" of . is correct", 0x8, lds.get(0).getSize());
+		assertEquals(" of . is correct", 3, lds.get(0).getDimension());
 		assertEquals("Username of Owner is correct", "root", lds.get(0).getOwner());
 		assertEquals("Id of . is correct", 8, lds.get(0).getId());
 		assertEquals("Last Modified date of . is correct", 8, lds.get(0).getLastModified());
 		assertEquals("Name of . is correct", ".", lds.get(0).getName());
 		
-		assertEquals("Type of .. is correct", "Directory", lds.get(1).getType());
+		assertEquals("Type of .. is correct", "directory", lds.get(1).getType());
 		assertEquals("Permissions of .. are correct", "rwxdr-x-", lds.get(1).getPermissions());
-		assertEquals("Size of .. is correct", 0x8, lds.get(1).getSize());
+		assertEquals("Dimension of .. is correct", 3, lds.get(1).getDimension());
 		assertEquals("Username of Owner is correct", "root", lds.get(1).getOwner());
 		assertEquals("Id of .. is correct", 8, lds.get(1).getId());
 		assertEquals("Last Modified date of .. is correct", 8, lds.get(1).getLastModified());
 		assertEquals("Name of .. is correct", "..", lds.get(1).getName());
 		
-		assertEquals("Type of home is Correct", "Directory", lds.get(2).getType());
+		assertEquals("Type of home is Correct", "directory", lds.get(2).getType());
 		assertEquals("Permissions of home are correct", "rwxdr-x-", lds.get(2).getPermissions());
-		assertEquals("Size of home is correct", 0x8, lds.get(2).getSize());
+		assertEquals("Dimension of home is correct", 2, lds.get(2).getDimension());
 		assertEquals("Username of Owner is correct", "root", lds.get(2).getOwner());
 		assertEquals("Id of home is correct", 8, lds.get(2).getId());
 		assertEquals("Last Modified date of home is correct", new DateTime(), lds.get(2).getLastModified());
@@ -113,7 +113,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of . is correct", "Directory", lds.get(0).getType());
 		assertEquals("Permissions of . are correct", "rwxdr-x-", lds.get(0).getPermissions());
-		assertEquals("Dimension of . is correct", 0x8, lds.get(0).getSize());
+		assertEquals("Dimension of . is correct", 0x8, lds.get(0).getDimension());
 		assertEquals("Username of Owner is correct", "root", lds.get(0).getOwner());
 		assertEquals("Id of . is correct", 8, lds.get(0).getId());
 		assertEquals("Last Modified date of . is correct", 8, lds.get(0).getLastModified());
@@ -121,7 +121,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of .. is correct", "Directory", lds.get(1).getType());
 		assertEquals("Permissions of .. are correct","rwxdr-x-", lds.get(1).getPermissions());
-		assertEquals("Size of .. is correct", 0x8, lds.get(1).getSize());
+		assertEquals("Dimension of .. is correct", 0x8, lds.get(1).getDimension());
 		assertEquals("Username of Owner is correct", "root", lds.get(1).getOwner());
 		assertEquals("Id of .. is correct", 8, lds.get(1).getId());
 		assertEquals("Last Modified date of .. is correct", new DateTime(), lds.get(1).getLastModified());
@@ -140,7 +140,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of . is correct", "Directory", lds.get(0).getType());
 		assertEquals("Permissions of . are correct", "rwxdr-x-", lds.get(0).getPermissions());
-		assertEquals("Dimension of . is correct", 0x8, lds.get(0).getSize());
+		assertEquals("Dimension of . is correct", 0x8, lds.get(0).getDimension());
 		assertEquals("Username of Owner is correct", "root", lds.get(0).getOwner());
 		assertEquals("Id of . is correct", 8, lds.get(0).getId());
 		assertEquals("Last Modified date of . is correct", 8, lds.get(0).getLastModified());
@@ -148,7 +148,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of .. is correct", "Directory", lds.get(1).getType());
 		assertEquals("Permissions of .. are correct","rwxdr-x-", lds.get(1).getPermissions());
-		assertEquals("Size of .. is correct", 0x8, lds.get(1).getSize());
+		assertEquals("Dimension of .. is correct", 0x8, lds.get(1).getDimension());
 		assertEquals("Username of Owner is correct", "root", lds.get(1).getOwner());
 		assertEquals("Id of .. is correct", 8, lds.get(1).getId());
 		assertEquals("Last Modified date of .. is correct", new DateTime(), lds.get(1).getLastModified());
@@ -156,7 +156,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of emptyDirectory is correct", "Directory", lds.get(2).getType());
 		assertEquals("Permissions of emptyDirectory are correct", "rwxdr----", lds.get(2).getPermissions());
-		assertEquals("Dimension of emptyDirectory is correct", 0x8, lds.get(2).getSize());
+		assertEquals("Dimension of emptyDirectory is correct", 0x8, lds.get(2).getDimension());
 		assertEquals("Username of Owner is correct", "manel", lds.get(2).getOwner());
 		assertEquals("Id of emptyDirectory is correct", 8, lds.get(2).getId());
 		assertEquals("Last Modified date of emptyDirectory is correct", 8, lds.get(2).getLastModified());
@@ -164,7 +164,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of MyApp is correct", "App", lds.get(3).getType());
 		assertEquals("Permissions of MyApp are correct","rwxdr----", lds.get(3).getPermissions());
-		assertEquals("Size of MyApp is correct", 0x8, lds.get(3).getSize());
+		assertEquals("Dimension of MyApp is correct", 0x8, lds.get(3).getDimension());
 		assertEquals("Username of Owner is correct", "manel", lds.get(3).getOwner());
 		assertEquals("Id of MyApp is correct", 8, lds.get(3).getId());
 		assertEquals("Last Modified date of MyApp is correct", new DateTime(), lds.get(3).getLastModified());
@@ -172,7 +172,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of MyLink is correct", "Link", lds.get(4).getType());
 		assertEquals("Permissions of MyLink are correct", "rwxdr----", lds.get(4).getPermissions());
-		assertEquals("Dimension of MyLink is correct", 0x8, lds.get(4).getSize());
+		assertEquals("Dimension of MyLink is correct", 0x8, lds.get(4).getDimension());
 		assertEquals("Username of Owner is correct", "manel", lds.get(4).getOwner());
 		assertEquals("Id of MyLink is correct", 8, lds.get(4).getId());
 		assertEquals("Last Modified date of MyLink is correct", 8, lds.get(4).getLastModified());
@@ -180,7 +180,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of MyTextFile is correct", "TextFile", lds.get(5).getType());
 		assertEquals("Permissions of MyTextFile are correct","rwxdr----", lds.get(5).getPermissions());
-		assertEquals("Size of MyTextFile is correct", 0x8, lds.get(5).getSize());
+		assertEquals("Dimension of MyTextFile is correct", 0x8, lds.get(5).getDimension());
 		assertEquals("Username of Owner is correct", "manel", lds.get(5).getOwner());
 		assertEquals("Id of MyTextFile is correct", 8, lds.get(5).getId());
 		assertEquals("Last Modified date of MyTextFile is correct", new DateTime(), lds.get(5).getLastModified());
@@ -200,7 +200,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of . is correct", "Directory", lds.get(0).getType());
 		assertEquals("Permissions of . are correct", "rwxdr----", lds.get(0).getPermissions());
-		assertEquals(" of . is correct", 0x8, lds.get(0).getSize());
+		assertEquals(" of . is correct", 0x8, lds.get(0).getDimension());
 		assertEquals("Username of Owner is correct", "manel", lds.get(0).getOwner());
 		assertEquals("Id of . is correct", 8, lds.get(0).getId());
 		assertEquals("Last Modified date of . is correct", 8, lds.get(0).getLastModified());
@@ -208,7 +208,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of .. is correct", "Directory", lds.get(1).getType());
 		assertEquals("Permissions of .. are correct", "rwxdr-x-", lds.get(1).getPermissions());
-		assertEquals("Size of .. is correct", 0x8, lds.get(1).getSize());
+		assertEquals("Dimension of .. is correct", 0x8, lds.get(1).getDimension());
 		assertEquals("Username of Owner is correct", "root", lds.get(1).getOwner());
 		assertEquals("Id of .. is correct", 8, lds.get(1).getId());
 		assertEquals("Last Modified date of .. is correct", 8, lds.get(1).getLastModified());
@@ -238,7 +238,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of . is correct", "Directory", lds.get(0).getType());
 		assertEquals("Permissions of . are correct", "rwxdr-x-", lds.get(0).getPermissions());
-		assertEquals("Size of . is correct", 0x8, lds.get(0).getSize());
+		assertEquals("Dimension of . is correct", 0x8, lds.get(0).getDimension());
 		assertEquals("Username of Owner is correct", "root", lds.get(0).getOwner());
 		assertEquals("Id of . is correct", 8, lds.get(0).getId());
 		assertEquals("Last Modified date of . is correct", 8, lds.get(0).getLastModified());
@@ -246,7 +246,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of .. is correct", "Directory", lds.get(1).getType());
 		assertEquals("Permissions of .. are correct", "rwxdr-x-", lds.get(1).getPermissions());
-		assertEquals("Size of .. is correct", 0x8, lds.get(1).getSize());
+		assertEquals("Dimension of .. is correct", 0x8, lds.get(1).getDimension());
 		assertEquals("Username of Owner is correct", "root", lds.get(1).getOwner());
 		assertEquals("Id of .. is correct", 8, lds.get(1).getId());
 		assertEquals("Last Modified date of .. is correct", 8, lds.get(1).getLastModified());
@@ -254,9 +254,9 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		
 		assertEquals("Type of home is Correct", "Directory", lds.get(2).getType());
 		assertEquals("Permissions of home are correct", "rwxdr-x-", lds.get(2).getPermissions());
-		assertEquals("Size of home is correct", 2, lds.get(2).getSize());
+		assertEquals("Dimension of home is correct", 4, lds.get(2).getDimension());
 		assertEquals("Username of Owner is correct", "root", lds.get(2).getOwner());
-		assertEquals("Id of home is correct",8, lds.get(2).getId());
+		assertEquals("Id of home is correct", 8, lds.get(2).getId());
 		assertEquals("Last Modified date of home is correct", new DateTime(), lds.get(2).getLastModified());
 		assertEquals("Name of home is correct","home", lds.get(2).getName());
 		
