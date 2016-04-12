@@ -6,6 +6,7 @@ import org.jdom2.Element;
 
 import java.util.ArrayList;
 
+import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.PathMaximumLengthException;;
@@ -125,10 +126,14 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
         return children;
     }    
 
-    public void remove(){
-    	setParent(null);
-        setOwner(null);
-        deleteDomainObject();
+    public void remove(User user) throws AccessDeniedException {
+    	if(user.canWrite(getParent()) || user.canDelete(this) ){
+    		setParent(null);
+            setOwner(null);
+            deleteDomainObject();
+		} else {
+			throw new AccessDeniedException(user.getUsername(), this.getName());
+		}
     };
     
     public int compareTo(AbstractFile f) {

@@ -12,6 +12,7 @@ import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.IsCurrentDirectoryException;
 import pt.tecnico.myDrive.exception.IsHomeDirectoryException;
+import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.CyclicLinkException;
 
 import org.jdom2.Element;
@@ -91,26 +92,28 @@ public class Directory extends Directory_Base {
 	public String getPath() {
 		return super.getPath() + "/";
 	}
-
 	
 	@Override
-	public void remove() 
-			throws IsHomeDirectoryException, IsCurrentDirectoryException {
-        if (getHostUserSet().size()!=0){
-            throw new IsHomeDirectoryException(this.getName());
-        }
+	public void remove(User user) throws IsHomeDirectoryException, IsCurrentDirectoryException, AccessDeniedException {
+		if (!user.canWrite(getParent()) || !user.canDelete(this)) {
+			throw new AccessDeniedException(user.getUsername(), this.getName());
+		}
 
-        if (getLoginSet().size()!=0) {
-        	throw new IsCurrentDirectoryException(this.getName());
+		if (getHostUserSet().size() != 0) {
+			throw new IsHomeDirectoryException(this.getName());
+		}
+
+		if (getLoginSet().size() != 0) {
+			throw new IsCurrentDirectoryException(this.getName());
         }
         
         if (getFilesSet().size()!=0) {
             for (AbstractFile child : this.getFilesSet()) {
-            	child.remove();
+            	child.remove(user);
             }
         }
 
-       super.remove();		
+       super.remove(user);		
        
 	}
 
