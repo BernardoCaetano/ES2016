@@ -21,8 +21,8 @@ public class App extends App_Base {
 		xmlImport(myDrive, appElement);
 	}
 	
-    public boolean hasValidContent() {
-    	String packageParts[] = getContent().split("\\.");
+    public boolean isValidPackageName(String packageName) {
+    	String packageParts[] = packageName.split("\\.");
     	
     	if (packageParts.length == 0)
     		return false;
