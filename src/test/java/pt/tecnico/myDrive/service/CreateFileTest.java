@@ -202,10 +202,10 @@ public class CreateFileTest extends TokenReceivingTest {
 		CreateFileService service = new CreateFileService(validToken, auxFileName, "TextFile");
 		service.execute();
 
-		AbstractFile f = getAbstractFile(validToken, "newDir");
+		AbstractFile f = getAbstractFile(validToken, auxFileName);
 		assertNotNull("TextFile wasn't created", f);
 		assertTrue("File created is not a TextFile", (f instanceof TextFile));
-		BasicFileTest(f, "newTextFile", "TextFile");
+		BasicFileTest(f, auxFileName, "TextFile");
 	}
 
 	@Test(expected = PathMaximumLengthException.class)
