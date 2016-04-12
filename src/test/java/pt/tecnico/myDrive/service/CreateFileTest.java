@@ -54,7 +54,7 @@ public class CreateFileTest extends TokenReceivingTest {
 
 	private AbstractFile getAbstractFile(long token, String fileName) {
 		try {
-			AbstractFile file = mD.getLoginByToken(token).getCurrentDir().getFileByName(fileName);
+			AbstractFile file = mD.getLoginByToken(token).getCurrentDir().getFileByNameNoFollow(fileName);
 			return file;
 		} catch (FileNotFoundException e) {
 			return null;
