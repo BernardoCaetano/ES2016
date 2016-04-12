@@ -191,7 +191,10 @@ public class Directory extends Directory_Base {
 	
 	@Override
 	public int dimension(){
-		return 2 + this.getFilesSet().size(); 
+		int result = 2;
+		for (AbstractFile f: this.getFilesRecursive())
+			result += f.dimension(); 
+		return result; 
 	
 	}
 }
