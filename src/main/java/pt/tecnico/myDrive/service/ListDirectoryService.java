@@ -13,7 +13,7 @@ import pt.tecnico.myDrive.exception.MyDriveException;
 
 public class ListDirectoryService extends MyDriveService {
 	long loginToken;
-	ArrayList<AbstractFileDTO> result;
+	ArrayList<AbstractFileDTO> result = new ArrayList<AbstractFileDTO>();
 
 	public ListDirectoryService(long token) {
 		loginToken = token;
