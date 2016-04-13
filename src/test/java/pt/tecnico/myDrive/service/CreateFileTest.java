@@ -12,7 +12,6 @@ import pt.tecnico.myDrive.exception.InvalidDirectoryContentException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.InvalidLinkContentException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
-import pt.tecnico.myDrive.exception.InvalidTextFileContentException;
 import pt.tecnico.myDrive.exception.InvalidTypeOfFileException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.PathMaximumLengthException;
@@ -62,9 +61,9 @@ public class CreateFileTest extends TokenReceivingTest {
 		
 	}
 
-	private void BasicFileTest(AbstractFile f, String fileName, String typeOfFile) {
-		Login login = mD.getLoginByToken(validToken);
-
+	private void BasicFileTest(AbstractFile f, String fileName, String typeOfFile, long token) {
+		Login login = mD.getLoginByToken(token);
+		
 		assertNotNull(typeOfFile + " created without an ID", f.getId());
 		assertNotNull(typeOfFile + " created without a Date", f.getLastModified());
 		assertEquals(typeOfFile + " created with a wrong Owner", f.getOwner(), login.getUser());
@@ -81,7 +80,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newDir");
 		assertNotNull("Directory wasn't created", f);
 		assertTrue("File created is not a Directory", (f instanceof Directory));
-		BasicFileTest(f, "newDir", "Directory");
+		BasicFileTest(f, "newDir", "Directory", validToken);
 	}
 
 	@Test
@@ -93,7 +92,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newApp");
 		assertNotNull("App wasn't created", f);
 		assertTrue("File created is not a App", (f instanceof App));
-		BasicFileTest(f, "newApp", "App");
+		BasicFileTest(f, "newApp", "App", validToken);
 		App app = (App) f;
 		assertEquals("App has invalid Content", "pt.tecnico.myDrive.domain.MyDriveFS.getInstance", app.getContent());
 	}
@@ -106,7 +105,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newApp");
 		assertNotNull("App wasn't created", f);
 		assertTrue("File created is not a App", (f instanceof App));
-		BasicFileTest(f, "newApp", "App");
+		BasicFileTest(f, "newApp", "App", validToken);
 	}
 
 	@Test
@@ -117,7 +116,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newLink");
 		assertNotNull("Link wasn't created", f);
 		assertTrue("File created is not a Link", (f instanceof Link));
-		BasicFileTest(f, "newLink", "Link");
+		BasicFileTest(f, "newLink", "Link", validToken);
 		Link link = (Link) f;
 		assertEquals("Link has invalid Content", "/home/root", link.getContent());
 	}
@@ -131,7 +130,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newTextFile");
 		assertNotNull("TextFile wasn't created", f);
 		assertTrue("File created is not a TextFile", (f instanceof TextFile));
-		BasicFileTest(f, "newTextFile", "TextFie");
+		BasicFileTest(f, "newTextFile", "TextFie", validToken);
 		TextFile textFile = (TextFile) f;
 		assertEquals("TextFile has invalid Content", "/home/Wololo/existingApp", textFile.getContent());
 	}
@@ -144,7 +143,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newTextFile");
 		assertNotNull("TextFile wasn't created", f);
 		assertTrue("File created is not a TextFile", (f instanceof TextFile));
-		BasicFileTest(f, "newTextFile", "TextFie");
+		BasicFileTest(f, "newTextFile", "TextFie", validToken);
 	}
 
 	@Test(expected = NameAlreadyExistsException.class)
@@ -161,7 +160,7 @@ public class CreateFileTest extends TokenReceivingTest {
 
 	@Test(expected = InvalidLinkContentException.class)
 	public void invalidLinkCreationWithInvalidContent() {
-		CreateFileService service = new CreateFileService(validToken, "newLink", "Link", "invalidPath//;-)");
+		CreateFileService service = new CreateFileService(validToken, "newLink", "Link", "invalidPath/\0/");
 		service.execute();
 	}
 
@@ -204,7 +203,7 @@ public class CreateFileTest extends TokenReceivingTest {
 
 		assertNotNull("TextFile wasn't created", f);
 		assertTrue("File created is not a TextFile", (f instanceof TextFile));
-		BasicFileTest(f, auxFileName, "TextFile");
+		BasicFileTest(f, auxFileName, "TextFile", validToken);
 	}
 
 	@Test(expected = PathMaximumLengthException.class)
@@ -228,10 +227,10 @@ public class CreateFileTest extends TokenReceivingTest {
 		CreateFileService service = new CreateFileService(rootToken, "newDir", "Directory");
 		service.execute();
 
-		AbstractFile f = getAbstractFile(validToken, "newDir");
+		AbstractFile f = getAbstractFile(rootToken, "newDir");
 		assertNotNull("Directory wasn't created", f);
 		assertTrue("File created is not a Directory", (f instanceof Directory));
-		BasicFileTest(f, "newDir", "Directory");
+		BasicFileTest(f, "newDir", "Directory", rootToken);
 	}
 
 	@Test(expected = InvalidLoginException.class)
@@ -250,7 +249,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newDir");
 		assertNotNull("Directory wasn't created", f);
 		assertTrue("File created is not a Directory", (f instanceof Directory));
-		BasicFileTest(f, "newDir", "Directory");
+		BasicFileTest(f, "newDir", "Directory", validToken);
 	}
 
 	@Test(expected = InvalidLoginException.class)
