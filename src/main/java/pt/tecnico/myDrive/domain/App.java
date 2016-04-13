@@ -37,6 +37,9 @@ public class App extends App_Base {
 	
     public boolean isValidPackageName(String packageName) {
     	
+    	if (packageName=="")
+    		return true;
+    	
     	String packageParts[] = packageName.split("\\.");
     	
     	if (packageParts.length == 0)
