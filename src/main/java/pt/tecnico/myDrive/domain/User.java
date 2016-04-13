@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.jdom2.Element;
-
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
@@ -65,13 +64,15 @@ public class User extends User_Base {
 			homeDirPath = homeDirPath.substring(1);
 			Directory rootDir = (Directory) myDrive.getRootDirectory();
 			String homeDirName = homeDirPath.substring(homeDirPath.lastIndexOf("/") + 1);
-			Directory parentDir = rootDir.createDirectoryByPath(myDrive, homeDirPath.substring(0, homeDirPath.lastIndexOf("/")));
+			Directory parentDir = rootDir.createDirectoryByPath(myDrive, myDrive.getUserByUsername("root"), homeDirPath.substring(0, homeDirPath.lastIndexOf("/")));
 			AbstractFile homeDir;
 			
 			try {
 				homeDir = parentDir.getFileByName(homeDirName);  
 			} catch (FileNotFoundException e) {
-				homeDir = new Directory(myDrive, parentDir, this, homeDirName);
+				homeDir = new Directory(myDrive, parentDir, myDrive.getUserByUsername("root"), homeDirName);
+				homeDir.setOwner(this);
+				homeDir.setPermissions(this.getUmask());
 			}
 			
 			if (!(homeDir instanceof Directory)){

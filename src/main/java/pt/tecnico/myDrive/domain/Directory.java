@@ -104,7 +104,7 @@ public class Directory extends Directory_Base {
 			throw new AccessDeniedException(user.getUsername(), this.getName());
 		}
 
-		if (getHostUserSet().size() != 0) {
+		if (isHomeDirectory()) {
 			throw new IsHomeDirectoryException(this.getName());
 		}
 
@@ -159,7 +159,7 @@ public class Directory extends Directory_Base {
 		return "directory";
 	}
 
-	public Directory createDirectoryByPath(MyDriveFS myDrive, String path) throws InvalidPathException {
+	public Directory createDirectoryByPath(MyDriveFS myDrive, User owner, String path) throws InvalidPathException {
 		
 		if (path.equals("")){
 			return this;
@@ -171,7 +171,7 @@ public class Directory extends Directory_Base {
 		try {
 			dir = getFileByName(dirName);  
 		} catch (FileNotFoundException e) {
-			dir = new Directory(myDrive, this, null, dirName);
+			dir = new Directory(myDrive, this, owner, dirName);
 		}
 		
 		if (!(dir instanceof Directory)){
@@ -185,7 +185,7 @@ public class Directory extends Directory_Base {
 			newPath = path.substring(path.indexOf("/") + 1);
 		}
 		
-		return ((Directory) dir).createDirectoryByPath(myDrive, newPath);
+		return ((Directory) dir).createDirectoryByPath(myDrive, owner,  newPath);
 	}
 	
 	@Override

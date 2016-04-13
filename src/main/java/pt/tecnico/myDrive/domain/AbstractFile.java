@@ -7,6 +7,7 @@ import org.jdom2.Element;
 import java.util.ArrayList;
 
 import pt.tecnico.myDrive.exception.AccessDeniedException;
+import pt.tecnico.myDrive.exception.CreateDeniedException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.PathMaximumLengthException;;
@@ -15,7 +16,9 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 
 	public void initAbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name)
 			throws InvalidFileNameException, NameAlreadyExistsException, PathMaximumLengthException {
-
+		if (!owner.canWrite(parentDir)) {
+			throw new CreateDeniedException(owner.getUsername());
+		}
 		setName(name);
 		setId(mydrive);
 		setLastModified(new DateTime());
