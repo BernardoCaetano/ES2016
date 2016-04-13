@@ -73,7 +73,7 @@ public class TextFile extends TextFile_Base {
 	}
 	
 	public String getContent(User user) {
-		if (user.canRead(this)) {
+		if (user.canRead(this) && user.canExecute(this.getParent())) {
 			return getContent();
 		} else {
 			throw new AccessDeniedException(user.getUsername(), getName());
