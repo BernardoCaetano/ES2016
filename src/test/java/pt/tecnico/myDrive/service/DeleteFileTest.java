@@ -30,8 +30,8 @@ public class DeleteFileTest extends TokenReceivingTest {
     protected void populate() {
     	
     	md = MyDriveFS.getInstance();
-    	jade = new User(md, "jade", "passjade", "jade", "rwxd--x-", null);
-    	roxy = new User(md, "roxy", "passroxy", "roxy", "rwxd--x-", null);
+    	jade = new User(md, "jade", "passjade", "jade", "rwxd--xd", null);
+    	roxy = new User(md, "roxy", "passroxy", "roxy", "rwxd--xd", null);
     	jadeHomeDir= jade.getHomeDirectory();
     	new TextFile(md, jadeHomeDir, jade, "tf1", "blah delete me");
 		
@@ -69,7 +69,7 @@ public class DeleteFileTest extends TokenReceivingTest {
     public void failOwnTextFile(){
     	
     	TextFile tf2= new TextFile(md, jadeHomeDir, jade, "tf2", "blah cant delete me");
-        tf2.setPermissions("rw-d----");
+        tf2.setPermissions("rwr-----");
         
     	DeleteFileService service = new DeleteFileService(validToken, "tf2");
     	service.execute();
