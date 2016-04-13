@@ -259,17 +259,9 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		service.execute();
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void otherWithoutMask() throws AccessDeniedException{
-		otherUser.setUmask("--------");
-		
-		ChangeDirectoryService service = new ChangeDirectoryService(otherToken, "testDir");
-		service.execute();
-	}
-	
 	@Test
-	public void rootWithoutMask() {
-		rootUser.setUmask("--------");
+	public void rootWithoutPermission() {
+		otherDir.setPermissions("--------");
 		
 		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, "otherDir");
 		service.execute();

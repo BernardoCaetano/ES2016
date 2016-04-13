@@ -31,8 +31,6 @@ public class ListDirectoryService extends MyDriveService {
 		for (AbstractFile file : files) {
 			result.add(new AbstractFileDTO(file));
 		}
-		
-		Collections.sort(files);
 	}
 	
 	public final List<AbstractFileDTO> result() {
