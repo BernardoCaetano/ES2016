@@ -13,12 +13,18 @@ public class TextFile extends TextFile_Base {
     }
 
     public TextFile(MyDriveFS mydrive, Directory parentDir, User owner, String name, String content) 
-    		throws InvalidFileNameException {
+    		throws InvalidFileNameException{
     	super();
     	initTextFile(mydrive, parentDir, owner, name, content);
     }
 
-	public TextFile(MyDriveFS myDrive, Element textFileElement){
+    public TextFile(MyDriveFS mydrive, Directory parentDir, User owner, String name) 
+    		throws InvalidFileNameException {
+    	super();
+		initTextFile(mydrive, parentDir, owner, name, "");
+    }
+
+    public TextFile(MyDriveFS myDrive, Element textFileElement){
 		super();
 		xmlImport(myDrive, textFileElement);
 	}
