@@ -69,7 +69,7 @@ public class DeleteFileTest extends TokenReceivingTest {
     public void failOwnTextFile(){
     	
     	TextFile tf2= new TextFile(md, jadeHomeDir, jade, "tf2", "blah cant delete me");
-        tf2.setPermissions("rwr-----");
+        tf2.setPermissions("rwx-----");
         
     	DeleteFileService service = new DeleteFileService(validToken, "tf2");
     	service.execute();
