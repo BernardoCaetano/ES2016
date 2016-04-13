@@ -1,9 +1,7 @@
 package pt.tecnico.myDrive.service;
 
 import pt.tecnico.myDrive.domain.TextFile;
-import pt.tecnico.myDrive.domain.Link;
 import pt.tecnico.myDrive.domain.Login;
-import pt.tecnico.myDrive.exception.ImmutableLinkContentException;
 import pt.tecnico.myDrive.exception.MyDriveException;
 
 public class WriteFileService extends MyDriveService {

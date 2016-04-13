@@ -2,7 +2,6 @@ package pt.tecnico.myDrive.service;
 
 import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.exception.CreateDeniedException;
-import pt.tecnico.myDrive.exception.InvalidAppContentException;
 import pt.tecnico.myDrive.exception.InvalidDirectoryContentException;
 import pt.tecnico.myDrive.exception.InvalidLinkContentException;
 import pt.tecnico.myDrive.exception.InvalidTypeOfFileException;

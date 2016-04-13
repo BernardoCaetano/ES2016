@@ -119,7 +119,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 	public Login getLoginByToken(long token) {
 		for (Login l : this.getLoginSet()) {
 			if (token == l.getToken() && l.isValid()) {
-				l.updateLastActivity(); //FIXME ?? Faz sentido no método no login verificar se é válido?
+				l.updateLastActivity();
 				return l;
 			}
 		}

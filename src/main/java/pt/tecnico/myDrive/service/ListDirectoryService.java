@@ -3,7 +3,6 @@ package pt.tecnico.myDrive.service;
 import pt.tecnico.myDrive.service.dto.AbstractFileDTO;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import pt.tecnico.myDrive.domain.AbstractFile;

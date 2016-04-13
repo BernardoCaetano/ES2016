@@ -3,7 +3,6 @@ package pt.tecnico.myDrive.domain;
 import org.jdom2.Element;
 
 import pt.tecnico.myDrive.exception.AccessDeniedException;
-import pt.tecnico.myDrive.exception.InvalidAppContentException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 
 public class TextFile extends TextFile_Base {

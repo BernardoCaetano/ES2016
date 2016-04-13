@@ -17,7 +17,6 @@ import pt.tecnico.myDrive.exception.CyclicLinkException;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidAppContentException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
-import pt.tecnico.myDrive.exception.InvalidTextFileContentException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
 
 public class WriteFileTest extends TokenReceivingTest {

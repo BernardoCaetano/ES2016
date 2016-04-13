@@ -2,9 +2,6 @@ package pt.tecnico.myDrive.domain;
 
 import org.joda.time.DateTime;
 
-import pt.tecnico.myDrive.exception.FileNotFoundException;
-import pt.tecnico.myDrive.exception.InvalidPathException;
-
 import org.jdom2.Element;
 
 public class RootDirectory extends RootDirectory_Base {

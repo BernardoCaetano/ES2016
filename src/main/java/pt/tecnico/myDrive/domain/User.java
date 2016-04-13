@@ -1,8 +1,6 @@
 package pt.tecnico.myDrive.domain;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.EqualsBuilder;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -139,7 +137,6 @@ public class User extends User_Base {
 		setName(userElement.getAttribute("name").getValue());
 		setUmask(userElement.getAttribute("umask").getValue());
 		
-		Directory currentDirectory = myDrive.getRootDirectory();
 		String homeDirectoryPath = userElement.getAttribute("homeDirectory").getValue();
 		
 		

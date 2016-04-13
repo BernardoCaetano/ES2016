@@ -5,7 +5,6 @@ import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.User;
-import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.MyDriveException;
 
 public class ReadFileService extends MyDriveService {

@@ -7,11 +7,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.ArrayList;
-import java.util.Collections;
-
-import org.joda.time.DateTime;
-
 import pt.tecnico.myDrive.domain.*;
 
 import pt.tecnico.myDrive.exception.InvalidLoginException;
