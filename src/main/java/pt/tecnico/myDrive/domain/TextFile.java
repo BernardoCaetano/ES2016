@@ -3,6 +3,7 @@ package pt.tecnico.myDrive.domain;
 import org.jdom2.Element;
 
 import pt.tecnico.myDrive.exception.AccessDeniedException;
+import pt.tecnico.myDrive.exception.InvalidAppContentException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 
 public class TextFile extends TextFile_Base {
@@ -60,7 +61,17 @@ public class TextFile extends TextFile_Base {
     	}
     	return result;
     }
-
+    
+    
+	public void setContent(String content, User user) throws AccessDeniedException {
+		if (user.canWrite(this) &&  user.canWrite(this.getParent())){
+			super.setContent(content);
+		}else{
+			throw new AccessDeniedException(user.getUsername(), getName());
+		}
+		
+	}
+	
 	public String getContent(User user) {
 		if (user.canRead(this)) {
 			return getContent();
