@@ -106,7 +106,7 @@ public class User extends User_Base {
     		default  : return false;
     	}
     	
-    	if (file.getOwner() != this)
+    	if (file.getOwner().sameAs(this) == false)
     		 pos += 4;
     	
     	return file.getPermissions().charAt(pos) == type;
@@ -173,4 +173,11 @@ public class User extends User_Base {
 
         return element;
     }
+    
+	public boolean sameAs(Object o) {
+		if (o instanceof User) {
+			return ((User) o).getUsername().equals(this.getUsername());
+		}
+		return false;
+	}
 }
