@@ -136,8 +136,7 @@ public class Directory extends Directory_Base {
 		ArrayList<AbstractFile> children = new ArrayList<AbstractFile>();
 		
 		for (AbstractFile f: getFilesSet()){
-			if (f!=this && f!= getParent())
-				children.addAll(f.getFilesRecursive());
+			children.addAll(f.getFilesRecursive());
 		}
 
 		children.add(this);
