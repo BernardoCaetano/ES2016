@@ -30,8 +30,8 @@ public class DeleteFileTest extends TokenReceivingTest {
     protected void populate() {
     	
     	md = MyDriveFS.getInstance();
-    	jade = new User(md, "jade", "passjade", "jade", "rwxd--xd", null);
-    	roxy = new User(md, "roxy", "passroxy", "roxy", "rwxd--xd", null);
+    	jade = new User(md, "jade", "passjade", "jade", "rwxd-wxd", null);
+    	roxy = new User(md, "roxy", "passroxy", "roxy", "rwxd-wxd", null);
     	jadeHomeDir= jade.getHomeDirectory();
     	new TextFile(md, jadeHomeDir, jade, "tf1", "blah delete me");
 		
@@ -54,7 +54,7 @@ public class DeleteFileTest extends TokenReceivingTest {
    
     
     @Test 
-    public void sucessTextFileOfAnother(){
+    public void sucessTextFileOfAnother(){ ///////////////////////////////////////////////////
     	
     	new TextFile(md, jadeHomeDir, roxy, "tf3", "blah erase me");
     	 
@@ -108,7 +108,7 @@ public class DeleteFileTest extends TokenReceivingTest {
     
     
     @Test(expected = IsHomeDirectoryException.class)
-    public void failHomeDirectory(){
+    public void failHomeDirectory(){ //////////////////////////////////////////////
     	
     	Directory newRoxyHomeDir = new Directory(md, jadeHomeDir, roxy, "newRoxyHomeDir"); 
         roxy.setHomeDirectory(newRoxyHomeDir); 
@@ -156,7 +156,7 @@ public class DeleteFileTest extends TokenReceivingTest {
    
     
     @Test(expected= AccessDeniedException.class)
-    public void failDirContainsNoPermissionFiles(){
+    public void failDirContainsNoPermissionFiles(){ ////////////////////////////////
     	
     	Directory dirContainsFileWithoutPermission = new Directory(md, jadeHomeDir, jade, "dirContainsFileWithoutPermission");       
         Directory dir = new Directory(md, dirContainsFileWithoutPermission, jade, "dirAux");          
@@ -181,7 +181,7 @@ public class DeleteFileTest extends TokenReceivingTest {
  
     
     @Test(expected= IsHomeDirectoryException.class)
-    public void failDirContainsHomeDir(){	
+    public void failDirContainsHomeDir(){	 ////////////////////////////////////////////////////
     	
     	Directory dirContainsHomeDir = new Directory(md, jadeHomeDir, jade, "dirContainsHomeDir");
         Directory dirHomeDir = new Directory(md, dirContainsHomeDir, roxy, "newRoxyHomeDir"); 
