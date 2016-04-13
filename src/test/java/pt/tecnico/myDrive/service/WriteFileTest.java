@@ -100,12 +100,6 @@ public class WriteFileTest extends TokenReceivingTest {
 		service.execute();
 	}
 
-	@Test(expected = InvalidTextFileContentException.class)
-	public void failTextFileInvalidContentTest() {
-		WriteFileService service = new WriteFileService(validToken, "marysTxt", "this content is invalid");
-		service.execute();
-	}
-
 	@Test
 	public void successAbsolutePathLink() {
 		WriteFileService service = new WriteFileService(validToken, "absoluteLink", "/home/mary/exampleApp 23 11");
@@ -155,7 +149,7 @@ public class WriteFileTest extends TokenReceivingTest {
 
 	@Test(expected = InvalidAppContentException.class)
 	public void failAppInvalidContentTest() {
-		WriteFileService service = new WriteFileService(validToken, "exampleApp", "invalid");
+		WriteFileService service = new WriteFileService(validToken, "exampleApp", "this content is invalid");
 		service.execute();
 	}
 
