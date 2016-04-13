@@ -65,7 +65,7 @@ public class TextFile extends TextFile_Base {
     
 	public void setContent(String content, User user) throws AccessDeniedException {
 		if (user.canWrite(this) &&  user.canWrite(this.getParent())){
-			super.setContent(content);
+			setContent(content);
 		}else{
 			throw new AccessDeniedException(user.getUsername(), getName());
 		}
