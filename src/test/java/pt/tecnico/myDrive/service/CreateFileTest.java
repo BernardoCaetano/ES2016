@@ -182,14 +182,26 @@ public class CreateFileTest extends TokenReceivingTest {
 	}
 
 	@Test(expected = InvalidFileNameException.class)
-	public void invalidFileCreationWithInvalidName() {
+	public void InvalidFileCreationWithSlash() {
 		CreateFileService service = new CreateFileService(validToken, "new/Dir", "Directory");
 		service.execute();
 	}
 
 	@Test(expected = InvalidFileNameException.class)
-	public void yetAnotherInvalidFileCreationWithInvalidName() {
+	public void InvalidFileCreationWithNullChar() {
 		CreateFileService service = new CreateFileService(validToken, "new\0Dir", "Directory");
+		service.execute();
+	}
+	
+	@Test(expected = InvalidFileNameException.class)
+	public void InvalidFileCreationWithDot() {
+		CreateFileService service = new CreateFileService(validToken, ".", "Directory");
+		service.execute();
+	}
+	
+	@Test(expected = InvalidFileNameException.class)
+	public void InvalidFileCreationWithDotDot() {
+		CreateFileService service = new CreateFileService(validToken, "..", "Directory");
 		service.execute();
 	}
 
