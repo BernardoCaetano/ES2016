@@ -190,6 +190,22 @@ public class DeleteFileTest extends TokenReceivingTest {
     	DeleteFileService service = new DeleteFileService(validToken, "dirContainsHomeDir");
     	service.execute();
     }
+    
+    @Test(expected= AccessDeniedException.class )
+    public void failDirWithoutPermissionContainsFile(){
+    	
+    	Directory dir = new Directory(md, jadeHomeDir, jade, "NotEmptyI");
+        new TextFile(md, dir, jade, "tf", "blah try to delete me");
+        dir.setPermissions("r-x-----");
+        
+    	jadeLogin.setCurrentDir(dir);
+    	
+    	DeleteFileService service = new DeleteFileService(validToken, "tf");
+    	service.execute(); 	
+    	
+    	assertFalse("File was deleted", (dir.hasFile("tf")));
+    }
+   
 
 
 	@Override
