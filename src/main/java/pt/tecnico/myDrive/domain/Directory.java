@@ -123,7 +123,7 @@ public class Directory extends Directory_Base {
 	}
 
 	public ArrayList<AbstractFile> getFilesSimpleSorted(User user) {
-		if(user.canExecute(this) == false){
+		if(user.canRead(this) == false){
 			throw new AccessDeniedException(user.getUsername(), getName());
 		}
 		
