@@ -262,7 +262,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 	}
 	
 	@Test
-	public void rootAllowedToList(){
+	public void rootAllowedToListFiles(){
 		rootLogin.setCurrentDir(filesPermDir);
 		
 		ListDirectoryService service = new ListDirectoryService(rootToken);
@@ -391,6 +391,33 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		ListDirectoryService service = new ListDirectoryService(otherUserToken);
         service.execute();    
     }
+	
+	@Test
+	public void rootCanList() {
+		rootLogin.setCurrentDir(otherCanNotList);
+		ListDirectoryService service = new ListDirectoryService(rootToken);
+        service.execute();
+		
+        List<AbstractFileDTO> lds = service.result();
+        
+        assertEquals("Wrong number of files in otherCanNotListDirectory", 2, lds.size());
+        
+		assertEquals("Type of . is incorrect", "directory", lds.get(0).getType());
+		assertEquals("Permissions of . are incorrect", "rwxd-wxd", lds.get(0).getPermissions());
+		assertEquals("Dimension of . is correct", otherCanNotList.dimension(), lds.get(0).getDimension());
+		assertEquals("Username of Owner is incorrect", "manel", lds.get(0).getOwner());
+		assertEquals("Id of . is incorrect", otherCanNotList.getId(), lds.get(0).getId());
+		assertEquals("Last Modified date of . is incorrect", otherCanNotList.getLastModified(), lds.get(0).getLastModified());
+		assertEquals("Name of . is incorrect", ".", lds.get(0).getName());
+		
+		assertEquals("Type of .. is incorrect", "directory", lds.get(1).getType());
+		assertEquals("Permissions of .. are incorrect","rwxdrwxd", lds.get(1).getPermissions());
+		assertEquals("Dimension of .. is incorrect", manelHome.dimension(), lds.get(1).getDimension());
+		assertEquals("Username of Owner is incorrect", "manel", lds.get(1).getOwner());
+		assertEquals("Id of .. is incorrect", manelHome.getId(), lds.get(1).getId());
+		assertEquals("Last Modified date of .. is incorrect", manelHome.getLastModified(), lds.get(1).getLastModified());
+		assertEquals("Name of .. is incorrect", "..", lds.get(1).getName());        
+	}
 	
 	@Test(expected = InvalidLoginException.class)
 	public void expiredSessionTest2h05minAgo() {
