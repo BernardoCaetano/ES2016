@@ -46,15 +46,17 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 		rootLogin.setCurrentDir(rootDir);
 		otherLogin.setCurrentDir(rootDir);
 		
+		rootDir.setPermissions("rwxdrwxd");
 		testDir = new Directory(mD, rootDir, rootUser, "testDir");
-		subDir = new Directory(mD, testDir, rootUser, "subDir");
-		mannyDir = new Directory(mD, subDir, rootUser, "mannyDir");
-		otherDir = new Directory(mD, rootDir, otherUser, "otherDir");
-		
 		testDir.setPermissions("rwxdrwxd");
+		subDir = new Directory(mD, testDir, rootUser, "subDir");
 		subDir.setPermissions("rwxdrwxd");
+		mannyDir = new Directory(mD, subDir, rootUser, "mannyDir");
 		mannyDir.setPermissions("rwxdrwxd");
+		otherDir = new Directory(mD, rootDir, otherUser, "otherDir");
 		otherDir.setPermissions("rwxdrwxd");
+				
+		
 	}
 	
 	@Test
