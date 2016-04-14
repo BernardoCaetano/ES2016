@@ -22,7 +22,7 @@ public class ListDirectoryService extends MyDriveService {
 	protected void dispatch() throws MyDriveException {
 		Login login = getMyDrive().getLoginByToken(loginToken);
 		Directory directory = login.getCurrentDir();
-		ArrayList<AbstractFile> files = directory.getFilesSimpleSorted();
+		ArrayList<AbstractFile> files = directory.getFilesSimpleSorted(login.getUser());
 		
 		result.add(new AbstractFileDTO(directory, "."));
 		result.add(new AbstractFileDTO(directory.getParent(), ".."));

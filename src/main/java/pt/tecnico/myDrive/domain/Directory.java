@@ -122,8 +122,11 @@ public class Directory extends Directory_Base {
        
 	}
 
-	public ArrayList<AbstractFile> getFilesSimpleSorted() {
-
+	public ArrayList<AbstractFile> getFilesSimpleSorted(User user) {
+		if(user.canExecute(this) == false){
+			throw new AccessDeniedException(user.getUsername(), getName());
+		}
+		
 		ArrayList<AbstractFile> children = new ArrayList<AbstractFile>();
 		children.addAll(getFilesSet());
 		Collections.sort(children);
