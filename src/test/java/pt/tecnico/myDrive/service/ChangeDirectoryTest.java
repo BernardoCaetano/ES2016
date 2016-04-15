@@ -60,18 +60,6 @@ public class ChangeDirectoryTest extends TokenReceivingTest {
 	}
 	
 	@Test
-	public void goTospace() {
-		Directory spaceDir = new Directory(mD, rootDir, rootUser, " ");
-		spaceDir.setPermissions("rwxdrwxd");
-		
-		ChangeDirectoryService service = new ChangeDirectoryService(rootToken, " ");
-		service.execute();
-		
-		Directory properDir = spaceDir;
-		assertEquals("Did not change to '" + properDir.getPath() + "'", properDir, rootLogin.getCurrentDir());
-	}
-	
-	@Test
 	public void goToRoot() {
 		rootLogin.setCurrentDir(mannyDir);
 		
