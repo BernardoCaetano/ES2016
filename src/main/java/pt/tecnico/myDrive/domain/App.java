@@ -41,7 +41,7 @@ public class App extends App_Base {
 		super.setContent(content);
 	}
 
-	public boolean isValidPackageName(String packageName) {
+	protected boolean isValidPackageName(String packageName) {
 
 		if (packageName == "")
 			return true;

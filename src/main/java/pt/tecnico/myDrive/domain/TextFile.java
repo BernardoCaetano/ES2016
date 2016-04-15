@@ -28,7 +28,7 @@ public class TextFile extends TextFile_Base {
 		xmlImport(myDrive, textFileElement);
 	}
 
-    public void initTextFile(MyDriveFS mydrive, Directory parentDir, User owner, String name, String content) 
+    protected void initTextFile(MyDriveFS mydrive, Directory parentDir, User owner, String name, String content) 
     		throws InvalidFileNameException {
     	initAbstractFile(mydrive, parentDir, owner, name);
     	super.setContent(content);

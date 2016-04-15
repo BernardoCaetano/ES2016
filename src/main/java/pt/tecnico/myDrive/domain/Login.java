@@ -31,7 +31,7 @@ public class Login extends Login_Base {
     	return (DateTime.now().getMillis() - this.getLastActivity().plusHours(2).getMillis()) < 0;
     }
     
-    public void updateLastActivity() {
+    protected void updateLastActivity() {
     	if (this.isValid()) {
     		super.setLastActivity(DateTime.now());
     	}

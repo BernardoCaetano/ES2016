@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.CreateDeniedException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
+import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.PathMaximumLengthException;;
 
@@ -42,7 +43,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 	@Override
 	public void setParent(Directory parentDir) throws NameAlreadyExistsException {
 		if (parentDir == null)
-			super.setParent(null); // FIXME better to throw exception?
+			throw new InvalidOperationException("A file must reside inside a directory");
 		else
 			parentDir.addFiles(this);
 	}
@@ -53,8 +54,8 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		else
 			owner.addFiles(this);
 	}
-
-	public void setId(MyDriveFS mydrive) {
+	
+	protected void setId(MyDriveFS mydrive) {
 		mydrive.incrementLastFileID();
 		super.setId(mydrive.getLastFileID());
 	}
@@ -63,13 +64,13 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		return getParent().getPath() + getName();
 	}
 
-	public void checkPathLength() {
+	protected void checkPathLength() {
 		if ((getPath().length() > 1024)) {
 			throw new PathMaximumLengthException();
 		}
 	}
 
-	public String getNameOfFileFromPath(String path) {
+	protected String getNameOfFileFromPath(String path) {
 		String[] parts = path.split("/");
 
 		if (parts.length > 0)
@@ -78,7 +79,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 			return "";
 	}
 
-	public Directory getParentFromPath(String path) {
+	protected Directory getParentFromPath(String path) {
 		if (path.equals("/"))
 			return RootDirectory.getInstance(MyDriveFS.getInstance());
 		else {
@@ -131,7 +132,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		if (!user.canWrite(getParent()) || !user.canDelete(this)) {
 			throw new AccessDeniedException(user.getUsername(), this.getName());
 		} else {
-			setParent(null);
+			super.setParent(null);
 			setOwner(null);
 			deleteDomainObject();
 		}

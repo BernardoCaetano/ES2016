@@ -6,6 +6,7 @@ import java.util.Collections;
 
 import org.jdom2.Element;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
+import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
 
@@ -87,7 +88,7 @@ public class User extends User_Base {
     
     @Override
     public String getPassword() {
-    	return null; //FIXME: define behaviour (throw exception/ log.warn() i don't know)
+    	throw new InvalidOperationException("Accessing user password");
     }
     
     public boolean checkPassword(String password) {

@@ -33,7 +33,7 @@ public class Link extends Link_Base {
 		xmlImport(myDrive, linkElement);
 	}
     
-    public boolean isValidPath(String path) {
+    protected boolean isValidPath(String path) {
     	if(path == null || path.length() < 1){
     		return false;
     	}

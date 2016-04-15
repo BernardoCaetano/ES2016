@@ -43,7 +43,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		super.addUsers(userToBeAdded);
 	}
 
-	public boolean hasUser(String username) {
+	protected boolean hasUser(String username) {
 		try {
 			return getUserByUsername(username) != null;
 		} catch(UserNotFoundException e){
@@ -51,7 +51,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		}
 	}
 
-	public User getUserByUsername(String username) throws UserNotFoundException{
+	protected User getUserByUsername(String username) throws UserNotFoundException{
 		for (User user : getUsersSet()) {
 			if (user.getUsername().equals(username)) {
 				return user;
@@ -60,7 +60,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		throw new UserNotFoundException(username);
 	}
 
-	public void incrementLastFileID() {
+	protected void incrementLastFileID() {
 		super.setLastFileID(getLastFileID() + 1);
 	}
 
@@ -126,7 +126,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		throw new InvalidLoginException(token);
 	}
 	
-	public void deleteInvalidLogins() {
+	protected void deleteInvalidLogins() {
 		for (Login l : this.getLoginSet()) {
 			if (!l.isValid()) {
 				l.remove();
@@ -157,7 +157,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		return doc;
 	}
 
-	public boolean elementExistsInMyDriveFS(Element xml) {
+	private boolean elementExistsInMyDriveFS(Element xml) {
 		RootDirectory rootDir = RootDirectory.getInstance(this);
 		Directory parentDirectory = rootDir.getParentFromPath(xml.getAttribute("path").getValue());
 		String nameOfFile = rootDir.getNameOfFileFromPath(xml.getAttribute("path").getValue());

@@ -162,7 +162,7 @@ public class Directory extends Directory_Base {
 		return "directory";
 	}
 
-	public Directory createDirectoryByPath(MyDriveFS myDrive, User owner, String path) throws InvalidPathException {
+	protected Directory createDirectoryByPath(MyDriveFS myDrive, User owner, String path) throws InvalidPathException {
 		
 		if (path.equals("")){
 			return this;
