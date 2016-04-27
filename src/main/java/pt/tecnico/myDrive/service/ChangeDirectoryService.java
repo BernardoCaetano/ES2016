@@ -8,6 +8,7 @@ public class ChangeDirectoryService extends MyDriveService {
 	
 	String path;
 	long token;
+	String newPath;
 
 	public ChangeDirectoryService(long token, String path) {
 		this.token = token;
@@ -20,6 +21,11 @@ public class ChangeDirectoryService extends MyDriveService {
 		MyDriveFS md = getMyDrive();
 		Login login = md.getLoginByToken(token);
 		Directory newDir = md.getDirectoryByPath(login.getCurrentDir(), path);
-		login.setCurrentDir(newDir);		
+		login.setCurrentDir(newDir);
+		this.newPath = newDir.getPath();
+	}
+	
+	public String result() {
+		return newPath;
 	}
 }
