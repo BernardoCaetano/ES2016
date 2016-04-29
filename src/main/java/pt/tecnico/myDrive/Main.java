@@ -24,29 +24,15 @@ public class Main {
 		try {
 			for (String s : args)
 				xmlScan(new File(s));
-			populate();
 			xmlPrint();
-			//init();
-			//xmlPrint();
+			
 		} finally {
 			FenixFramework.shutdown();
 		}
 	}
+	
 	@Atomic
-	public static void populate() {
-		MyDriveFS md = MyDriveFS.getInstance();
-		Login login = new Login(md, "root", "***");
-		User root = login.getUser();
-		User jules = new User(md, "jules", "JulesRocks", "jules", "rwxdr-x-", "/users/admin/jules");
-		Directory sh = new Directory(md, jules.getHomeDirectory(), jules, "superheroes");
-		new App(md, sh, jules, "Batman");
-		Directory marvel = new Directory(md, sh, jules, "marvel");
-		new TextFile(md, marvel, jules, "Thor");
-		new TextFile(md, md.getDirectoryByPath(md.getRootDirectory(), "./home"), root, "README.md");
-		
-	}
-	@Atomic
-    public static void init() {
+    public static void cleanup() {
 		MyDriveFS.getInstance().cleanup();
     }
 

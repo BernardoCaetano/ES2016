@@ -15,7 +15,6 @@ import pt.tecnico.myDrive.exception.PathMaximumLengthException;;
 
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
 	
-
 	public void initAbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name)
 			throws InvalidFileNameException, NameAlreadyExistsException, PathMaximumLengthException {
 		if (!owner.canWrite(parentDir)) {
@@ -52,9 +51,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		
 	public void setOwner(MyDriveFS mydrive, User owner) {
 		if (owner == null)
-			mydrive
-			.getUserByUsername("root")
-			.addFiles(this);
+			mydrive.getUserByUsername("root").addFiles(this);
 		else
 			owner.addFiles(this);
 	}

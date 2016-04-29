@@ -2,7 +2,6 @@ package pt.tecnico.myDrive.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import pt.ist.fenixframework.FenixFramework;
@@ -216,9 +215,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 	}
 	
 	public void cleanup() {
-		for (User u : getUsersSet()) {
-			u.cleanup();
-		}
+		for (User u : getUsersSet()) u.cleanup();
 		this.getRootDirectory().cleanup();
 	}
 }
