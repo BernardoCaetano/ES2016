@@ -15,6 +15,7 @@ import pt.ist.fenixframework.FenixFramework;
 
 import pt.tecnico.myDrive.domain.*;
 import pt.tecnico.myDrive.exception.*;
+import pt.tecnico.myDrive.presentation.MyDriveShell;
 
 import java.util.Collection;
 
@@ -25,6 +26,9 @@ public class Main {
 			for (String s : args)
 				xmlScan(new File(s));
 			xmlPrint();
+
+			MyDriveShell sh = new MyDriveShell();
+			sh.execute();
 			
 		} finally {
 			FenixFramework.shutdown();
