@@ -1,5 +1,6 @@
 package pt.tecnico.myDrive.domain;
 
+import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
 
@@ -13,5 +14,16 @@ public class SuperUser extends SuperUser_Base {
 	@Override
 	protected boolean canAccess(AbstractFile file, char type) {
 		return true;
+	}
+	
+	@Override
+	protected void cleanup() {
+		for (Login l : this.getLoginSet()) l.cleanup();
+		for (AbstractFile f : this.getFilesSet()) 
+			if (!(f.getPath().equals("/home/") || f.getPath().equals("/home/root/"))) {
+				try {	
+					f.setOwner(null);
+				} catch (InvalidOperationException e) {}
+			}
 	}
 }

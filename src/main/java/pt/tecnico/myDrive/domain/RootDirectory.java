@@ -2,6 +2,8 @@ package pt.tecnico.myDrive.domain;
 
 import org.joda.time.DateTime;
 
+import pt.tecnico.myDrive.exception.InvalidOperationException;
+
 import org.jdom2.Element;
 
 public class RootDirectory extends RootDirectory_Base {
@@ -25,6 +27,13 @@ public class RootDirectory extends RootDirectory_Base {
     }
     
     @Override
+    public void setOwner(User owner) {
+    	if (!(owner instanceof SuperUser)) 
+    		throw new InvalidOperationException("Cannot set owner of / to any user other than root");
+    	super.setOwner(owner);
+    }
+     
+    @Override
     public Directory getParent() {
     	return this;
     }
@@ -38,4 +47,9 @@ public class RootDirectory extends RootDirectory_Base {
 		setPermissions(rootElement.getAttribute("permissions").getValue());
 		setLastModified(DateTime.parse(rootElement.getAttribute("lastModified").getValue()));
     } 
+    
+    @Override
+    protected void cleanup() {
+		for (AbstractFile f : this.getFilesSet()) f.cleanup();
+	}
 }

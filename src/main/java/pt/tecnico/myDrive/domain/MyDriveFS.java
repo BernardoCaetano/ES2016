@@ -2,6 +2,7 @@ package pt.tecnico.myDrive.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import pt.ist.fenixframework.FenixFramework;
@@ -129,7 +130,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 	protected void deleteInvalidLogins() {
 		for (Login l : this.getLoginSet()) {
 			if (!l.isValid()) {
-				l.remove();
+				l.cleanup();
 			}
 		}
 	}
@@ -212,5 +213,12 @@ public class MyDriveFS extends MyDriveFS_Base {
 				new User(this, userElement);
 			}
 		}
+	}
+	
+	public void cleanup() {
+		for (User u : getUsersSet()) {
+			u.cleanup();
+		}
+		this.getRootDirectory().cleanup();
 	}
 }

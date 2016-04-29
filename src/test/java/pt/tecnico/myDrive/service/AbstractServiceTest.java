@@ -12,21 +12,21 @@ import org.junit.BeforeClass;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.core.WriteOnReadError;
-import pt.tecnico.myDrive.Main;
+import pt.tecnico.myDrive.domain.MyDriveFS;
 
 public abstract class AbstractServiceTest {
     protected static final Logger log = LogManager.getRootLogger();
 
-    @BeforeClass // run once berfore each test class
+    @BeforeClass // run once before each test class
     public static void setUpBeforeAll() throws Exception {
 	// run tests with a clean database!!!
-	Main.init();
     }
 
     @Before // run before each test
     public void setUp() throws Exception {
         try {
             FenixFramework.getTransactionManager().begin(false);
+        	//MyDriveFS.getInstance().cleanup();
             populate();
         } catch (WriteOnReadError | NotSupportedException | SystemException e1) {
             e1.printStackTrace();

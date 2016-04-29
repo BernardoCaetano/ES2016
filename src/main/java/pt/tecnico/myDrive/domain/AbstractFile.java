@@ -14,6 +14,7 @@ import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.PathMaximumLengthException;;
 
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
+	
 
 	public void initAbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name)
 			throws InvalidFileNameException, NameAlreadyExistsException, PathMaximumLengthException {
@@ -47,10 +48,13 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		else
 			parentDir.addFiles(this);
 	}
-
+	
+		
 	public void setOwner(MyDriveFS mydrive, User owner) {
 		if (owner == null)
-			mydrive.getUserByUsername("root").addFiles(this);
+			mydrive
+			.getUserByUsername("root")
+			.addFiles(this);
 		else
 			owner.addFiles(this);
 	}
@@ -133,10 +137,15 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 			throw new AccessDeniedException(user.getUsername(), this.getName());
 		} else {
 			super.setParent(null);
-			setOwner(null);
+			super.setOwner(null);
 			deleteDomainObject();
 		}
 	};
+	
+	protected void cleanup() {
+		super.setParent(null);
+		super.deleteDomainObject();
+	}
 
 	public int compareTo(AbstractFile f) {
 		String thisPath = this.getPath().replaceAll("/", "");

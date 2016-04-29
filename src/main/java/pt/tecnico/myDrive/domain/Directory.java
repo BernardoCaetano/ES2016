@@ -121,6 +121,13 @@ public class Directory extends Directory_Base {
        super.remove(user);		
        
 	}
+	
+	@Override
+	protected void cleanup() {
+		for (AbstractFile f : this.getFilesSet()) f.cleanup();
+		if (isHomeDirectory() || getPath().equals("/home/")) return;
+		super.cleanup();
+	}
 
 	public ArrayList<AbstractFile> getFilesSimpleSorted(User user) {
 		if(user.canRead(this) == false){

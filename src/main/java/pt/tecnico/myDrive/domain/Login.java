@@ -64,11 +64,14 @@ public class Login extends Login_Base {
     	super.setLastActivity(newTime);
     }
     
-    public void remove() {
-    	this.setCurrentDir(null);
+    public void cleanup() {
+    	for (Variable v : this.getVariableSet()) {
+    		v.cleanup();
+    	}
+    	super.setCurrentDir(null);
     	this.setUser(null);
     	this.setMyDrive(null);
-    	deleteDomainObject();
+    	this.deleteDomainObject();
     }
     
 }

@@ -8,4 +8,9 @@ public class Variable extends Variable_Base {
         setValue(value);
     }
     
+    protected void cleanup() {
+    	this.setLogin(null);
+    	this.deleteDomainObject();
+	}
+    
 }

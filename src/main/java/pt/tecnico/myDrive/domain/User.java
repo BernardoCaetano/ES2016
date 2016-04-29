@@ -106,7 +106,9 @@ public class User extends User_Base {
     		default  : return false;
     	}
     	
-    	if (file.getOwner().sameAs(this) == false)
+    	if (file
+    		.getOwner()
+    		.equals(this) == false)
     		 pos += 4;
     	
     	return file.getPermissions().charAt(pos) == type;
@@ -178,5 +180,13 @@ public class User extends User_Base {
 			return ((User) o).getUsername().equals(this.getUsername());
 		}
 		return false;
+	}
+	
+	protected void cleanup() {
+		for (Login l : this.getLoginSet()) l.cleanup();	
+		for (AbstractFile f : this.getFilesSet()) f.setOwner(null);
+		setHomeDirectory(null);
+		setMyDrive(null);
+		deleteDomainObject();
 	}
 }
