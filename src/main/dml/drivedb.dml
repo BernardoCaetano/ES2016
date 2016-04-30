@@ -42,7 +42,7 @@ class Variable {
 
 relation MyDriveHasUsers {
 	MyDriveFS playsRole myDrive { multiplicity 1; }
-	User playsRole users { multiplicity *; }
+	User playsRole user { multiplicity *; }
 }
 
 relation DirectoryHasFiles {

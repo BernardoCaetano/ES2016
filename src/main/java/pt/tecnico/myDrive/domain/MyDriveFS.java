@@ -37,11 +37,11 @@ public class MyDriveFS extends MyDriveFS_Base {
 	}
 
 	@Override
-	public void addUsers(User userToBeAdded) throws NameAlreadyExistsException {
+	public void addUser(User userToBeAdded) throws NameAlreadyExistsException {
 		if (hasUser(userToBeAdded.getUsername())) {
 			throw new NameAlreadyExistsException(userToBeAdded.getUsername());
 		}
-		super.addUsers(userToBeAdded);
+		super.addUser(userToBeAdded);
 	}
 
 	protected boolean hasUser(String username) {
@@ -53,12 +53,21 @@ public class MyDriveFS extends MyDriveFS_Base {
 	}
 
 	protected User getUserByUsername(String username) throws UserNotFoundException{
-		for (User user : getUsersSet()) {
+		for (User user : getUsers()) {
 			if (user.getUsername().equals(username)) {
 				return user;
 			}
 		}
 		throw new UserNotFoundException(username);
+	}
+	
+	@Override
+	public Set<User> getUserSet() {
+		throw new InvalidOperationException("Obtaining application users");
+	}
+	
+	protected Set<User> getUsers() {
+		return super.getUserSet();
 	}
 
 	protected void incrementLastFileID() {
@@ -120,7 +129,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 	
 	@Override
 	public Set<Login> getLoginSet() {
-		throw new InvalidOperationException("Listing login history");
+		throw new InvalidOperationException("Obtaining application login history");
 	}
 	
 	private Set<Login> getLogins() {
@@ -158,7 +167,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		}
 		
 		
-		Set<User> userSet = getUsersSet();
+		Set<User> userSet = getUsers();
 
 		for (User u : userSet) {
 			if (!u.getUsername().equals("root"))
@@ -226,7 +235,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 	}
 	
 	public void cleanup() {
-		for (User u : getUsersSet()) u.cleanup();
+		for (User u : getUsers()) u.cleanup();
 		this.getRootDirectory().cleanup();
 	}
 }

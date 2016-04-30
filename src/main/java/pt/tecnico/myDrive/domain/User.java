@@ -47,7 +47,7 @@ public class User extends User_Base {
         if (mydrive == null) {
             super.setMyDrive(null);
         } else {
-            mydrive.addUsers(this);
+            mydrive.addUser(this);
         }
     }
 
