@@ -40,7 +40,7 @@ public class CreateFileTest extends TokenReceivingTest {
 
 		User newUser = new User(mD, "Wololo", "password", "April Fool", "rwxdrwxd", null);
 		super.populate("Wololo", "password");
-		login = new Login(mD, "Wololo", "password");
+		login = mD.getLoginByToken(validToken);
 		
 		Directory currentDir = login.getCurrentDir();
 		new Directory(mD, currentDir, newUser, "existingDir");
