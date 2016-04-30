@@ -1,15 +1,22 @@
 package pt.tecnico.myDrive.domain;
 
+import pt.tecnico.myDrive.exception.InvalidOperationException;
+
 public class Variable extends Variable_Base {
     
-    public Variable(String name, String value) {
+    protected Variable(Login login, String name, String value) {
         super();
         setName(name);
         setValue(value);
     }
     
+    @Override
+    public void setLogin(Login login) {
+    	throw new InvalidOperationException("Changing login to which a variable is associated");
+    }
+    
     protected void cleanup() {
-    	this.setLogin(null);
+    	super.setLogin(null);
     	this.deleteDomainObject();
 	}
     

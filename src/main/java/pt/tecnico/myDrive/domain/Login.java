@@ -89,4 +89,22 @@ public class Login extends Login_Base {
     	setMyDrive(null);
     	deleteDomainObject();
     }
+    
+    public void addVariable(String name, String value) {
+    	Variable v = getVariableByName(name);
+		if (v != null) 
+    		v.setValue(value);
+		else 
+			addVariable(new Variable(this, name, value));
+    	
+    }
+       
+    protected Variable getVariableByName(String name) {
+    	for (Variable v : getVariableSet()) {
+    		if (v.getName().equals(name)) 
+    			return v;
+    	}
+    	return null;
+    }
+    
 }
