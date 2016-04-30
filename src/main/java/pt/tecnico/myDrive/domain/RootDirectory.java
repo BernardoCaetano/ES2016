@@ -29,7 +29,7 @@ public class RootDirectory extends RootDirectory_Base {
     @Override
     public void setOwner(User owner) {
     	if (!(owner instanceof SuperUser)) 
-    		throw new InvalidOperationException("Cannot set owner of / to any user other than root");
+    		throw new InvalidOperationException("Setting owner of / to any user other than root");
     	super.setOwner(owner);
     }
      

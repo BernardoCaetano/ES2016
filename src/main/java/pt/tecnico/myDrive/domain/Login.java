@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.util.Random;
 import org.joda.time.DateTime;
 
-import pt.tecnico.myDrive.domain.Login_Base.DO_State;
 import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.CannotExtendSessionTimeException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
@@ -31,17 +30,17 @@ public class Login extends Login_Base {
     
     @Override
     public void setUser(User user) {
-    	throw new InvalidOperationException("Cannot change user associated with a login session");
+    	throw new InvalidOperationException("Changing user associated with a login session");
     }
     
     @Override
     public void setToken(java.lang.Long token) {
-    	throw new InvalidOperationException("Cannot change token associated with a login session");
+    	throw new InvalidOperationException("Changing token associated with a login session");
     }
         
     @Override
     public void setMyDrive(MyDriveFS myDrive) {
-    	throw new InvalidOperationException("Cannot change application associated with a login session");
+    	throw new InvalidOperationException("Changing application associated with a login session");
     }
     
     public boolean isValid() {
@@ -86,9 +85,8 @@ public class Login extends Login_Base {
     		v.cleanup();
     	}
     	super.setCurrentDir(null);
-    	this.setUser(null);
-    	this.setMyDrive(null);
-    	this.deleteDomainObject();
+    	setUser(null);
+    	setMyDrive(null);
+    	deleteDomainObject();
     }
-    
 }

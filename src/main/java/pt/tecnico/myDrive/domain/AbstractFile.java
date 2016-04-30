@@ -43,7 +43,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 	@Override
 	public void setParent(Directory parentDir) throws NameAlreadyExistsException {
 		if (parentDir == null)
-			throw new InvalidOperationException("A file must reside inside a directory");
+			throw new InvalidOperationException("Setting host directory of a file to null");
 		else
 			parentDir.addFiles(this);
 	}

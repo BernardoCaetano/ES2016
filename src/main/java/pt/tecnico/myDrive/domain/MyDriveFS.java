@@ -7,6 +7,7 @@ import java.util.Set;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
+import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
@@ -116,8 +117,18 @@ public class MyDriveFS extends MyDriveFS_Base {
 		return (Directory) af;
 	}
 	
+	
+	@Override
+	public Set<Login> getLoginSet() {
+		throw new InvalidOperationException("Listing login history");
+	}
+	
+	private Set<Login> getLogins() {
+		return super.getLoginSet();
+	}
+	
 	public Login getLoginByToken(long token) {
-		for (Login l : this.getLoginSet()) {
+		for (Login l : this.getLogins()) {
 			if (token == l.getToken() && l.isValid()) {
 				l.updateLastActivity();
 				return l;
@@ -127,7 +138,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 	}
 	
 	protected void deleteInvalidLogins() {
-		for (Login l : this.getLoginSet()) {
+		for (Login l : this.getLogins()) {
 			if (!l.isValid()) {
 				l.cleanup();
 			}
