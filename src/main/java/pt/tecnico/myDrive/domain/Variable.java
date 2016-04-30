@@ -4,7 +4,7 @@ import pt.tecnico.myDrive.exception.InvalidOperationException;
 
 public class Variable extends Variable_Base {
     
-    protected Variable(Login login, String name, String value) {
+    protected Variable(String name, String value) {
         super();
         setName(name);
         setValue(value);

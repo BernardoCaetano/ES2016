@@ -95,7 +95,7 @@ public class Login extends Login_Base {
 		if (v != null) 
     		v.setValue(value);
 		else 
-			addVariable(new Variable(this, name, value));
+			addVariable(new Variable(name, value));
     	
     }
        
