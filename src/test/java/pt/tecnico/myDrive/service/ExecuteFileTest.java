@@ -4,15 +4,18 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import pt.tecnico.myDrive.domain.App;
 import pt.tecnico.myDrive.domain.Directory;
 import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
+import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.User;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 
 public class ExecuteFileTest extends TokenReceivingTest {
 
 	MyDriveFS mD;
+	ExecuteFileService service;
 	
 	@Override
 	protected void populate() {
@@ -21,11 +24,16 @@ public class ExecuteFileTest extends TokenReceivingTest {
 		Login login;
 		
 		User newUser = new User(mD, "insertUsername", "insertPassword", "insert Name", "rwxdrwxd", null);
-		super.populate("Wololo", "password");
-		login = new Login(mD, "insertUsername", "insertPassword");
+		super.populate("insertUsername", "insertPassword");
+		login = mD.getLoginByToken(validToken);
 		
-//		Directory currentDir = login.getCurrentDir();
-//		new Directory(mD, currentDir, newUser, "dirName");
+ 		Directory currentDir = login.getCurrentDir();
+ 		
+ 		// This App and TextFile will be changed to future tests
+ 		App appNP = new App(mD, currentDir, newUser, "appWithoutPermissions");
+ 		appNP.setPermissions("rw-d----");
+ 		
+ 		TextFile textFile = new TextFile(mD, currentDir, newUser, "simpleTextFile");
 	}
 
 	@Test
