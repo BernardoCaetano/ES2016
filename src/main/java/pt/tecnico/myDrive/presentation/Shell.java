@@ -93,7 +93,7 @@ public abstract class Shell {
 
 				if (c == null) {
 					if (arg0.length() > 0) {
-						println(arg0 + ": command not found ('help' for command list').");
+						println(arg0 + ": command not found ('help' for command list).");
 					}
 				} else {
 					try {
