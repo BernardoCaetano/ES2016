@@ -4,8 +4,10 @@ import java.math.BigInteger;
 import java.util.Random;
 import org.joda.time.DateTime;
 
+import pt.tecnico.myDrive.domain.Login_Base.DO_State;
 import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.CannotExtendSessionTimeException;
+import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.WrongPasswordException;
 
@@ -18,13 +20,28 @@ public class Login extends Login_Base {
     	if (!user.checkPassword(password)) {
     		throw new WrongPasswordException();
     	}
-    	this.setMyDrive(myDrive);
-    	this.setUser(user);
+    	super.setMyDrive(myDrive);
+    	super.setUser(user);
         this.setCurrentDir(user.getHomeDirectory());
-        this.setToken(new BigInteger(64, new Random()).longValue());
+        super.setToken(new BigInteger(64, new Random()).longValue());
         super.setLastActivity(DateTime.now());  
         
         myDrive.deleteInvalidLogins();
+    }
+    
+    @Override
+    public void setUser(User user) {
+    	throw new InvalidOperationException("Cannot change user associated with a login session");
+    }
+    
+    @Override
+    public void setToken(java.lang.Long token) {
+    	throw new InvalidOperationException("Cannot change token associated with a login session");
+    }
+        
+    @Override
+    public void setMyDrive(MyDriveFS myDrive) {
+    	throw new InvalidOperationException("Cannot change application associated with a login session");
     }
     
     public boolean isValid() {
