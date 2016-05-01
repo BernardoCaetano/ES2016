@@ -85,8 +85,8 @@ public class Login extends Login_Base {
     		v.cleanup();
     	}
     	super.setCurrentDir(null);
-    	setUser(null);
-    	setMyDrive(null);
+    	super.setUser(null);
+    	super.setMyDrive(null);
     	deleteDomainObject();
     }
     
