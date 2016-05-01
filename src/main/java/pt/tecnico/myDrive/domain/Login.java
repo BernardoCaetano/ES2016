@@ -6,6 +6,7 @@ import org.joda.time.DateTime;
 
 import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.CannotExtendSessionTimeException;
+import pt.tecnico.myDrive.exception.InvalidLoginException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.WrongPasswordException;
@@ -19,13 +20,24 @@ public class Login extends Login_Base {
     	if (!user.checkPassword(password)) {
     		throw new WrongPasswordException();
     	}
-    	super.setMyDrive(myDrive);
-    	super.setUser(user);
-        this.setCurrentDir(user.getHomeDirectory());
-        super.setToken(new BigInteger(64, new Random()).longValue());
-        super.setLastActivity(DateTime.now());  
-        
+		super.setUser(user);
+		this.setCurrentDir(user.getHomeDirectory());
+		super.setToken(generateUniqueToken(myDrive));
+		super.setMyDrive(myDrive);
+		super.setLastActivity(DateTime.now());
+
         myDrive.deleteInvalidLogins();
+    }
+    
+    private long generateUniqueToken(MyDriveFS myDrive) {
+    	 long newToken;
+         while (true) {
+         	newToken = new BigInteger(64, new Random()).longValue();
+         	try {
+         		myDrive.getLoginByToken(newToken);
+         	} catch (InvalidLoginException e) { break; }
+         }
+         return newToken;
     }
     
     @Override

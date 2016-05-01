@@ -6,6 +6,7 @@ import java.util.Random;
 import org.joda.time.DateTime;
 import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
+import pt.tecnico.myDrive.exception.InvalidLoginException;
 
 public abstract class TokenReceivingTest extends AbstractServiceTest implements TokenReceivingInterface {
 
@@ -14,7 +15,15 @@ public abstract class TokenReceivingTest extends AbstractServiceTest implements 
 
 	protected void populate(String username, String password) {
 		validToken = (new Login(MyDriveFS.getInstance(), username, password)).getToken();
-		invalidToken = new BigInteger(64, new Random()).longValue(); //FIXME There is a chance to be a valid token, one in a million
+		
+		while (true) {
+			invalidToken = new BigInteger(64, new Random()).longValue();
+			try {
+				MyDriveFS.getInstance().getLoginByToken(invalidToken);
+			} catch (InvalidLoginException e) {
+				break;
+			}
+		}
 	}
 
 	protected void setLastActivity2h05minAgo() {
