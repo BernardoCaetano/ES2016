@@ -14,7 +14,7 @@ public abstract class TokenReceivingTest extends AbstractServiceTest implements 
 
 	protected void populate(String username, String password) {
 		validToken = (new Login(MyDriveFS.getInstance(), username, password)).getToken();
-		invalidToken = new BigInteger(64, new Random()).longValue();
+		invalidToken = new BigInteger(64, new Random()).longValue(); //FIXME There is a chance to be a valid token, one in a million
 	}
 
 	protected void setLastActivity2h05minAgo() {

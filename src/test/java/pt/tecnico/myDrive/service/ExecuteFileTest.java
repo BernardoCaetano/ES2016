@@ -41,19 +41,19 @@ public class ExecuteFileTest extends TokenReceivingTest {
 		// TODO 
 	}
 
-	@Override
+	@Test(expected = InvalidLoginException.class)
 	public void expiredSessionTest2h05minAgo() throws InvalidLoginException {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	@Test
 	public void sessionStillValidTest1h55min() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	@Test(expected = InvalidLoginException.class)
 	public void nonExistentTokenTest() throws InvalidLoginException {
 		// TODO Auto-generated method stub
 		
