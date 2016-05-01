@@ -38,11 +38,12 @@ public class ListVariablesTest extends TokenReceivingTest {
         
         assertNotNull("Returned list is null", variableList);
         assertEquals("List hasn't 2 Variables", 2, variableList.size());
-        assertEquals("Variable name does not match", "noIdea", variableList.get(0).getName());
-        assertEquals("Variable value does not match", "I have no idea what to write here, lol", variableList.get(0).getValue());
         
-        assertEquals("Variable name does not match", "iTry", variableList.get(1).getName());
-        assertEquals("Variable value does not match", "I really do", variableList.get(1).getValue());
+        assertEquals("Variable name does not match", "iTry", variableList.get(0).getName());
+        assertEquals("Variable value does not match", "I really do", variableList.get(0).getValue());
+        
+        assertEquals("Variable name does not match", "noIdea", variableList.get(1).getName());
+        assertEquals("Variable value does not match", "I have no idea what to write here, lol", variableList.get(1).getValue());
     }
 	
 	@Test
@@ -55,11 +56,12 @@ public class ListVariablesTest extends TokenReceivingTest {
         
         assertNotNull("Returned list is null", variableList);
         assertEquals("List hasn't 2 Variables", 2, variableList.size());
-        assertEquals("Variable name does not match", "noIdea", variableList.get(0).getName());
-        assertEquals("Variable value does not match", "I have no idea what to write here, lol", variableList.get(0).getValue());
         
-        assertEquals("Variable name does not match", "iTry", variableList.get(1).getName());
-        assertEquals("Variable value does not match", "The Value MUST be changed!", variableList.get(1).getValue());
+        assertEquals("Variable name does not match", "iTry", variableList.get(0).getName());
+        assertEquals("Variable value does not match", "The Value MUST be changed!", variableList.get(0).getValue());
+
+        assertEquals("Variable name does not match", "noIdea", variableList.get(1).getName());
+        assertEquals("Variable value does not match", "I have no idea what to write here, lol", variableList.get(1).getValue());
 	}
 	
 	@Test(expected = InvalidLoginException.class)
@@ -78,11 +80,13 @@ public class ListVariablesTest extends TokenReceivingTest {
 	    
 		assertNotNull("Returned list is null", variableList);
 	    assertEquals("List hasn't 2 Variables", 2, variableList.size());
-	    assertEquals("Variable name does not match", "noIdea", variableList.get(0).getName());
-	    assertEquals("Variable value does not match", "I have no idea what to write here, lol", variableList.get(0).getValue());
-	        
-	    assertEquals("Variable name does not match", "iTry", variableList.get(1).getName());
-	    assertEquals("Variable value does not match", "I really do", variableList.get(1).getValue());
+	    
+
+        assertEquals("Variable name does not match", "iTry", variableList.get(0).getName());
+        assertEquals("Variable value does not match", "I really do", variableList.get(0).getValue());
+        
+        assertEquals("Variable name does not match", "noIdea", variableList.get(1).getName());
+        assertEquals("Variable value does not match", "I have no idea what to write here, lol", variableList.get(1).getValue());
 	}
 
 	@Test(expected = InvalidLoginException.class)
