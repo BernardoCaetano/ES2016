@@ -12,11 +12,6 @@ public class AddVariableService extends MyDriveService {
 	String value;
 	VariableDTO result;
 	
-	public AddVariableService(Long token, String name) {
-		this.token = token;
-		this.name = name;
-	}
-	
 	public AddVariableService(long token, String name, String value) {
 		this.token = token;
 		this.name = name;
