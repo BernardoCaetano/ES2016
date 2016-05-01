@@ -99,7 +99,7 @@ public class Login extends Login_Base {
     	
     }
        
-    protected Variable getVariableByName(String name) {
+    public Variable getVariableByName(String name) {
     	for (Variable v : getVariableSet()) {
     		if (v.getName().equals(name)) 
     			return v;
