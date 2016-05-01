@@ -16,6 +16,7 @@ import pt.tecnico.myDrive.service.dto.VariableDTO;
 public class ListVariablesTest extends TokenReceivingTest {
 
 	MyDriveFS mD;
+	Login login;
 	
 	@Override
 	protected void populate() {
@@ -23,13 +24,10 @@ public class ListVariablesTest extends TokenReceivingTest {
 		
 		new User(mD, "username", "password", "Name", "rwxdrwxd", null);
 		super.populate("username", "password");
-		Login login = mD.getLoginByToken(validToken);
+		login = mD.getLoginByToken(validToken);
 		
 		login.addVariable("noIdea", "I have no idea what to write here, lol");
 		login.addVariable("iTry", "I really do");
-		
-		// TODO Auto-generated method stub
-		
 	}
 	
 	@Test
@@ -46,6 +44,23 @@ public class ListVariablesTest extends TokenReceivingTest {
         assertEquals("Variable name does not match", "iTry", variableList.get(1).getName());
         assertEquals("Variable value does not match", "I really do", variableList.get(1).getValue());
     }
+	
+	@Test
+    public void successWithChangeValue() {
+		login.addVariable("iTry", "The Value MUST be changed!");
+		
+		ListVariablesService service = new ListVariablesService(validToken);
+        service.execute();
+        List<VariableDTO> variableList = service.result();
+        
+        assertNotNull("Returned list is null", variableList);
+        assertEquals("List hasn't 2 Variables", 2, variableList.size());
+        assertEquals("Variable name does not match", "noIdea", variableList.get(0).getName());
+        assertEquals("Variable value does not match", "I have no idea what to write here, lol", variableList.get(0).getValue());
+        
+        assertEquals("Variable name does not match", "iTry", variableList.get(1).getName());
+        assertEquals("Variable value does not match", "The Value MUST be changed!", variableList.get(1).getValue());
+	}
 	
 	@Test(expected = InvalidLoginException.class)
 	public void expiredSessionTest2h05minAgo() throws InvalidLoginException {
