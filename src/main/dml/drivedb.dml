@@ -40,6 +40,10 @@ class Variable {
 	String value;
 }
 
+class Association {
+	String fileExtension;
+}
+
 relation MyDriveHasUsers {
 	MyDriveFS playsRole myDrive { multiplicity 1; }
 	User playsRole user { multiplicity *; }
@@ -89,4 +93,14 @@ relation LoginHasCurrentDirectory {
 relation LoginHasVariables {
 	Login playsRole login {multiplicity 1; }
 	Variable playsRole variable { multiplicity *; }
+}
+
+relation UserHasAssociation {
+	User playsRole user { multiplicity 1; }
+	Association playsRole associations { multiplicity *; }
+}
+
+relation AssociationHasApplicationFile {
+	Association playsRole associations { multiplicity *; }
+	TextFile playsRole applicationFile { multiplicity 1; }
 }

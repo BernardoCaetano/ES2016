@@ -183,10 +183,28 @@ public class User extends User_Base {
 	}
 	
 	protected void cleanup() {
+		for (Association a : this.getAssociationsSet()) a.cleanup();	
 		for (Login l : this.getLoginSet()) l.cleanup();	
 		for (AbstractFile f : this.getFilesSet()) f.setOwner(null);
 		setHomeDirectory(null);
 		setMyDrive(null);
 		deleteDomainObject();
 	}
+	
+	public void addAssociation(String fileExtension, TextFile applicationFile) {
+    	Association a = getAssociationByFileExtension(fileExtension);
+		if (a != null) 
+    		a.setApplicationFile(applicationFile);
+		else 
+			addAssociations(new Association(fileExtension, applicationFile));
+    	
+    }
+       
+    public Association getAssociationByFileExtension(String fileExtension) {
+    	for (Association a : getAssociationsSet()) {
+    		if (a.getFileExtension().equals(fileExtension)) 
+    			return a;
+    	}
+    	return null;
+    }
 }
