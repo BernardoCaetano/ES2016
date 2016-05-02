@@ -32,6 +32,7 @@ public class MyDriveShell extends Shell {
 		super("MyDrive");
 
 		// Add MyDrive commands here
+		new Environment(this);
 	}
 
 }
