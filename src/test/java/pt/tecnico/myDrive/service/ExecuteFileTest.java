@@ -2,6 +2,9 @@ package pt.tecnico.myDrive.service;
 
 import static org.junit.Assert.*;
 
+import mockit.Mock;
+import mockit.MockUp;
+
 import org.junit.Test;
 
 import pt.tecnico.myDrive.domain.App;
@@ -33,12 +36,22 @@ public class ExecuteFileTest extends TokenReceivingTest {
  		App appNP = new App(mD, currentDir, newUser, "appWithoutPermissions");
  		appNP.setPermissions("rw-d----");
  		
- 		TextFile textFile = new TextFile(mD, currentDir, newUser, "simpleTextFile");
+ 		new TextFile(mD, currentDir, newUser, "simpleTextFile");
 	}
 
 	@Test
 	public void success() {
 		// TODO 
+	}
+	
+	@Test
+	public void successExecuteAssociation() {
+		//FIXME this mockup will need to be changed. Maybe call a method and use verifications?
+		new MockUp<ExecuteFileService>() {
+			@Mock
+			void dispatch() { return; }
+		};
+		service = new ExecuteFileService(validToken, "appWithoutPermissions", null);		
 	}
 
 	@Test(expected = InvalidLoginException.class)
