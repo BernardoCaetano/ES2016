@@ -56,7 +56,7 @@ public class Login extends Login_Base {
     }
     
     public boolean isValid() {
-    	return (DateTime.now().getMillis() - this.getLastActivity().plusHours(2).getMillis()) < 0;
+    	return getUser().isValid(this.getLastActivity());
     }
     
     protected void updateLastActivity() {

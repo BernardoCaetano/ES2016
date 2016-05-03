@@ -1,5 +1,7 @@
 package pt.tecnico.myDrive.domain;
 
+import org.joda.time.DateTime;
+
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
@@ -25,5 +27,9 @@ public class SuperUser extends SuperUser_Base {
 					f.setOwner(null);
 				} catch (InvalidOperationException e) {}
 			}
+	}
+	
+	public boolean isValid(DateTime lastActivity) {
+		return (DateTime.now().getMillis() - lastActivity.plusMinutes(10).getMillis()) <= 0;
 	}
 }

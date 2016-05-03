@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.jdom2.Element;
+import org.joda.time.DateTime;
+
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
@@ -206,5 +208,9 @@ public class User extends User_Base {
     			return a;
     	}
     	return null;
+    }
+    
+    public boolean isValid(DateTime lastActivity) {
+    	return (DateTime.now().getMillis() - lastActivity.plusHours(2).getMillis()) < 0;
     }
 }
