@@ -19,8 +19,8 @@ public abstract class MyDriveCommand extends Command {
 		return getShell().switchToToken(username);
 	}
 
-	void addToken(String username, long token) {
-		getShell().addToken(username, token);
+	void switchToNewToken(String username, long token) {
+		getShell().switchToNewToken(username, token);
 	}
 
 	String getCurrentUsername() {

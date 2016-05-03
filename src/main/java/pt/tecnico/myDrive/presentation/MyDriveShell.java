@@ -20,7 +20,7 @@ public class MyDriveShell extends Shell {
 		return token;
 	}
 
-	void addToken(String username, long token) {
+	void switchToNewToken(String username, long token) {
 		tokens.put(username, token);
 		currentToken = token;
 		currentUsername = username;
