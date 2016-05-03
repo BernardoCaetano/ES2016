@@ -1,16 +1,24 @@
 package pt.tecnico.myDrive.presentation;
 
-public class Key extends Command {
+public class Key extends MyDriveCommand {
 
-	public Key(Shell shell) {
+	public Key(MyDriveShell shell) {
 		super(shell, "token", "change current session");
 	}
 
 	@Override
 	void execute(String[] args) {
-		// TODO Auto-generated method stub
-		if (args.length < 1 || args.length > 1)
-			throw new RuntimeException("USAGE: " + getName() + " [username]");
+		
+		if (args.length > 1 ) {
+			throw new RuntimeException("Use: '" + getName() + " <username>' to change current session");
+		} else if (args.length == 0) {
+			println("Active Session: Username- " + getCurrentUsername() + " Token- " + getCurrentToken());
+		} else if (args.length == 1) {
+			if (switchToToken(args[0]) != null) {
+				println("Active Session: Username- " + getCurrentUsername() + " Token- " + getCurrentToken());
+			} else {
+				println(args[0] + " : (invalid username)");
+			}
+		}
 	}
-
 }
