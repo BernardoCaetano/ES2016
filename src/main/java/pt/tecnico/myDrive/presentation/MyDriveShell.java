@@ -6,11 +6,18 @@ import java.util.Map;
 public class MyDriveShell extends Shell {
 
 	private Map<String, Long> tokens = new HashMap<String, Long>();
+	
+	// TODO: Log nobody in
 	private String currentUsername;
 	private long currentToken;
 
-	long getToken(String username) {
-		return tokens.get(username);
+	Long switchToToken(String username) {
+		Long token = tokens.get(username);
+		if (token != null) {
+			currentToken = token;
+			currentUsername = username;
+		}
+		return token;
 	}
 
 	void addToken(String username, long token) {
@@ -26,7 +33,6 @@ public class MyDriveShell extends Shell {
 	long getCurrentToken() {
 		return currentToken;
 	}
-	
 
 	public MyDriveShell() {
 		super("MyDrive");
