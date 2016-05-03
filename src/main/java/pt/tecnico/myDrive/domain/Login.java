@@ -56,7 +56,7 @@ public class Login extends Login_Base {
     }
     
     public boolean isValid() {
-    	return getUser().isValid(this.getLastActivity());
+    	return getUser().isLoginValid(this.getLastActivity());
     }
     
     protected void updateLastActivity() {

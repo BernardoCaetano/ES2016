@@ -210,7 +210,7 @@ public class User extends User_Base {
     	return null;
     }
     
-    public boolean isValid(DateTime lastActivity) {
+    public boolean isLoginValid(DateTime lastActivity) {
     	return (DateTime.now().getMillis() - lastActivity.plusHours(2).getMillis()) < 0;
     }
 }

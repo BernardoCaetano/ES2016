@@ -29,7 +29,8 @@ public class SuperUser extends SuperUser_Base {
 			}
 	}
 	
-	public boolean isValid(DateTime lastActivity) {
+	@Override
+	public boolean isLoginValid(DateTime lastActivity) {
 		return (DateTime.now().getMillis() - lastActivity.plusMinutes(10).getMillis()) <= 0;
 	}
 }

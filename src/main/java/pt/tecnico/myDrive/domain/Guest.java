@@ -1,5 +1,7 @@
 package pt.tecnico.myDrive.domain;
 
+import org.joda.time.DateTime;
+
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
@@ -40,5 +42,10 @@ class Guest extends Guest_Base {
 					f.setOwner(null);
 				} catch (InvalidOperationException e) {}
 			}
+	}
+	
+	@Override
+	public boolean isLoginValid(DateTime lastActivity) {
+		return true;
 	}
 }
