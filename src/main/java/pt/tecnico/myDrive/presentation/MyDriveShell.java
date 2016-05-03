@@ -33,6 +33,7 @@ public class MyDriveShell extends Shell {
 
 		// Add MyDrive commands here
 		new Environment(this);
+		new Execute(this);
 	}
 
 }

@@ -15,7 +15,12 @@ public class ExecuteFileService extends MyDriveService {
 		this.path = path;
 		this.args = args;
 	}
-
+	
+	public ExecuteFileService(long token, String path){
+		this.token = token;
+		this.path = path;
+	}
+	
 	@Override
 	protected void dispatch() throws MyDriveException {
 		//TODO
