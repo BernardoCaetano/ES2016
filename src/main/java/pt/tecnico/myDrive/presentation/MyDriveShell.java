@@ -3,11 +3,12 @@ package pt.tecnico.myDrive.presentation;
 import java.util.HashMap;
 import java.util.Map;
 
+import pt.tecnico.myDrive.service.LoginService;
+
 public class MyDriveShell extends Shell {
 
 	private Map<String, Long> tokens = new HashMap<String, Long>();
 	
-	// TODO: Log nobody in
 	private String currentUsername;
 	private long currentToken;
 
@@ -25,6 +26,10 @@ public class MyDriveShell extends Shell {
 		currentToken = token;
 		currentUsername = username;
 	}
+	
+	void forgetToken(String username){
+		tokens.remove(username);
+	}
 
 	String getCurrentUsername() {
 		return currentUsername;
@@ -33,14 +38,28 @@ public class MyDriveShell extends Shell {
 	long getCurrentToken() {
 		return currentToken;
 	}
+	
+	private void login(String username, String password){
+		LoginService login = new LoginService(username, password);
+		login.execute();
+		currentToken = login.result();
+		currentUsername = username;
+	}
 
 	public MyDriveShell() {
 		super("MyDrive");
+		login("nobody", "");
 
 		// Add MyDrive commands here
 		new Environment(this);
 		new Execute(this);
 		new Key(this);
+	}
+
+	@Override
+	protected boolean onQuit() {
+		forgetToken("nobody");
+		return super.onQuit();
 	}
 
 }

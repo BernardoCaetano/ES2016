@@ -38,8 +38,10 @@ public abstract class Shell {
 		new Command(Shell.this, "quit", "quit the command interpreter") {
 			@Override
 			void execute(String[] args) {
-				println(name + " quit.");
-				System.exit(0);
+				if(Shell.this.onQuit()){
+					println(name + " quit.");
+					System.exit(0);
+				}
 			}
 		};
 
@@ -109,6 +111,10 @@ public abstract class Shell {
 			println("failed to read line: " + e.getMessage());
 		}
 		println(name + " end.");
+	}
+	
+	protected boolean onQuit(){
+		return true;
 	}
 
 }
