@@ -1,24 +1,30 @@
 package pt.tecnico.myDrive.service;
 
-import static org.junit.Assert.*;
+import pt.tecnico.myDrive.presentation.FileViewer;
 
 import mockit.Mock;
 import mockit.MockUp;
+import mockit.Verifications;
+import mockit.integration.junit4.JMockit;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import pt.tecnico.myDrive.domain.App;
 import pt.tecnico.myDrive.domain.Directory;
+import pt.tecnico.myDrive.domain.Link;
 import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
-import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.User;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 
+@RunWith(JMockit.class)
 public class ExecuteFileTest extends TokenReceivingTest {
 
 	MyDriveFS mD;
 	ExecuteFileService service;
+	private static final String pdfFile = "appWithoutPermissions.pdf";
+	private static final String linkFile = "link to useless app";
 	
 	@Override
 	protected void populate() {
@@ -32,28 +38,50 @@ public class ExecuteFileTest extends TokenReceivingTest {
 		
  		Directory currentDir = login.getCurrentDir();
  		
- 		// This App and TextFile will be changed to future tests
- 		App appNP = new App(mD, currentDir, newUser, "appWithoutPermissions");
+ 		App appNP = new App(mD, currentDir, newUser, pdfFile);
  		appNP.setPermissions("rw-d----");
  		
- 		new TextFile(mD, currentDir, newUser, "simpleTextFile");
-	}
-
-	@Test
-	public void success() {
-		// TODO 
+ 		new Link(mD, currentDir ,newUser, "link to useless app" ,"./appWithoutPermissions.pdf");
 	}
 	
 	@Test
-	public void successExecuteAssociation() {
-		//FIXME this mockup will need to be changed. Maybe call a method and use verifications?
+	public void successExecuteAssociationApplication() {
 		new MockUp<ExecuteFileService>() {
 			@Mock
-			void dispatch() { return; }
+			void dispatch() { 
+				FileViewer.executePDF(pdfFile);
+			}
 		};
-		service = new ExecuteFileService(validToken, "appWithoutPermissions", null);		
+		
+		service = new ExecuteFileService(validToken, pdfFile, null);
+		service.execute();
+		
+		new Verifications() {
+			{
+				FileViewer.executePDF(pdfFile);
+			}
+        };
 	}
+	
+	@Test
+	public void successExecuteAssociationLinkThatPointsToFile() {
+		new MockUp<ExecuteFileService>() {
+			@Mock
+			void dispatch() {
+				FileViewer.executePDF(linkFile);
+			}
+		};
 
+		service = new ExecuteFileService(validToken, linkFile, null);
+		service.execute();
+
+		new Verifications() {
+			{
+				FileViewer.executePDF(linkFile);
+			}
+		};
+	}
+	
 	@Test(expected = InvalidLoginException.class)
 	public void expiredSessionTest2h05minAgo() throws InvalidLoginException {
 		// TODO Auto-generated method stub
