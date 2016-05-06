@@ -77,6 +77,9 @@ public class MyDriveFS extends MyDriveFS_Base {
 
 	private AbstractFile getFileByPathAux(Directory currentDir, String path, boolean follow)
 			throws FileNotFoundException, InvalidPathException {
+		if (!isValidPath(path)){
+			throw new InvalidPathException(path);
+		}
 		if (path.equals("/")) {
 			return getRootDirectory();
 		} else if (path.startsWith("/")) {
@@ -234,6 +237,13 @@ public class MyDriveFS extends MyDriveFS_Base {
 			}
 		}
 	}
+	
+	protected boolean isValidPath(String path) {
+    	if(path == null || path.length() < 1){
+    		return false;
+    	}
+    	return !path.contains("\0") && !path.contains("//");
+    }
 	
 	public void cleanup() {
 		for (User u : getUsers()) u.cleanup();
