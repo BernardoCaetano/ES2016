@@ -13,6 +13,7 @@ import pt.tecnico.myDrive.exception.InvalidUsernameException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.NotDirectoryException;
+import pt.tecnico.myDrive.exception.CannotRemoveUserException;
 
 import org.jdom2.Element;
 import org.jdom2.Document;
@@ -28,7 +29,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		RootDirectory rootDir = RootDirectory.getInstance(newMyDrive);
 		newMyDrive.setRootDirectory(rootDir);
 		User root = new SuperUser(newMyDrive, "root", "***", "Super User", "rwxdr-x-", "/home/root");
-		Guest guest = new Guest(newMyDrive);
+		new Guest(newMyDrive);
 		rootDir.setOwner(root);
 		return newMyDrive;
 	}
@@ -129,7 +130,6 @@ public class MyDriveFS extends MyDriveFS_Base {
 		}
 		return (Directory) af;
 	}
-	
 	
 	@Override
 	public Set<Login> getLoginSet() {
@@ -248,5 +248,12 @@ public class MyDriveFS extends MyDriveFS_Base {
 	public void cleanup() {
 		for (User u : getUsers()) u.cleanup();
 		this.getRootDirectory().cleanup();
+	}
+	
+	@Override
+	public void removeUser(User u) throws CannotRemoveUserException {
+		if(u instanceof Guest || u instanceof SuperUser)
+			throw new CannotRemoveUserException(u);
+		super.removeUser(u);
 	}
 }
