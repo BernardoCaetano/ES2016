@@ -17,6 +17,7 @@ import pt.tecnico.myDrive.exception.CyclicLinkException;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidAppContentException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
+import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
 
 public class WriteFileTest extends TokenReceivingTest {
@@ -51,8 +52,9 @@ public class WriteFileTest extends TokenReceivingTest {
 		rootToken = rootLg.getToken();
 	}
 
-	private AbstractFile getFile(String name) {
-		return currentDir.getFileByName(name);
+	private AbstractFile getFile(String path) {
+		MyDriveFS md = MyDriveFS.getInstance();
+		return md.getFileByPath(currentDir, path);
 	}
 
 	@Test
@@ -185,6 +187,29 @@ public class WriteFileTest extends TokenReceivingTest {
 	public void nonExistentTokenTest() {
 		WriteFileService service = new WriteFileService(invalidToken, "someTxt", "some text");
 		service.execute();
+	}
+	
+	// NEW TESTS
+	
+	@Test(expected = InvalidPathException.class)
+	public void pathIsInvalidTest() {
+		WriteFileService service = new WriteFileService(validToken, "//", "some text");
+		service.execute();
+	}
+	
+	@Test(expected = FileNotFoundException.class)
+	public void fileInPathNotFoundTest() {
+		WriteFileService service = new WriteFileService(validToken, "/batata", "some text");
+		service.execute();
+	}
+	
+	@Test
+	public void successWriteTextFileWithPathTest() {
+		WriteFileService service = new WriteFileService(validToken, "/home/mary/marysTxt", "some texttt");
+		service.execute();
+		
+		TextFile t = (TextFile) getFile("/home/mary/marysTxt");
+		assertEquals("Content is not the same", "some texttt", t.getContent());
 	}
 
 }
