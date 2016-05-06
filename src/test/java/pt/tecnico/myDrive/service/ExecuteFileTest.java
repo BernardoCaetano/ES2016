@@ -16,6 +16,7 @@ import pt.tecnico.myDrive.domain.Link;
 import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.User;
+import pt.tecnico.myDrive.exception.AssociationDoesNotExistExceotion;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 
 @RunWith(JMockit.class)
@@ -80,6 +81,20 @@ public class ExecuteFileTest extends TokenReceivingTest {
 				FileViewer.executePDF(linkFile);
 			}
 		};
+	}
+	
+	@Test(expected=AssociationDoesNotExistExceotion.class)
+	public void noAssociationFound() {
+		final String nonExisting = "random.org";
+
+		new MockUp<ExecuteFileService>() {
+			@Mock
+			void dispatch() { 
+				throw new AssociationDoesNotExistExceotion(nonExisting);
+			}
+		};
+		
+		new ExecuteFileService(validToken, nonExisting, null).execute();;
 	}
 	
 	@Test(expected = InvalidLoginException.class)
