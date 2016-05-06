@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
+import pt.tecnico.myDrive.exception.InvalidPermissionStringException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
 
 
@@ -214,4 +215,17 @@ public class User extends User_Base {
     public boolean isLoginValid(DateTime lastActivity) {
     	return (DateTime.now().getMillis() - lastActivity.plusHours(2).getMillis()) < 0;
     }
+
+	public static boolean isValidPermissionString(String test) {
+		return AbstractFile.isValidPermissionString(test);
+	}
+
+	@Override
+	public void setUmask(String umask) {
+		if (isValidPermissionString(umask)) {
+			super.setUmask(umask);
+		} else {
+			throw new InvalidPermissionStringException(umask);
+		}
+	}
 }

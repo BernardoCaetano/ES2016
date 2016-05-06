@@ -10,6 +10,7 @@ import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.CreateDeniedException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
+import pt.tecnico.myDrive.exception.InvalidPermissionStringException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.PathMaximumLengthException;;
 
@@ -156,4 +157,17 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 	}
 
 	public abstract int dimension();
+
+	public static boolean isValidPermissionString(String test) {
+		return test.matches("([r-][w-][x-][d-]){2}");
+	}
+
+	@Override
+	public void setPermissions(String permissions) {
+		if (isValidPermissionString(permissions)) {
+			super.setPermissions(permissions);
+		} else {
+			throw new InvalidPermissionStringException(permissions);
+		}
+	}
 }
