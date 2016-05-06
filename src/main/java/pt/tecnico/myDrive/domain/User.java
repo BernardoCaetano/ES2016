@@ -64,6 +64,9 @@ public class User extends User_Base {
 
 	public void setHomeDirectory(MyDriveFS myDrive, String homeDirPath) throws InvalidPathException {
 		try {
+			if(homeDirPath.endsWith("/") || !homeDirPath.startsWith("/")){
+				throw new InvalidPathException(homeDirPath);
+			}
 			homeDirPath = homeDirPath.substring(1);
 			Directory rootDir = (Directory) myDrive.getRootDirectory();
 			String homeDirName = homeDirPath.substring(homeDirPath.lastIndexOf("/") + 1);
