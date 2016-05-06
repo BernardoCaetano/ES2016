@@ -13,6 +13,7 @@ import pt.tecnico.myDrive.exception.InvalidUsernameException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.NotDirectoryException;
+import pt.tecnico.myDrive.exception.NotTextFileException;
 
 import org.jdom2.Element;
 import org.jdom2.Document;
@@ -128,6 +129,15 @@ public class MyDriveFS extends MyDriveFS_Base {
 			throw new NotDirectoryException(af.getName());
 		}
 		return (Directory) af;
+	}
+	
+	public TextFile getTextFileByPath(Directory currentDir, String path) 
+			throws NotDirectoryException, FileNotFoundException, InvalidPathException {
+		AbstractFile af = getFileByPath(currentDir, path);
+		if (!(af instanceof TextFile)){
+			throw new NotTextFileException(af.getName());
+		}
+		return (TextFile) af;
 	}
 	
 	
