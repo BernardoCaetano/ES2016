@@ -16,7 +16,7 @@ import pt.tecnico.myDrive.domain.Link;
 import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.User;
-import pt.tecnico.myDrive.exception.AssociationDoesNotExistExceotion;
+import pt.tecnico.myDrive.exception.AssociationDoesNotExistException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 
 @RunWith(JMockit.class)
@@ -83,14 +83,14 @@ public class ExecuteFileTest extends TokenReceivingTest {
 		};
 	}
 	
-	@Test(expected=AssociationDoesNotExistExceotion.class)
+	@Test(expected=AssociationDoesNotExistException.class)
 	public void noAssociationFound() {
 		final String nonExisting = "random.org";
 
 		new MockUp<ExecuteFileService>() {
 			@Mock
 			void dispatch() { 
-				throw new AssociationDoesNotExistExceotion(nonExisting);
+				throw new AssociationDoesNotExistException(nonExisting);
 			}
 		};
 		

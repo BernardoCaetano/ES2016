@@ -1,10 +1,10 @@
 package pt.tecnico.myDrive.exception;
 
-public class AssociationDoesNotExistExceotion extends MyDriveException{
+public class AssociationDoesNotExistException extends MyDriveException{
 	private static final long serialVersionUID = 1L;
 	private String fileName;
 
-	public AssociationDoesNotExistExceotion(String fileName) {
+	public AssociationDoesNotExistException(String fileName) {
 		this.fileName = fileName;
 	}
 	
