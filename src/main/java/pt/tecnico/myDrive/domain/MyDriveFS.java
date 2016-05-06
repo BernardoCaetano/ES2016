@@ -238,7 +238,7 @@ public class MyDriveFS extends MyDriveFS_Base {
 		}
 	}
 	
-	protected boolean isValidPath(String path) {
+	protected static boolean isValidPath(String path) {
     	if(path == null || path.length() < 1){
     		return false;
     	}

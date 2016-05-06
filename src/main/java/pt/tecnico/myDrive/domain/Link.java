@@ -16,7 +16,7 @@ public class Link extends Link_Base {
     		throws InvalidFileNameException {
     	super();
     	
-    	if(!mydrive.isValidPath(content)){
+    	if(!isValidPath(content)){
     		throw new InvalidLinkContentException();
     	}
     	
@@ -32,6 +32,10 @@ public class Link extends Link_Base {
 		super();
 		xmlImport(myDrive, linkElement);
 	}
+    
+    protected static boolean isValidPath(String content) {
+    	return MyDriveFS.isValidPath(content);
+    }
 	
     @Override
     public String xmlTag() {
