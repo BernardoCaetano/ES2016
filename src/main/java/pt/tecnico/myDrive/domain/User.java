@@ -111,9 +111,7 @@ public class User extends User_Base {
     		default  : return false;
     	}
     	
-    	if (file
-    		.getOwner()
-    		.equals(this) == false)
+    	if (file.getOwner().equals(this) == false)
     		 pos += 4;
     	
     	return file.getPermissions().charAt(pos) == type;
