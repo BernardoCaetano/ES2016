@@ -1,7 +1,9 @@
 package pt.tecnico.myDrive.domain;
 
+import org.jdom2.Element;
 import org.joda.time.DateTime;
 
+import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
@@ -32,6 +34,11 @@ class Guest extends Guest_Base {
     	else
     		return false;
     }
+    
+    @Override
+	public void xmlImport(MyDriveFS myDrive, Element userElement) {
+    	throw new ImportDocumentException("Cannot import Guest user");	
+	}
 
 	@Override
 	protected void cleanup() {

@@ -5,6 +5,10 @@ public class ImportDocumentException extends MyDriveException {
     private static final long serialVersionUID = 1L;
 
     public ImportDocumentException() {
-        super("Error in importing file system from XML");
+        super("Error importing file system from XML");
     }
+    
+    public ImportDocumentException(String message) {
+    	super("Error importing file system from XML: " + message);
+	}
 }
