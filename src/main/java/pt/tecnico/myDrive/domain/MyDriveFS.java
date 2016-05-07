@@ -208,21 +208,20 @@ public class MyDriveFS extends MyDriveFS_Base {
 		
 		for (Element userElement : myDriveElement.getChildren("user")) {
 			String username = userElement.getAttributeValue("username");
-			User u;
 			try {
-				u = getUserByUsername(username);
+				User u = getUserByUsername(username);
 				u.xmlImport(this, userElement);
 			} catch (UserNotFoundException e) {
-				u = new User(this, userElement);
+				new User(this, userElement);
 			}
 		}
 
-		for (Element directoryElement : myDriveElement.getChildren("directory")) {
-			if (elementExistsInMyDriveFS(directoryElement)) {
-				new Directory(this, directoryElement);
-			} else {
-				getFileByPath(rootDir, directoryElement.getAttribute("path").getValue()).xmlImport(this,
-						directoryElement);
+		for (Element dirElement : myDriveElement.getChildren("directory")) {
+			try {
+				Directory d = getDirectoryByPath(rootDir, dirElement.getChildText("path"));
+				d.xmlImport(this, dirElement);
+			} catch (NotDirectoryException | FileNotFoundException e ) {
+				new Directory(this, dirElement);
 			}
 		}
 
