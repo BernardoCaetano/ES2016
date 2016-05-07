@@ -6,6 +6,7 @@ import java.util.Set;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
+import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
@@ -217,10 +218,13 @@ public class MyDriveFS extends MyDriveFS_Base {
 
 		for (Element dirElement : myDriveElement.getChildren("directory")) {
 			try {
-				Directory d = getDirectoryByPath(rootDir, dirElement.getChildText("path"));
+				String fullpath = dirElement.getChildText("path") +"/"+ dirElement.getChildText("name");
+				Directory d = getDirectoryByPath(rootDir, fullpath);
 				d.xmlImport(this, dirElement);
-			} catch (NotDirectoryException | FileNotFoundException e ) {
+			} catch (FileNotFoundException e ) {
 				new Directory(this, dirElement);
+			} catch (NotDirectoryException e) {
+				throw new ImportDocumentException("A file with that name already exists and is not a directory");
 			}
 		}
 
@@ -246,14 +250,6 @@ public class MyDriveFS extends MyDriveFS_Base {
 				new Link(this, linkElement);
 			} else {
 				getFileByPath(rootDir, linkElement.getAttribute("path").getValue()).xmlImport(this, linkElement);
-			}
-		}
-
-		for (Element userElement : myDriveElement.getChildren("user")) {
-			if (hasUser(userElement.getAttribute("username").getValue())) {
-				getUserByUsername(userElement.getAttribute("username").getValue()).xmlImport(this, userElement);
-			} else {
-				new User(this, userElement);
 			}
 		}
 	}
