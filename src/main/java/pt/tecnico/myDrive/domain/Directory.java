@@ -14,6 +14,7 @@ import pt.tecnico.myDrive.exception.IsCurrentDirectoryException;
 import pt.tecnico.myDrive.exception.IsHomeDirectoryException;
 import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.CyclicLinkException;
+import pt.tecnico.myDrive.exception.EnvironmentVariableDoesNotExistException;
 
 import org.jdom2.Element;
 
@@ -64,7 +65,7 @@ public class Directory extends Directory_Base {
 		throw new FileNotFoundException(getPath() + name);
 	}
 
-	public AbstractFile getFileByName(String name) throws FileNotFoundException {
+	public AbstractFile getFileByName(String name) throws FileNotFoundException, EnvironmentVariableDoesNotExistException {
 		Set<String> visitedPaths = new TreeSet<String>();
 		AbstractFile f = getFileByNameNoFollow(name);
 
@@ -87,7 +88,7 @@ public class Directory extends Directory_Base {
 	}
 	
 	
-	public String translate(String path){
+	public String translate(String path) throws EnvironmentVariableDoesNotExistException{
 		//for mockup example
 		return path;
 	}

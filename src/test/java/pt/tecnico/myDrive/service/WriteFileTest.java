@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import mockit.Mock;
+import mockit.MockUp;
 import pt.tecnico.myDrive.domain.AbstractFile;
 import pt.tecnico.myDrive.domain.App;
 import pt.tecnico.myDrive.domain.Directory;
@@ -14,6 +16,7 @@ import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.User;
 import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.CyclicLinkException;
+import pt.tecnico.myDrive.exception.EnvironmentVariableDoesNotExistException;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidAppContentException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
@@ -44,6 +47,10 @@ public class WriteFileTest extends TokenReceivingTest {
 
 		new Link(md, currentDir, mary, "loopLink1", "/home/mary/loopLink2");
 		new Link(md, currentDir, mary, "loopLink2", "/home/mary/loopLink1");
+
+		new Link(md, currentDir, mary, "linkWith$", "/home/$MARY/marysTxt");
+		new Link(md, currentDir, mary, "linkWith$FailFile", "/home/$JOHN/marysTxt");
+		new Link(md, currentDir, mary, "linkWith$FailEnv", "/home/$JAKE/maryysTxt");
 
 		populate("mary", "5678");
 
@@ -188,28 +195,78 @@ public class WriteFileTest extends TokenReceivingTest {
 		WriteFileService service = new WriteFileService(invalidToken, "someTxt", "some text");
 		service.execute();
 	}
-	
+
 	// NEW TESTS
-	
+
 	@Test(expected = InvalidPathException.class)
 	public void pathIsInvalidTest() {
 		WriteFileService service = new WriteFileService(validToken, "//", "some text");
 		service.execute();
 	}
-	
+
 	@Test(expected = FileNotFoundException.class)
 	public void fileInPathNotFoundTest() {
 		WriteFileService service = new WriteFileService(validToken, "/batata", "some text");
 		service.execute();
 	}
-	
+
 	@Test
 	public void successWriteTextFileWithPathTest() {
 		WriteFileService service = new WriteFileService(validToken, "/home/mary/marysTxt", "some texttt");
 		service.execute();
-		
+
 		TextFile t = (TextFile) getFile("/home/mary/marysTxt");
 		assertEquals("Content is not the same", "some texttt", t.getContent());
+	}
+
+	/// ENVIRONMENT TEST ///
+
+	@Test
+	public void successLinkWithEnvironment() {
+
+		new MockUp<Directory>() {
+			@Mock
+			String translate(String path) {
+				return "/home/mary/marysTxt";
+			}
+		};
+
+		WriteFileService service = new WriteFileService(validToken, "linkWith$", "after Mock");
+		service.execute();
+
+		TextFile tf = (TextFile) getFile("/home/mary/marysTxt");
+		assertEquals("Content not the same", "after Mock", tf.getContent());
+	}
+
+	@Test(expected = FileNotFoundException.class)
+	public void failureLinkFileDoesNotExist() {
+
+		new MockUp<Directory>() {
+			@Mock
+			String translate(String path) {
+				return "/home/JOHN/marysTxt";
+			}
+		};
+
+		WriteFileService service = new WriteFileService(validToken, "linkWith$FailFile$", "after Mock");
+		service.execute();
+
+	}
+
+	@Test (expected= EnvironmentVariableDoesNotExistException.class)
+	public void failureLinkEnvDoesNotExist() {
+
+		new MockUp<Directory>() {
+			@Mock
+			String translate(String path) throws EnvironmentVariableDoesNotExistException{
+				throw new EnvironmentVariableDoesNotExistException("$JAKE");
+			};	
+			
+		};
+
+		WriteFileService service = new WriteFileService(validToken, "linkWith$FailEnv", "after Mock");
+		service.execute();
+
 	}
 
 }
