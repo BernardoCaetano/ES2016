@@ -219,7 +219,7 @@ public class WriteFileTest extends TokenReceivingTest {
 		assertEquals("Content is not the same", "some texttt", t.getContent());
 	}
 
-	/// ENVIRONMENT TEST ///
+	/// ENVIRONMENT LINKS TEST ///
 
 	@Test
 	public void successLinkWithEnvironment() {
