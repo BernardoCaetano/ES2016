@@ -172,21 +172,20 @@ public class MyDriveFS extends MyDriveFS_Base {
 		Element element = new Element("myDrive");
 		Document doc = new Document(element);
 		
+		Set<User> userSet = getUsers();
+
+		for (User u : userSet) {
+			if (!u.getUsername().equals("root") && !u.getUsername().equals("nobody"))
+				element.addContent(u.xmlExport());
+		}
+		
 		ArrayList<AbstractFile> allFiles = getRootDirectory().getFilesRecursive();
 		Collections.sort(allFiles);
 		
 		for (AbstractFile f: allFiles){
 			if (!f.getPath().equals("/") && !f.getPath().equals("/home/") && !f.isHomeDirectory())
 				element.addContent(f.xmlExport());
-		}
-		
-		
-		Set<User> userSet = getUsers();
-
-		for (User u : userSet) {
-			if (!u.getUsername().equals("root"))
-				element.addContent(u.xmlExport());
-		}
+		}		
 
 		return doc;
 	}

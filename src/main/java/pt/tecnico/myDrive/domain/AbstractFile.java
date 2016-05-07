@@ -135,9 +135,32 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 	
 	public Element xmlAddFile() {
 		Element element = new Element(xmlTag());
-		element.setAttribute("path", getPath());
-		element.setAttribute("permissions", getPermissions());
-		element.setAttribute("lastModified", getLastModified().toString());
+		
+		//FIXME Very, very dirty hack: Paths need to be changed not to accept '/' as last char
+		String path = getParent().getPath();
+		if (path != "/" && path.endsWith("/")) {
+			path = path.substring(0, path.lastIndexOf("/"));
+		}
+		
+		Element pathElement = new Element("path");
+		pathElement.addContent(path);
+        element.addContent(pathElement);
+		
+        Element nameElement = new Element("name");
+        nameElement.addContent(getName());
+        element.addContent(nameElement);
+        
+        Element ownerElement = new Element("owner");
+        ownerElement.addContent(getOwner().getUsername());
+        element.addContent(ownerElement);
+        
+        Element permissionsElement = new Element("permissions");
+        permissionsElement.addContent(getPermissions());
+        element.addContent(permissionsElement);
+        
+        Element lastModifiedElement = new Element("lastModified");
+        lastModifiedElement.addContent(getLastModified().toString());
+        element.addContent(lastModifiedElement);
 
 		return element;
 	}

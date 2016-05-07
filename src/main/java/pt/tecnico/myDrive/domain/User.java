@@ -164,20 +164,28 @@ public class User extends User_Base {
         Element element = new Element("user");
         
         element.setAttribute("username", getUsername());
-        element.setAttribute("password", super.getPassword());
-        element.setAttribute("name", getName());
-        element.setAttribute("umask", getUmask());
-        element.setAttribute("homeDirectory", getHomeDirectory().getPath());
         
-		ArrayList<AbstractFile> ownedFiles = new ArrayList<AbstractFile>();
-		ownedFiles.addAll(getFilesSet());
-		Collections.sort(ownedFiles);
-
-        for (AbstractFile f: ownedFiles) {
-            Element fileElement = new Element("file");
-            fileElement.setAttribute("path", f.getPath());
-            element.addContent(fileElement);
-        }
+        Element nameElement = new Element("name");
+        nameElement.addContent(getName());
+        element.addContent(nameElement);
+        
+        Element passwordElement = new Element("password");
+        passwordElement.addContent(super.getPassword());
+        element.addContent(passwordElement);
+        
+        Element umaskElement = new Element("umask");
+        umaskElement.addContent(getUmask());
+        element.addContent(umaskElement);
+        
+        //FIXME Very, very dirty hack: Paths need to be changed not to accept '/' as last char
+        String path = getHomeDirectory().getPath();
+		if ((path != "/") && (path.endsWith("/"))) {
+			path = path.substring(0, path.lastIndexOf("/"));
+		}
+        
+        Element homeElement = new Element("home");
+        homeElement.addContent(path);
+        element.addContent(homeElement);
 
         return element;
     }
