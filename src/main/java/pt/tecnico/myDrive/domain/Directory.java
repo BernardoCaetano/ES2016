@@ -70,6 +70,8 @@ public class Directory extends Directory_Base {
 
 		while (f instanceof Link) {
 			String dstPath = ((Link) f).getContent();
+			
+			dstPath= translate(dstPath);
 
 			if (visitedPaths.contains(dstPath)) {
 				throw new CyclicLinkException();
@@ -83,6 +85,13 @@ public class Directory extends Directory_Base {
 
 		return f;
 	}
+	
+	
+	public String translate(String path){
+		//for mockup example
+		return path;
+	}
+
 
 	public TextFile getTextFileByName(String name) throws NotTextFileException {
 		try {
