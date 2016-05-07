@@ -3,9 +3,6 @@ package pt.tecnico.myDrive.domain;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import org.jdom2.Element;
 import org.joda.time.DateTime;
 
@@ -151,13 +148,6 @@ public class User extends User_Base {
 		} catch (UnsupportedEncodingException e) {
 			throw new ImportDocumentException();
 		}
-
-		// for (Element fileElement : userElement.getChildren("file")){
-		// String path = fileElement.getAttribute("path").getValue();
-		// Directory currentDir = myDrive.getRootDirectory();
-		// myDrive.getFileByPath(currentDir,
-		// path).setOwner(MyDriveFS.getInstance(), this);
-		// }
 	}
 
     public Element xmlExport() {

@@ -2,8 +2,8 @@ package pt.tecnico.myDrive.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.Set;
-
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.ImportDocumentException;
@@ -190,68 +190,52 @@ public class MyDriveFS extends MyDriveFS_Base {
 
 		return doc;
 	}
-
-	private boolean elementExistsInMyDriveFS(Element xml) {
-		RootDirectory rootDir = RootDirectory.getInstance(this);
-		Directory parentDirectory = rootDir.getParentFromPath(xml.getAttribute("path").getValue());
-		String nameOfFile = rootDir.getNameOfFileFromPath(xml.getAttribute("path").getValue());
-		if (!parentDirectory.hasFile(nameOfFile)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
 	
 	public void xmlImport(Element myDriveElement) {
 		
 		RootDirectory rootDir = getRootDirectory();
-		
-		for (Element userElement : myDriveElement.getChildren("user")) {
-			String username = userElement.getAttributeValue("username");
-			try {
-				User u = getUserByUsername(username);
-				u.xmlImport(this, userElement);
-			} catch (UserNotFoundException e) {
-				new User(this, userElement);
-			}
-		}
 
-		for (Element dirElement : myDriveElement.getChildren("directory")) {
-			try {
-				String fullpath = dirElement.getChildText("path") +"/"+ dirElement.getChildText("name");
-				Directory d = getDirectoryByPath(rootDir, fullpath);
-				d.xmlImport(this, dirElement);
-			} catch (FileNotFoundException e ) {
-				new Directory(this, dirElement);
-			} catch (NotDirectoryException e) {
-				throw new ImportDocumentException("A file with that name already exists and is not a directory");
-			}
-		}
+		Iterator<Element> iterator = myDriveElement.getChildren().iterator();
+		Element element;
 
-		for (Element textFileElement : myDriveElement.getChildren("textFile")) {
-			if (elementExistsInMyDriveFS(textFileElement)) {
-				new TextFile(this, textFileElement);
+		while (iterator.hasNext()) {
+			element = iterator.next();
+			String elementName = element.getName();
+			if (elementName.equals("user")) {
+				String username = element.getAttributeValue("username");
+				try {
+					User u = getUserByUsername(username);
+					if (u != null)
+						throw new ImportDocumentException("Trying to import a user that already exists '" + u.getName() + "'");
+
+				} catch (UserNotFoundException e) {
+					new User(this, element);
+				}
 			} else {
-				getFileByPath(rootDir, textFileElement.getAttribute("path").getValue()).xmlImport(this,
-						textFileElement);
-			}
-		}
+	
+				String fullpath = element.getChildText("path") + "/" + element.getChildText("name");
+				try {
+					AbstractFile file = getFileByPath(rootDir, fullpath);
+					if (file != null)
+						throw new ImportDocumentException("Trying to import a file that already exists '" + file.getName() + "'");
 
-		for (Element appElement : myDriveElement.getChildren("app")) {
-			if (elementExistsInMyDriveFS(appElement)) {
-				new App(this, appElement);
-			} else {
-				getFileByPath(rootDir, appElement.getAttribute("path").getValue()).xmlImport(this, appElement);
+				} catch (FileNotFoundException e) {
+					switch (elementName) {
+					case "directory":
+						new Directory(this, element);
+						break;
+					case "app":
+						new App(this, element);
+						break;
+					case "textFile":
+						new TextFile(this, element);
+						break;
+					case "link":
+						new Link(this, element);
+					}
+				}
 			}
-		}
-
-		for (Element linkElement : myDriveElement.getChildren("link")) {
-			if (elementExistsInMyDriveFS(linkElement)) {
-				new Link(this, linkElement);
-			} else {
-				getFileByPath(rootDir, linkElement.getAttribute("path").getValue()).xmlImport(this, linkElement);
-			}
-		}
+		}			
 	}
 	
 	protected static boolean isValidPath(String path) {
