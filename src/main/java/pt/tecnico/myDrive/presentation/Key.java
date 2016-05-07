@@ -10,14 +10,15 @@ public class Key extends MyDriveCommand {
 	void execute(String[] args) {
 		
 		if (args.length > 1 ) {
-			throw new RuntimeException("Use: '" + getName() + " <username>' to change current session");
+			throw new RuntimeException("Use '" + getName() + " <username>' to change current session or '" + getName()
+					+ "' to see current session details");
 		} else if (args.length == 0) {
 			println("Active Session: Username- " + getCurrentUsername() + " Token- " + getCurrentToken());
 		} else if (args.length == 1) {
 			if (switchToToken(args[0]) != null) {
 				println("Active Session: Username- " + getCurrentUsername() + " Token- " + getCurrentToken());
 			} else {
-				println(args[0] + " : (invalid username)");
+				println(getName() + " : " + args[0] + " is not logged in");
 			}
 		}
 	}
