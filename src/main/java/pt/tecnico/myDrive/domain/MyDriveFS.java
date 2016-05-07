@@ -203,7 +203,19 @@ public class MyDriveFS extends MyDriveFS_Base {
 	}
 	
 	public void xmlImport(Element myDriveElement) {
-		RootDirectory rootDir = RootDirectory.getInstance(this);
+		
+		RootDirectory rootDir = getRootDirectory();
+		
+		for (Element userElement : myDriveElement.getChildren("user")) {
+			String username = userElement.getAttributeValue("username");
+			User u;
+			try {
+				u = getUserByUsername(username);
+				u.xmlImport(this, userElement);
+			} catch (UserNotFoundException e) {
+				u = new User(this, userElement);
+			}
+		}
 
 		for (Element directoryElement : myDriveElement.getChildren("directory")) {
 			if (elementExistsInMyDriveFS(directoryElement)) {
