@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<myDrive>
+  <user username="BOMDIAaLÉGRIA">
+    <name>BOMDIAaLÉGRIA</name>
+    <password>BOMDIAaLÉGRIA</password>
+    <umask>rwxd----</umask>
+    <home>/home/s/f/j/wwewe</home>
+  </user>
+  <directory>
+    <path>/home</path>
+    <name>s</name>
+    <owner>root</owner>
+    <permissions>rwxdr-x-</permissions>
+    <lastModified>2016-05-07T21:15:06.041+01:00</lastModified>
+  </directory>
+  <directory>
+    <path>/home/s</path>
+    <name>f</name>
+    <owner>root</owner>
+    <permissions>rwxdr-x-</permissions>
+    <lastModified>2016-05-07T21:15:06.041+01:00</lastModified>
+  </directory>
+  <directory>
+    <path>/home/s/f</path>
+    <name>j</name>
+    <owner>root</owner>
+    <permissions>rwxdr-x-</permissions>
+    <lastModified>2016-05-07T21:15:06.041+01:00</lastModified>
+  </directory>
+</myDrive>

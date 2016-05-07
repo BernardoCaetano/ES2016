@@ -172,21 +172,20 @@ public class MyDriveFS extends MyDriveFS_Base {
 		Element element = new Element("myDrive");
 		Document doc = new Document(element);
 		
+		Set<User> userSet = getUsers();
+
+		for (User u : userSet) {
+			if (!u.getUsername().equals("root") && !u.getUsername().equals("nobody"))
+				element.addContent(u.xmlExport());
+		}
+		
 		ArrayList<AbstractFile> allFiles = getRootDirectory().getFilesRecursive();
 		Collections.sort(allFiles);
 		
 		for (AbstractFile f: allFiles){
 			if (!f.getPath().equals("/") && !f.getPath().equals("/home/") && !f.isHomeDirectory())
 				element.addContent(f.xmlExport());
-		}
-		
-		
-		Set<User> userSet = getUsers();
-
-		for (User u : userSet) {
-			if (!u.getUsername().equals("root"))
-				element.addContent(u.xmlExport());
-		}
+		}		
 
 		return doc;
 	}
@@ -203,14 +202,25 @@ public class MyDriveFS extends MyDriveFS_Base {
 	}
 	
 	public void xmlImport(Element myDriveElement) {
-		RootDirectory rootDir = RootDirectory.getInstance(this);
+		
+		RootDirectory rootDir = getRootDirectory();
+		
+		for (Element userElement : myDriveElement.getChildren("user")) {
+			String username = userElement.getAttributeValue("username");
+			try {
+				User u = getUserByUsername(username);
+				u.xmlImport(this, userElement);
+			} catch (UserNotFoundException e) {
+				new User(this, userElement);
+			}
+		}
 
-		for (Element directoryElement : myDriveElement.getChildren("directory")) {
-			if (elementExistsInMyDriveFS(directoryElement)) {
-				new Directory(this, directoryElement);
-			} else {
-				getFileByPath(rootDir, directoryElement.getAttribute("path").getValue()).xmlImport(this,
-						directoryElement);
+		for (Element dirElement : myDriveElement.getChildren("directory")) {
+			try {
+				Directory d = getDirectoryByPath(rootDir, dirElement.getChildText("path"));
+				d.xmlImport(this, dirElement);
+			} catch (NotDirectoryException | FileNotFoundException e ) {
+				new Directory(this, dirElement);
 			}
 		}
 

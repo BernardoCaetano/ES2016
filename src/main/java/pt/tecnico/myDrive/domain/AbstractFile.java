@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.CreateDeniedException;
+import pt.tecnico.myDrive.exception.FileNotFoundException;
+import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPermissionStringException;
@@ -83,7 +85,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 
 	protected Directory getParentFromPath(String path) {
 		if (path.equals("/"))
-			return RootDirectory.getInstance(MyDriveFS.getInstance());
+			return MyDriveFS.getInstance().getRootDirectory();
 		else {
 			String[] parts = path.split("/");
 			String name = parts[parts.length - 1];
@@ -96,27 +98,69 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		}
 	}
 
-	public abstract Element xmlExport();
-
 	public void xmlImport(MyDriveFS myDrive, Element element) {
-		Directory parentDirectory = getParentFromPath(element.getAttribute("path").getValue());
-		String nameOfFile = getNameOfFileFromPath(element.getAttribute("path").getValue());
 
-		if (!parentDirectory.hasFile(nameOfFile)) {
-			setName(nameOfFile);
-			setParent(parentDirectory);
+		String parentPath = element.getChildText("path");
+		if (parentPath == null) {
+			throw new ImportDocumentException("A file must reside inside a directory");
+		}
+		Directory parent;
+		try {
+			parent = myDrive.getDirectoryByPath(myDrive.getRootDirectory(), parentPath);
+		} catch (FileNotFoundException e) {
+			throw new ImportDocumentException("The path specified refers to a non-existing file");
+		}
+
+		String name = element.getChildText("name");
+		if (name == null) {
+			throw new ImportDocumentException("A file must have a name");
+		}
+
+		if (!parent.hasFile(name)) {
+			setName(name);
+			setParent(parent);
 			setId(myDrive);
 		}
 
-		setPermissions(element.getAttribute("permissions").getValue());
-		setLastModified(DateTime.parse(element.getAttribute("lastModified").getValue()));
-	}
+		String owner = element.getChildText("owner");
+		setOwner(myDrive.getUserByUsername(owner != null ? owner : "root"));
 
+		setPermissions(element.getChildText("permissions"));
+
+		String time = element.getChildText("lastModified");
+		setLastModified(time != null ? DateTime.parse(time) : DateTime.now());
+	}
+	
+	public abstract Element xmlExport();
+	
 	public Element xmlAddFile() {
 		Element element = new Element(xmlTag());
-		element.setAttribute("path", getPath());
-		element.setAttribute("permissions", getPermissions());
-		element.setAttribute("lastModified", getLastModified().toString());
+		
+		//FIXME Very, very dirty hack: Paths need to be changed not to accept '/' as last char
+		String path = getParent().getPath();
+		if (path != "/" && path.endsWith("/")) {
+			path = path.substring(0, path.lastIndexOf("/"));
+		}
+		
+		Element pathElement = new Element("path");
+		pathElement.addContent(path);
+        element.addContent(pathElement);
+		
+        Element nameElement = new Element("name");
+        nameElement.addContent(getName());
+        element.addContent(nameElement);
+        
+        Element ownerElement = new Element("owner");
+        ownerElement.addContent(getOwner().getUsername());
+        element.addContent(ownerElement);
+        
+        Element permissionsElement = new Element("permissions");
+        permissionsElement.addContent(getPermissions());
+        element.addContent(permissionsElement);
+        
+        Element lastModifiedElement = new Element("lastModified");
+        lastModifiedElement.addContent(getLastModified().toString());
+        element.addContent(lastModifiedElement);
 
 		return element;
 	}
@@ -164,6 +208,10 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 
 	@Override
 	public void setPermissions(String permissions) {
+		if (permissions == null) {
+			super.setPermissions(getOwner().getUmask());
+			return;
+		}
 		if (isValidPermissionString(permissions)) {
 			super.setPermissions(permissions);
 		} else {

@@ -1,6 +1,8 @@
 package pt.tecnico.myDrive.domain;
 
 import org.apache.commons.lang.StringUtils;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -8,6 +10,7 @@ import org.jdom2.Element;
 import org.joda.time.DateTime;
 
 import pt.tecnico.myDrive.exception.FileNotFoundException;
+import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidPermissionStringException;
@@ -135,46 +138,54 @@ public class User extends User_Base {
     }
 
 	public void xmlImport(MyDriveFS myDrive, Element userElement) {
-		if(!myDrive.hasUser(userElement.getAttribute("username").getValue())){
-			
-			setUsername(userElement.getAttribute("username").getValue());
-			setMyDrive(myDrive);
-		}
-		
-		setPassword(userElement.getAttribute("password").getValue());
-		setName(userElement.getAttribute("name").getValue());
-		setUmask(userElement.getAttribute("umask").getValue());
-		
-		String homeDirectoryPath = userElement.getAttribute("homeDirectory").getValue();
-		
-		
-		setHomeDirectory(myDrive, homeDirectoryPath);
+		try {
+			if (!myDrive.hasUser(userElement.getAttributeValue("username"))) {
+				setUsername(new String(userElement.getAttributeValue("username").getBytes("UTF-8")));
+				setMyDrive(myDrive);
+			}
 
-		for (Element fileElement : userElement.getChildren("file")){ 
-			String path = fileElement.getAttribute("path").getValue();
-			Directory currentDir = myDrive.getRootDirectory();
-			myDrive.getFileByPath(currentDir, path).setOwner(MyDriveFS.getInstance(), this);
-		} 
+			setPassword(new String(userElement.getChildText("password").getBytes("UTF-8")));
+			setName(new String(userElement.getChildText("name").getBytes("UTF-8")));
+			setUmask(userElement.getChildText("umask"));
+			setHomeDirectory(myDrive, userElement.getChildText("home"));
+		} catch (UnsupportedEncodingException e) {
+			throw new ImportDocumentException();
+		}
+
+		// for (Element fileElement : userElement.getChildren("file")){
+		// String path = fileElement.getAttribute("path").getValue();
+		// Directory currentDir = myDrive.getRootDirectory();
+		// myDrive.getFileByPath(currentDir,
+		// path).setOwner(MyDriveFS.getInstance(), this);
+		// }
 	}
 
     public Element xmlExport() {
         Element element = new Element("user");
         
         element.setAttribute("username", getUsername());
-        element.setAttribute("password", super.getPassword());
-        element.setAttribute("name", getName());
-        element.setAttribute("umask", getUmask());
-        element.setAttribute("homeDirectory", getHomeDirectory().getPath());
         
-		ArrayList<AbstractFile> ownedFiles = new ArrayList<AbstractFile>();
-		ownedFiles.addAll(getFilesSet());
-		Collections.sort(ownedFiles);
-
-        for (AbstractFile f: ownedFiles) {
-            Element fileElement = new Element("file");
-            fileElement.setAttribute("path", f.getPath());
-            element.addContent(fileElement);
-        }
+        Element nameElement = new Element("name");
+        nameElement.addContent(getName());
+        element.addContent(nameElement);
+        
+        Element passwordElement = new Element("password");
+        passwordElement.addContent(super.getPassword());
+        element.addContent(passwordElement);
+        
+        Element umaskElement = new Element("umask");
+        umaskElement.addContent(getUmask());
+        element.addContent(umaskElement);
+        
+        //FIXME Very, very dirty hack: Paths need to be changed not to accept '/' as last char
+        String path = getHomeDirectory().getPath();
+		if ((path != "/") && (path.endsWith("/"))) {
+			path = path.substring(0, path.lastIndexOf("/"));
+		}
+        
+        Element homeElement = new Element("home");
+        homeElement.addContent(path);
+        element.addContent(homeElement);
 
         return element;
     }
@@ -190,8 +201,8 @@ public class User extends User_Base {
 		for (Association a : this.getAssociationsSet()) a.cleanup();	
 		for (Login l : this.getLoginSet()) l.cleanup();	
 		for (AbstractFile f : this.getFilesSet()) f.setOwner(null);
-		setHomeDirectory(null);
-		setMyDrive(null);
+		super.setHomeDirectory(null);
+		super.setMyDrive(null);
 		deleteDomainObject();
 	}
 	
