@@ -31,8 +31,8 @@ public class WriteFileTest extends TokenReceivingTest {
 	@Override
 	protected void populate() {
 		MyDriveFS md = MyDriveFS.getInstance();
-		User john = new User(md, "john", "1234", "Johnny", "rwxdrwx-", null);
-		User mary = new User(md, "mary", "5678", "Mary", "rwxdrwx-", null);
+		User john = new User(md, "john", "12345678", "Johnny", "rwxdrwx-", null);
+		User mary = new User(md, "mary", "56781234", "Mary", "rwxdrwx-", null);
 		currentDir = mary.getHomeDirectory();
 		new Directory(md, currentDir, mary, "exampleDir");
 		new TextFile(md, currentDir, mary, "marysTxt", "/home/mary/exampleApp 1 2");
@@ -52,7 +52,7 @@ public class WriteFileTest extends TokenReceivingTest {
 		new Link(md, currentDir, mary, "linkWith$FailFile", "/home/$JOHN/marysTxt");
 		new Link(md, currentDir, mary, "linkWith$FailEnv", "/home/$JAKE/maryysTxt");
 
-		populate("mary", "5678");
+		populate("mary", "56781234");
 
 		Login rootLg = new Login(md, "root", "***");
 		rootLg.setCurrentDir(currentDir);

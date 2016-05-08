@@ -24,8 +24,8 @@ public class ReadFileTest extends TokenReceivingTest {
 	@Override
 	protected void populate() {
 		MyDriveFS md = MyDriveFS.getInstance();
-		User john = new User(md, "john", "1234", "Johnny", "rwxd-w--", null);
-		User mary = new User(md, "mary", "5678", "Mary", "rwxdr-x-", null);
+		User john = new User(md, "john", "12345678", "Johnny", "rwxd-w--", null);
+		User mary = new User(md, "mary", "56781234", "Mary", "rwxdr-x-", null);
 		Directory maryHome = mary.getHomeDirectory();
 		maryHome.setPermissions("rwxdrwxd");
 		new TextFile(md, maryHome, mary, "exampleTxt", "/home/mary/exampleApp 1 2");
@@ -44,7 +44,7 @@ public class ReadFileTest extends TokenReceivingTest {
 		new Link(md, maryHome, mary, "linkWith$FailFile", "/home/$JOHN/marysTxt");
 		new Link(md, maryHome, mary, "linkWith$FailEnv", "/home/$JAKE/maryysTxt");
 
-		super.populate("mary", "5678");
+		super.populate("mary", "56781234");
 	}
 
 	@Test
