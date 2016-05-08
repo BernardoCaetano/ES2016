@@ -16,7 +16,7 @@ import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 import pt.tecnico.myDrive.exception.CyclicLinkException;
-import pt.tecnico.myDrive.exception.EnvironmentVariableDoesNotExistException;
+import pt.tecnico.myDrive.exception.UndefinedVariableException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
 
 public class ReadFileTest extends TokenReceivingTest {
@@ -168,13 +168,13 @@ public class ReadFileTest extends TokenReceivingTest {
 		
 	}
 
-	@Test(expected = EnvironmentVariableDoesNotExistException.class)
+	@Test(expected = UndefinedVariableException.class)
 	public void failureLinkEnvDoesNotExist() {
 
 		new MockUp<Directory>() {
 			@Mock
-			String translate(String path) throws EnvironmentVariableDoesNotExistException {
-				throw new EnvironmentVariableDoesNotExistException("$JAKE");
+			String translate(String path) throws UndefinedVariableException {
+				throw new UndefinedVariableException("$JAKE");
 			};
 
 		};
