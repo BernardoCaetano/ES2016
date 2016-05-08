@@ -108,7 +108,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		try {
 			parent = myDrive.getDirectoryByPath(myDrive.getRootDirectory(), parentPath);
 		} catch (FileNotFoundException e) {
-			throw new ImportDocumentException("The path specified refers to a non-existing file"); //FIXME: will have to create all directories int the path
+			throw new ImportDocumentException("The path specified refers to a non-existing directory"); //FIXME: will have to create all directories in the path
 		}
 
 		String name = element.getChildText("name");
@@ -116,16 +116,21 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 			throw new ImportDocumentException("A file must have a name");
 		}
 
-		if (!parent.hasFile(name)) {
-			setName(name);
-			setParent(parent);
-			setId(myDrive);
-		}
+		if (parent.hasFile(name)) 
+			throw new ImportDocumentException("Trying to import a file that already exists '" + name + "'");
+		
+		setName(name);
+		setParent(parent);
+		setId(myDrive);
 
 		String owner = element.getChildText("owner");
 		setOwner(myDrive.getUserByUsername(owner != null ? owner : "root"));
-
-		setPermissions(element.getChildText("permissions"));
+		
+		try {
+			setPermissions(element.getChildText("permissions"));
+		} catch (InvalidPermissionStringException e) {
+			throw new ImportDocumentException(e.getMessage());
+		}
 
 		String time = element.getChildText("lastModified");
 		setLastModified(time != null ? DateTime.parse(time) : DateTime.now());
