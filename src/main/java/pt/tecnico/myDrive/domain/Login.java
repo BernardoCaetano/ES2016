@@ -8,6 +8,7 @@ import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.CannotExtendSessionTimeException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
+import pt.tecnico.myDrive.exception.PasswordTooShortException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.WrongPasswordException;
 
@@ -19,6 +20,9 @@ public class Login extends Login_Base {
     	User user = myDrive.getUserByUsername(username);
     	if (!user.checkPassword(password)) {
     		throw new WrongPasswordException();
+    	}
+    	if (!user.canLogin()) {
+    		throw new PasswordTooShortException(password);
     	}
 		super.setUser(user);
 		this.setCurrentDir(user.getHomeDirectory());

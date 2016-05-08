@@ -31,6 +31,11 @@ class Guest extends Guest_Base {
 	public void setPassword(String password) {
 		throw new InvalidOperationException("Cannot change password of Guest user");
 	}
+	
+	@Override
+	public boolean canLogin() {
+		return true;
+	}
  
     @Override
     public boolean canDelete(AbstractFile file) {

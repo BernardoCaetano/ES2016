@@ -11,7 +11,9 @@ public class PasswordTooShortException extends MyDriveException {
 	public String getPassword() { return password; }
 	
 	public String getMessage() {
-		return "Invalid password '" + password + "'. Passwords must have at least 8 characters";
+		return "Password too short '" + password + "'. "
+				+ "Password must have at least 8 characters for "
+				+ "you to be able to login";
 	}
 
 }

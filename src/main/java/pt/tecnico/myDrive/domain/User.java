@@ -114,6 +114,10 @@ public class User extends User_Base {
     	return password.equals(super.getPassword());
     }
     
+    public boolean canLogin() {
+    	return (super.getPassword().length() >= 8);
+    }
+    
     protected boolean canAccess(AbstractFile file, char type) {
     	int pos;
     	

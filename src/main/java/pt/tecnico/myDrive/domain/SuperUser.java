@@ -26,6 +26,11 @@ public class SuperUser extends SuperUser_Base {
 	}
 	
 	@Override
+	public boolean canLogin() {
+		return true;
+	}
+	
+	@Override
 	protected void cleanup() {
 		for (Login l : this.getLoginSet()) l.cleanup();
 		for (AbstractFile f : this.getFilesSet()) 
