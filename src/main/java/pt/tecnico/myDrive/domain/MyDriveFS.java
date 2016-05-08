@@ -193,47 +193,27 @@ public class MyDriveFS extends MyDriveFS_Base {
 	
 	public void xmlImport(Element myDriveElement) {
 		
-		RootDirectory rootDir = getRootDirectory();
-
 		Iterator<Element> iterator = myDriveElement.getChildren().iterator();
 		Element element;
 
 		while (iterator.hasNext()) {
 			element = iterator.next();
-			String elementName = element.getName();
-			if (elementName.equals("user")) {
-				String username = element.getAttributeValue("username");
-				try {
-					User u = getUserByUsername(username);
-					if (u != null)
-						throw new ImportDocumentException("Trying to import a user that already exists '" + u.getName() + "'");
-
-				} catch (UserNotFoundException e) {
-					new User(this, element);
-				}
-			} else {
-	
-				String fullpath = element.getChildText("path") + "/" + element.getChildText("name");
-				try {
-					AbstractFile file = getFileByPath(rootDir, fullpath);
-					if (file != null)
-						throw new ImportDocumentException("Trying to import a file that already exists '" + file.getName() + "'");
-
-				} catch (FileNotFoundException e) {
-					switch (elementName) {
-					case "directory":
-						new Directory(this, element);
-						break;
-					case "app":
-						new App(this, element);
-						break;
-					case "textFile":
-						new TextFile(this, element);
-						break;
-					case "link":
-						new Link(this, element);
-					}
-				}
+			switch (element.getName()) {
+			case "user":
+				new User(this, element);
+				break;
+			case "directory":
+				new Directory(this, element);
+				break;
+			case "app":
+				new App(this, element);
+				break;
+			case "textFile":
+				new TextFile(this, element);
+				break;
+			case "link":
+				new Link(this, element);
+				break;
 			}
 		}			
 	}

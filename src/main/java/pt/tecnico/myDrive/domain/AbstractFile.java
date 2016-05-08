@@ -101,14 +101,19 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 	public void xmlImport(MyDriveFS myDrive, Element element) {
 
 		String parentPath = element.getChildText("path");
-		if (parentPath == null) {
+		if (parentPath == null)
 			throw new ImportDocumentException("A file must reside inside a directory");
-		}
+
+		if (!parentPath.startsWith("/"))
+			throw new ImportDocumentException("All paths specified must begin at root '/'");
+
 		Directory parent;
 		try {
 			parent = myDrive.getDirectoryByPath(myDrive.getRootDirectory(), parentPath);
 		} catch (FileNotFoundException e) {
-			throw new ImportDocumentException("The path specified refers to a non-existing directory"); //FIXME: will have to create all directories in the path
+			Directory root = myDrive.getRootDirectory();
+			User superuser = myDrive.getUserByUsername("root");
+			parent = root.createDirectoryByPath(myDrive, superuser, parentPath.substring(1));
 		}
 
 		String name = element.getChildText("name");
@@ -116,16 +121,17 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 			throw new ImportDocumentException("A file must have a name");
 		}
 
-		if (parent.hasFile(name)) 
-			throw new ImportDocumentException("Trying to import a file that already exists '" + name + "'");
-		
+		if (parent.hasFile(name))
+			throw new ImportDocumentException(
+					"Trying to import a " + element.getName() + " that already exists '" + name + "'");
+
 		setName(name);
 		setParent(parent);
 		setId(myDrive);
 
 		String owner = element.getChildText("owner");
 		setOwner(myDrive.getUserByUsername(owner != null ? owner : "root"));
-		
+
 		try {
 			setPermissions(element.getChildText("permissions"));
 		} catch (InvalidPermissionStringException e) {

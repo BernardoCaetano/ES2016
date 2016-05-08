@@ -2,6 +2,7 @@ package pt.tecnico.myDrive.domain;
 
 import org.joda.time.DateTime;
 
+import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 
 import org.jdom2.Element;
@@ -44,8 +45,7 @@ public class RootDirectory extends RootDirectory_Base {
     }
     
     public void xmlImport(Element rootElement){
-		setPermissions(rootElement.getAttribute("permissions").getValue());
-		setLastModified(DateTime.parse(rootElement.getAttribute("lastModified").getValue()));
+    	throw new ImportDocumentException("Trying to import Root directory");
     } 
     
     @Override
