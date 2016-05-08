@@ -136,15 +136,29 @@ public class User extends User_Base {
 
 	public void xmlImport(MyDriveFS myDrive, Element userElement) {
 		try {
-			if (!myDrive.hasUser(userElement.getAttributeValue("username"))) {
-				setUsername(new String(userElement.getAttributeValue("username").getBytes("UTF-8")));
-				setMyDrive(myDrive);
+			String username = userElement.getAttributeValue("username");
+			if (username == null)
+				throw new ImportDocumentException("User must have a username");
+			username = new String(username.getBytes("UTF-8"));
+			
+			if (myDrive.hasUser(username)) 
+				throw new ImportDocumentException("Trying to import a user that already exists '" + username + "'");
+			
+			setUsername(username);
+			setMyDrive(myDrive);
+			
+			String s = userElement.getChildText("password");
+			setPassword(s != null ? s : username);
+			s = userElement.getChildText("name");
+			setName(s != null ? new String(s.getBytes("UTF-8")) : username);
+			try {
+				setUmask(userElement.getChildText("umask"));
+			} catch (InvalidPermissionStringException e) {
+				throw new ImportDocumentException(e.getMessage());
 			}
-
-			setPassword(new String(userElement.getChildText("password").getBytes("UTF-8")));
-			setName(new String(userElement.getChildText("name").getBytes("UTF-8")));
-			setUmask(userElement.getChildText("umask"));
-			setHomeDirectory(myDrive, userElement.getChildText("home"));
+			s = userElement.getChildText("home");
+			setHomeDirectory(myDrive, s != null ? s : "/home/" + username);
+			
 		} catch (UnsupportedEncodingException e) {
 			throw new ImportDocumentException();
 		}
