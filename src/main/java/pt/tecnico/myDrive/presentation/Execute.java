@@ -20,10 +20,10 @@ public class Execute extends MyDriveCommand {
 			new ExecuteFileService(getCurrentToken(), args[0]).execute();
 		} else {
 			
-			ArrayList<String> al = new ArrayList<String>();
+			String[] al = new String[args.length-1];
 
 			for (int i = 1; i < args.length; i++) {
-				al.add(args[i]);
+				al[i-1]= args[i];
 			}
 			new ExecuteFileService(getCurrentToken(), args[0], al).execute();
 		}
