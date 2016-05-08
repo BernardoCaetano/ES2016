@@ -5,9 +5,9 @@ import pt.tecnico.myDrive.service.dto.VariableDTO;
 
 public class ShowVariableService extends MyDriveService {
 
-	long token;
-	String name;
-	VariableDTO result;
+	private long token;
+	private String name;
+	private VariableDTO result;
 
 	public ShowVariableService(long token, String name) {
 		this.token = token;
