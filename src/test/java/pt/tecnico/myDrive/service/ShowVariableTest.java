@@ -19,8 +19,8 @@ public class ShowVariableTest extends TokenReceivingTest {
 	@Override
 	protected void populate() {
 		md = MyDriveFS.getInstance();
-		new User(md, "username", "mypass", "User", "rwxdrwxd", null);
-		super.populate("username", "mypass");
+		new User(md, "username", "mypassword", "User", "rwxdrwxd", null);
+		super.populate("username", "mypassword");
 	}
 
 	@Override
