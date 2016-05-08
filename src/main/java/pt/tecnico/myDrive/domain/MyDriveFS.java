@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Set;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
-import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;

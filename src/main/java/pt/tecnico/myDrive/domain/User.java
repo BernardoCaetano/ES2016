@@ -2,7 +2,6 @@ package pt.tecnico.myDrive.domain;
 
 import org.apache.commons.lang.StringUtils;
 
-import java.io.UnsupportedEncodingException;
 import org.jdom2.Element;
 import org.joda.time.DateTime;
 
@@ -12,6 +11,7 @@ import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPathException;
 import pt.tecnico.myDrive.exception.InvalidPermissionStringException;
 import pt.tecnico.myDrive.exception.InvalidUsernameException;
+import pt.tecnico.myDrive.exception.PasswordTooShortException;
 
 
 public class User extends User_Base {
@@ -52,6 +52,19 @@ public class User extends User_Base {
         } else {
             mydrive.addUser(this);
         }
+    }
+    
+    @Override
+    public void setPassword(String password) {
+    	setValidPassword(password, true);
+    }
+    
+    void setValidPassword(String password, boolean atLeast8char) {
+    	if (atLeast8char) {
+    		if (!(password.length() >= 8)) 
+        		throw new PasswordTooShortException(password);
+    	}
+    	super.setPassword(password);
     }
 
 	@Override

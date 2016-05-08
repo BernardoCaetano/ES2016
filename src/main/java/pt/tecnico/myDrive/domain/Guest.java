@@ -11,7 +11,7 @@ import pt.tecnico.myDrive.exception.InvalidUsernameException;
 class Guest extends Guest_Base {
 
 	Guest(MyDriveFS myDrive) throws InvalidPathException, InvalidUsernameException{
-		setPassword("");
+		super.setValidPassword("", false);
 		setUsername("nobody");
 		setName("Guest");
 		setUmask("rwxdr-x-");
@@ -26,6 +26,11 @@ class Guest extends Guest_Base {
     	else
     		return false;
     }
+	
+	@Override
+	public void setPassword(String password) {
+		throw new InvalidOperationException("Cannot change password of Guest user");
+	}
  
     @Override
     public boolean canDelete(AbstractFile file) {
