@@ -54,6 +54,7 @@ public class MyDriveShell extends Shell {
 		new Environment(this);
 		new Execute(this);
 		new Key(this);
+		new Write(this);
 	}
 
 	@Override
