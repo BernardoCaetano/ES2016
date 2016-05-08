@@ -59,7 +59,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		
 	}
 
-	private void BasicFileTest(AbstractFile f, String fileName, String typeOfFile, long token) {
+	private void basicFileTest(AbstractFile f, String fileName, String typeOfFile, long token) {
 		Login login = mD.getLoginByToken(token);
 		
 		assertNotNull(typeOfFile + " created without an ID", f.getId());
@@ -78,7 +78,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newDir");
 		assertNotNull("Directory wasn't created", f);
 		assertTrue("File created is not a Directory", (f instanceof Directory));
-		BasicFileTest(f, "newDir", "Directory", validToken);
+		basicFileTest(f, "newDir", "Directory", validToken);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newApp");
 		assertNotNull("App wasn't created", f);
 		assertTrue("File created is not a App", (f instanceof App));
-		BasicFileTest(f, "newApp", "App", validToken);
+		basicFileTest(f, "newApp", "App", validToken);
 		App app = (App) f;
 		assertEquals("App has invalid Content", "pt.tecnico.myDrive.domain.MyDriveFS.getInstance", app.getContent());
 	}
@@ -103,7 +103,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newApp");
 		assertNotNull("App wasn't created", f);
 		assertTrue("File created is not a App", (f instanceof App));
-		BasicFileTest(f, "newApp", "App", validToken);
+		basicFileTest(f, "newApp", "App", validToken);
 	}
 
 	@Test
@@ -114,7 +114,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newLink");
 		assertNotNull("Link wasn't created", f);
 		assertTrue("File created is not a Link", (f instanceof Link));
-		BasicFileTest(f, "newLink", "Link", validToken);
+		basicFileTest(f, "newLink", "Link", validToken);
 		Link link = (Link) f;
 		assertEquals("Link has invalid Content", "/home/root", link.getContent());
 	}
@@ -128,7 +128,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newTextFile");
 		assertNotNull("TextFile wasn't created", f);
 		assertTrue("File created is not a TextFile", (f instanceof TextFile));
-		BasicFileTest(f, "newTextFile", "TextFie", validToken);
+		basicFileTest(f, "newTextFile", "TextFie", validToken);
 		TextFile textFile = (TextFile) f;
 		assertEquals("TextFile has invalid Content", "/home/Wololo/existingApp", textFile.getContent());
 	}
@@ -141,7 +141,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newTextFile");
 		assertNotNull("TextFile wasn't created", f);
 		assertTrue("File created is not a TextFile", (f instanceof TextFile));
-		BasicFileTest(f, "newTextFile", "TextFie", validToken);
+		basicFileTest(f, "newTextFile", "TextFie", validToken);
 	}
 
 	@Test(expected = NameAlreadyExistsException.class)
@@ -213,7 +213,7 @@ public class CreateFileTest extends TokenReceivingTest {
 
 		assertNotNull("TextFile wasn't created", f);
 		assertTrue("File created is not a TextFile", (f instanceof TextFile));
-		BasicFileTest(f, auxFileName, "TextFile", validToken);
+		basicFileTest(f, auxFileName, "TextFile", validToken);
 	}
 
 	@Test(expected = PathMaximumLengthException.class)
@@ -240,7 +240,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(rootToken, "newDir");
 		assertNotNull("Directory wasn't created", f);
 		assertTrue("File created is not a Directory", (f instanceof Directory));
-		BasicFileTest(f, "newDir", "Directory", rootToken);
+		basicFileTest(f, "newDir", "Directory", rootToken);
 	}
 
 	@Test(expected = InvalidLoginException.class)
@@ -259,7 +259,7 @@ public class CreateFileTest extends TokenReceivingTest {
 		AbstractFile f = getAbstractFile(validToken, "newDir");
 		assertNotNull("Directory wasn't created", f);
 		assertTrue("File created is not a Directory", (f instanceof Directory));
-		BasicFileTest(f, "newDir", "Directory", validToken);
+		basicFileTest(f, "newDir", "Directory", validToken);
 	}
 
 	@Test(expected = InvalidLoginException.class)
