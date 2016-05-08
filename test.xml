@@ -1,30 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <myDrive>
   <user username="BOMDIAaLÉGRIA">
     <name>BOMDIAaLÉGRIA</name>
     <password>BOMDIAaLÉGRIA</password>
-    <umask>rwxd----</umask>
-    <home>/home/s/f/j/wwewe</home>
+    <umask>rwxdrwxd</umask>
+    <home>/home/jUAN</home>
   </user>
   <directory>
-    <path>/home</path>
-    <name>s</name>
-    <owner>root</owner>
-    <permissions>rwxdr-x-</permissions>
-    <lastModified>2016-05-07T21:15:06.041+01:00</lastModified>
+    <path>/home/jUAN</path>
+    <name>Movies</name>
+    <owner>BOMDIAaLÉGRIA</owner>
+    <permissions>rwxdrwxd</permissions>
+    <lastModified>2016-05-08T00:12:52.669+01:00</lastModified>
   </directory>
-  <directory>
-    <path>/home/s</path>
-    <name>f</name>
-    <owner>root</owner>
-    <permissions>rwxdr-x-</permissions>
-    <lastModified>2016-05-07T21:15:06.041+01:00</lastModified>
-  </directory>
-  <directory>
-    <path>/home/s/f</path>
-    <name>j</name>
-    <owner>root</owner>
-    <permissions>rwxdr-x-</permissions>
-    <lastModified>2016-05-07T21:15:06.041+01:00</lastModified>
-  </directory>
+  <textFile>
+    <path>/home/jUAN/Movies</path>
+    <name>#1</name>
+    <owner>BOMDIAaLÉGRIA</owner>
+    <permissions>rwxdrwxd</permissions>
+    <lastModified>2016-05-08T00:12:52.670+01:00</lastModified>
+    <content>Me and Earl and the Dying Girl</content>
+  </textFile>
+  <textFile>
+    <path>/home/jUAN/Movies</path>
+    <name>#2</name>
+    <owner>BOMDIAaLÉGRIA</owner>
+    <permissions>rwxdrwxd</permissions>
+    <lastModified>2016-05-08T00:12:52.670+01:00</lastModified>
+    <content>The Perks of Being a Wallflower</content>
+  </textFile>
+  <app>
+    <path>/home/jUAN/Movies</path>
+    <name>play</name>
+    <owner>BOMDIAaLÉGRIA</owner>
+    <permissions>rwxdrwxd</permissions>
+    <lastModified>2016-05-08T00:12:52.671+01:00</lastModified>
+    <content>Video.VLC.Play</content>
+  </app>
 </myDrive>
