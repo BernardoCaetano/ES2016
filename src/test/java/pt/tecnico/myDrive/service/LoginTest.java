@@ -15,14 +15,14 @@ public class LoginTest extends AbstractServiceTest {
 	protected void populate() {
 		MyDriveFS md = MyDriveFS.getInstance();
 
-		new User(md, "jane", "sp1der", "Mary Jane", null, null);
+		new User(md, "jane", "sp1derman", "Mary Jane", null, null);
 		new User(md, "camoes", "lus1adas", "Luís de Camões", null, null);
 	}
 
 	@Test
 	public void success() {
 		MyDriveFS md = MyDriveFS.getInstance();
-		LoginService login = new LoginService("jane", "sp1der");
+		LoginService login = new LoginService("jane", "sp1derman");
 		login.execute();
 		long token = login.result();
 
@@ -31,19 +31,19 @@ public class LoginTest extends AbstractServiceTest {
 
 	@Test(expected = UserNotFoundException.class)
 	public void userNotFound() {
-		LoginService login = new LoginService("idontexistbla", "pass");
+		LoginService login = new LoginService("idontexistbla", "longpass");
 		login.execute();
 	}
 
 	@Test(expected = WrongPasswordException.class)
 	public void wrongPassword() {
-		LoginService login = new LoginService("jane", "wrongpw");
+		LoginService login = new LoginService("jane", "somewrongpw");
 		login.execute();
 	}
 	
 	@Test
 	public void differentToken(){
-		LoginService login1 = new LoginService("jane", "sp1der");
+		LoginService login1 = new LoginService("jane", "sp1derman");
 		LoginService login2 = new LoginService("camoes", "lus1adas");
 		login1.execute();
 		login2.execute();
