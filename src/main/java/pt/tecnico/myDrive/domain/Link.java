@@ -3,6 +3,7 @@ package pt.tecnico.myDrive.domain;
 import org.jdom2.Element;
 
 import pt.tecnico.myDrive.exception.ImmutableLinkContentException;
+import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.InvalidLinkContentException;
 
@@ -30,6 +31,11 @@ public class Link extends Link_Base {
     
     public Link(MyDriveFS myDrive, Element linkElement){
 		super();
+		String content = linkElement.getChildText("content");
+		content = (content != null ? content : "");
+		if (!isValidPath(content))
+			throw new ImportDocumentException("Invalid content '" + content + "' for App file");
+		
 		xmlImport(myDrive, linkElement);
 	}
     

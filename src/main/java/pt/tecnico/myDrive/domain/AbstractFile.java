@@ -108,7 +108,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		try {
 			parent = myDrive.getDirectoryByPath(myDrive.getRootDirectory(), parentPath);
 		} catch (FileNotFoundException e) {
-			throw new ImportDocumentException("The path specified refers to a non-existing file");
+			throw new ImportDocumentException("The path specified refers to a non-existing file"); //FIXME: will have to create all directories int the path
 		}
 
 		String name = element.getChildText("name");

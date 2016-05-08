@@ -37,8 +37,9 @@ public class TextFile extends TextFile_Base {
     @Override
     public void xmlImport(MyDriveFS myDrive, Element element){
 		super.xmlImport(myDrive, element);
+		String content = element.getChildText("content");
+    	super.setContent(content != null ? content : "");
 		
-		super.setContent(element.getAttribute("content").getValue());
 	}
 
     @Override
