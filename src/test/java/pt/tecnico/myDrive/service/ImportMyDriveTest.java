@@ -26,7 +26,6 @@ public class ImportMyDriveTest extends AbstractServiceTest {
 	@Override
 	protected void populate() {
 		MyDriveFS.getInstance();
-
 	}
 
 	@Test
