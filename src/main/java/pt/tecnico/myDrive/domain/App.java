@@ -2,6 +2,7 @@ package pt.tecnico.myDrive.domain;
 
 import org.jdom2.Element;
 
+import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.InvalidAppContentException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
@@ -45,6 +46,13 @@ public class App extends App_Base {
 			throw new InvalidAppContentException(content);
 		}
 		super.setContent(content);
+	}
+	
+	@Override
+	public void execute(User u, Object[] args) {
+		if (!u.canExecute(this))
+			throw new AccessDeniedException(u.getUsername(), getName());
+		executeReflection(getContent(), args);
 	}
 
 	protected boolean isValidPackageName(String packageName) {

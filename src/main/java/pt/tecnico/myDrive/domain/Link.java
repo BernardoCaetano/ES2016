@@ -6,6 +6,7 @@ import pt.tecnico.myDrive.exception.ImmutableLinkContentException;
 import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.InvalidLinkContentException;
+import pt.tecnico.myDrive.exception.NotTextFileException;
 
 public class Link extends Link_Base {
     
@@ -27,6 +28,16 @@ public class Link extends Link_Base {
     @Override
     public void setContent(String content) {
     	throw new ImmutableLinkContentException();
+    }
+    
+    @Override
+    public void execute(User u, Object[] args) {
+    	try {
+    		TextFile t = u.getMyDrive().getTextFileByPath(getParent(), super.getContent());
+    		t.execute(u, args);
+    	} catch (NotTextFileException e) {
+    		throw new RuntimeException("The link does not reference neither a TextFile nor an App"); //FIXME
+    	}
     }
     
     public Link(MyDriveFS myDrive, Element linkElement){

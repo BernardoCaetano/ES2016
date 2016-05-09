@@ -1,5 +1,8 @@
 package pt.tecnico.myDrive.domain;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import org.jdom2.Element;
 
 import pt.tecnico.myDrive.exception.AccessDeniedException;
@@ -70,6 +73,57 @@ public class TextFile extends TextFile_Base {
     	}
     	return result;
     }
+    
+	public void execute(User u, Object[] args) {
+		if (!u.canExecute(this))
+			throw new AccessDeniedException(u.getUsername(), getName());
+
+		String[] lines = getContent().split("\\n");
+		for (String line : lines) {
+			String appPath = line.split(" ")[0];
+			Object[] params = line.substring(line.indexOf(" ") + 1).split(" ");
+			try {
+				App app = (App) u.getMyDrive().getFileByPath(getParent(), appPath);
+				app.execute(u, params);
+			} catch (ClassCastException e) {
+				throw new RuntimeException("Wrong type of file found. The path on each line of "
+						+ "a text file must refer to an App or a Link to an App"); // FIXME
+			}
+		}
+	}
+    
+	static void executeReflection(String fqnMethod, Object[] args) {
+		String className = fqnMethod.substring(0, fqnMethod.lastIndexOf("."));
+		String methodName = fqnMethod.substring(fqnMethod.lastIndexOf(".") + 1);
+		Class<?> c = null;
+
+		boolean loaded;
+		try {
+			c = Class.forName(className);
+			loaded = true;
+		} catch (ClassNotFoundException e) {
+			loaded = false;
+		}
+		if (!loaded) {
+			try {
+				c = Class.forName(fqnMethod);
+				loaded = true;
+				className = fqnMethod;
+				methodName = "main";
+			} catch (ClassNotFoundException e) {
+				throw new RuntimeException("Failed to load class (either " + className + " or " + fqnMethod + ")"); // FIXME
+			}
+		}
+
+		try {
+			Method method = c.getMethod(methodName, new Class[] { String[].class });
+			method.invoke(null, new Object[] { args });
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException("Method not found (either " + fqnMethod + " or " + className + ".main)"); // FIXME
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw new RuntimeException("Failed to execute method '" + methodName + "'"); // FIXME
+		}
+	}
     
     
 	public void setContent(String content, User user) throws AccessDeniedException {
