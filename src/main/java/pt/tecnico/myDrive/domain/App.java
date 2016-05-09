@@ -1,5 +1,7 @@
 package pt.tecnico.myDrive.domain;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.jdom2.Element;
 
 import pt.tecnico.myDrive.exception.AccessDeniedException;
@@ -49,7 +51,7 @@ public class App extends App_Base {
 	}
 	
 	@Override
-	public void execute(User u, Object[] args) {
+	public void execute(User u, String[] args) {
 		if (!u.canExecute(this))
 			throw new AccessDeniedException(u.getUsername(), getName());
 		executeReflection(getContent(), args);

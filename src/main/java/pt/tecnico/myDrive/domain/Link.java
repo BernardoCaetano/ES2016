@@ -2,6 +2,7 @@ package pt.tecnico.myDrive.domain;
 
 import org.jdom2.Element;
 
+import pt.tecnico.myDrive.exception.ExecuteFileException;
 import pt.tecnico.myDrive.exception.ImmutableLinkContentException;
 import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
@@ -31,12 +32,12 @@ public class Link extends Link_Base {
     }
     
     @Override
-    public void execute(User u, Object[] args) {
+    public void execute(User u, String[] args) {
     	try {
     		TextFile t = u.getMyDrive().getTextFileByPath(getParent(), super.getContent());
     		t.execute(u, args);
     	} catch (NotTextFileException e) {
-    		throw new RuntimeException("The link does not reference neither a TextFile nor an App"); //FIXME
+    		throw new ExecuteFileException("The link does not reference neither a TextFile nor an App"); //FIXME
     	}
     }
     
