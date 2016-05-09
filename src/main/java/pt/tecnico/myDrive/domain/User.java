@@ -167,7 +167,8 @@ public class User extends User_Base {
 		s = userElement.getChildText("name");
 		setName(s != null ? s : username);
 		try {
-			setUmask(userElement.getChildText("umask"));
+			s = userElement.getChildText("umask");
+			setUmask(s != null ? s : "rwxd----");
 		} catch (InvalidPermissionStringException e) {
 			throw new ImportDocumentException(e.getMessage());
 		}
