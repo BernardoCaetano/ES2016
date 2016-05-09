@@ -9,6 +9,7 @@ import pt.tecnico.myDrive.exception.CannotExtendSessionTimeException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.PasswordTooShortException;
+import pt.tecnico.myDrive.exception.UndefinedVariableException;
 import pt.tecnico.myDrive.exception.UserNotFoundException;
 import pt.tecnico.myDrive.exception.WrongPasswordException;
 
@@ -107,20 +108,22 @@ public class Login extends Login_Base {
     }
     
     public void addVariable(String name, String value) {
-    	Variable v = getVariableByName(name);
-		if (v != null) 
-    		v.setValue(value);
-		else 
-			addVariable(new Variable(name, value));
+    	try {
+			Variable v = getVariableByName(name);
+			v.setValue(value);
+		}catch (UndefinedVariableException e){
+			addVariable(new Variable(name, value));	
+		}
+		
     	
     }
        
-    public Variable getVariableByName(String name) {
+    public Variable getVariableByName(String name) throws UndefinedVariableException {
     	for (Variable v : getVariableSet()) {
     		if (v.getName().equals(name)) 
     			return v;
     	}
-    	return null;
+    	throw new UndefinedVariableException(name);
     }
     
 }
