@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<myDrive>
+  <user username="jtb">
+    <password>Fernandes</password>
+    <name>Joaquim Teófilo Braga</name>
+    <home>/home/jtb</home>
+    <umask>rwxdr-x-</umask>
+  </user>
+  <user username="mtg">
+    <password>nefelibata</password>
+    <name>Manuel Teixeira Gomes</name>
+  </user>
+ <textFile id="3">
+    <path>/home/jtb</path>
+    <owner>jtb</owner>
+    <name>profile</name>
+    <content>Primeiro chefe de Estado do regime republicano</content>
+  </textFile>
+  <directory id="4">
+    <owner>jtb</owner>
+    <path>/home/jtb</path>
+    <name>documents</name>
+  </directory>
+ <link id="5">
+    <path>/home/jtb</path>
+    <owner>jtb</owner>
+    <name>doc</name>
+    <content>/home/jtb/documents</content>
+  </link>
+  <app id="7">
+    <path>/home/jtb/bin</path>
+    <name>greetings</name>
+    <owner>jtb</owner>
+    <content>pt.tecnico.myDrive.presentation.Hello.greet</content>
+  </app>
+  <app id="8">
+    <path>/home/jtb/bin</path>
+    <name>the_answer</name>
+    <owner>jtb</owner>
+    <content>pt.tecnico.myDrive.presentation.Hello.sum</content>
+  </app>
+  <textFile id="9">
+    <path>/home/jtb</path>
+    <owner>jtb</owner>
+    <name>example</name>
+    <content>/home/jtb/bin/the_beginning friend! &#10;/home/jtb/bin/greetings friend! &#10;/home/jtb/bin/the_answer 30 12&#10;/home/jtb/bin/exec:death him me yoursELF??&#10;/home/jtb/bin/farewell friend</content>
+  </textFile>
+  <app id="10">
+    <path>/home/jtb/bin</path>
+    <name>farewell</name>
+    <owner>jtb</owner>
+    <content>pt.tecnico.myDrive.presentation.Hello.bye</content>
+  </app>
+  <app id="11">
+    <path>/home/jtb/bin</path>
+    <name>the_beginning</name>
+    <owner>jtb</owner>
+    <content>pt.tecnico.myDrive.presentation.Hello</content>
+  </app>
+  <app id="12">
+    <path>/home/jtb/bin</path>
+    <name>exec:death</name>
+    <owner>jtb</owner>
+    <content>pt.tecnico.myDrive.presentation.Hello.execute</content>
+  </app>
+  <link id="13">
+    <path>/home/jtb</path>
+    <owner>jtb</owner>
+    <name>sum</name>
+    <content>/home/jtb/bin/the_answer</content>
+  </link>
+
+</myDrive>
