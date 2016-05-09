@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!-- Success test -->
+<myDrive>
+  <user username="BOMDIAaLÉGRIA">
+    <name>BOMDIAaLÉGRIA</name>
+    <password>BOMDIAaLÉGRIA</password>
+    <umask>rwxdrwxd</umask>
+    <home>/home/jUAN</home>
+  </user>
+  
+  <!-- User created with default values -->
+  <user username="justCreateMeWITHDEFAULT">
+  </user>
+
+  <!-- Create a Directory-->
+  <!-- Will create with default permissions -->
+  <directory id="6">
+    <path>/home/jUAN</path>
+    <name>Movies</name>
+    <owner>BOMDIAaLÉGRIA</owner>
+    <lastModified>2016-05-08T00:12:53.000+01:00</lastModified>
+  </directory>
+
+  <!-- Create a TextFile-->
+  <textFile id="7">
+    <path>/home/jUAN/Movies</path>
+    <name>#1</name>
+    <owner>BOMDIAaLÉGRIA</owner>
+    <permissions>rwxdrwxd</permissions>
+    <lastModified>2016-05-08T00:12:53.000+01:00</lastModified>
+    <content>Me and Earl and the Dying Girl</content>
+  </textFile>
+
+  <textFile id="8">
+    <path>/home/jUAN/Movies</path>
+    <name>#2</name>
+    <owner>BOMDIAaLÉGRIA</owner>
+    <permissions>rwxdrwxd</permissions>
+    <lastModified>2016-05-08T00:12:53.000+01:00</lastModified>
+    <content>The Perks of Being a Wallflower</content>
+  </textFile>
+
+  <!-- Create an App -->
+  <app id="9">
+    <path>/home/jUAN/Movies</path>
+    <name>play</name>
+    <owner>BOMDIAaLÉGRIA</owner>
+    <permissions>rwxdrwxd</permissions>
+    <lastModified>2016-05-08T00:12:53.000+01:00</lastModified>
+    <content>Video.VLC.Play</content>
+  </app>
+
+  <!-- Create a Link-->
+  <link id="10">
+    <path>/home/jUAN/Movies</path>
+    <name>linkToPlay</name>
+    <owner>BOMDIAaLÉGRIA</owner>
+    <permissions>rwxdrwxd</permissions>
+    <lastModified>2016-05-08T00:12:53.000+01:00</lastModified>
+    <content>/home/jUAN/Movies/play</content>
+  </link>
+</myDrive>

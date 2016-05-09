@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!-- Fail Permissions test -->
+<myDrive>
+  <user username="BOMDIAaLÉGRIA">
+    <name>BOMDIAaLÉGRIA</name>
+    <password>BOMDIAaLÉGRIA</password>
+    <umask>LOL</umask>
+    <home>/home/jUAN</home>
+  </user>
+</myDrive>

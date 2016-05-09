@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<myDrive>
+  <user username="BOMDIAaLÉGRIA">
+    <name>BOMDIAaLÉGRIA</name>
+    <password>BOMDIAaLÉGRIA</password>
+    <umask>rwxdrwxd</umask>
+    <home>/home/jUAN</home>
+  </user>
+  <!-- Create a Link with Invalid content -->
+  <link id="10">
+    <path>/home/jUAN/Movies</path>
+    <name>linkToPlay</name>
+    <owner>BOMDIAaLÉGRIA</owner>
+    <permissions>rwxdrwxd</permissions>
+    <lastModified>2016-05-08T00:12:53.000+01:00</lastModified>
+    <content>Invalid Link Content</content>
+  </link>
+</myDrive>

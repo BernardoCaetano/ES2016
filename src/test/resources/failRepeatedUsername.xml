@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Repeated Usernames, expect import exception -->
+<myDrive>
+  <user username="uusseerr">
+  </user>
+
+  <user username="uusseerr">
+  </user>
+
+</myDrive>

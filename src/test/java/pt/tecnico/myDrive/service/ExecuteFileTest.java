@@ -47,7 +47,7 @@ public class ExecuteFileTest extends TokenReceivingTest {
 		
  		Directory currentDir = login.getCurrentDir();
  		
- 		new App(mD, currentDir, newUser, pdfFile);
+ 		appNP = new App(mD, currentDir, newUser, pdfFile);
  		appNP.setPermissions("rw-d----");
  		
  		new Link(mD, currentDir ,newUser, "link to useless app" ,"./appWithoutPermissions.pdf");

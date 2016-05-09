@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <!-- Success test -->
+<myDrive>
+  <user username="BOMDIAaLÉGRIA">
+    <name>BOMDIAaLÉGRIA</name>
+    <password>BOMDIAaLÉGRIA</password>
+    <umask>rwxdrwxd</umask>
+    <home>/home/jUAN</home>
+  </user>
+
+
+  <directory id="6">
+  	<path>/home/jUAN</path>
+    <owner>BOMDIAaLÉGRIA</owner>
+    <lastModified>2016-05-08T00:12:53.000+01:00</lastModified>
+  </directory>
+</myDrive>

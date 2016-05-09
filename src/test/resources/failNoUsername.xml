@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- No Username specified, expect import exception -->
+<myDrive>
+	 <!-- User created with default values -->
+  <user>
+  </user>
+
+</myDrive>

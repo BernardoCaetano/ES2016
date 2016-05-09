@@ -47,15 +47,23 @@ public class MyDriveFS extends MyDriveFS_Base {
 		super.addUser(userToBeAdded);
 	}
 
-	protected boolean hasUser(String username) {
+	public boolean hasUser(String username) {
 		try {
 			return getUserByUsername(username) != null;
 		} catch(UserNotFoundException e){
 			return false;
 		}
 	}
+	
+	public boolean hasFile(String path) {
+		try {
+			return getFileByPath(getRootDirectory(), path) != null;
+		} catch(FileNotFoundException e){
+			return false;
+		}
+	}
 
-	protected User getUserByUsername(String username) throws UserNotFoundException{
+	public User getUserByUsername(String username) throws UserNotFoundException{
 		for (User user : getUsers()) {
 			if (user.getUsername().equals(username)) {
 				return user;
