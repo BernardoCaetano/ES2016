@@ -205,13 +205,6 @@ public class User extends User_Base {
 
         return element;
     }
-    
-	public boolean sameAs(Object o) {
-		if (o instanceof User) {
-			return ((User) o).getUsername().equals(this.getUsername());
-		}
-		return false;
-	}
 	
 	protected void cleanup() {
 		for (Association a : this.getAssociationsSet()) a.cleanup();	
