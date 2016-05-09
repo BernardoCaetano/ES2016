@@ -1,5 +1,8 @@
 package pt.tecnico.myDrive.service;
 
+import pt.tecnico.myDrive.domain.Login;
+import pt.tecnico.myDrive.domain.MyDriveFS;
+import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.exception.MyDriveException;
 
 public class ExecuteFileService extends MyDriveService {
@@ -21,6 +24,9 @@ public class ExecuteFileService extends MyDriveService {
 	
 	@Override
 	protected void dispatch() throws MyDriveException {
-		//TODO
-	}	
+		MyDriveFS md = getMyDrive();
+		Login l = md.getLoginByToken(token);
+		TextFile t = md.getTextFileByPath(l.getCurrentDir(), path);
+		t.execute(l.getUser(), args);
+	}
 }
