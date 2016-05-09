@@ -64,9 +64,11 @@ public class ShowVariableTest extends TokenReceivingTest {
 		final String name = "idontexistforsureiguessblablabla";
 
 		Login login = md.getLoginByToken(validToken);
-		Variable v = login.getVariableByName(name);
-		if (v != null) {
+		try {
+			Variable v = login.getVariableByName(name);
 			login.removeVariable(v);
+		} catch (UndefinedVariableException e) {
+			// expected
 		}
 
 		ShowVariableService service = new ShowVariableService(validToken, name);
