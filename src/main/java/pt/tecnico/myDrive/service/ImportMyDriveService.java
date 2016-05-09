@@ -14,7 +14,7 @@ public class ImportMyDriveService extends MyDriveService {
 
 	@Override
 	protected void dispatch() throws ImportDocumentException {
-		//TODO: auto-generated method stub
+		getMyDrive().xmlImport(doc.getRootElement());
 	}
 
 }
