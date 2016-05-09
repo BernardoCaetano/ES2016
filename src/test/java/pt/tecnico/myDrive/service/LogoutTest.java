@@ -31,14 +31,13 @@ public class LogoutTest extends TokenReceivingTest {
 	}
 
 	@Override
-	@Test
+	@Test(expected = InvalidLoginException.class)
 	public void sessionStillValidTest1h55min() {
 		super.setLastActivity1h55minAgo();
 		LogoutService service = new LogoutService(validToken);
 		service.execute();
 
 		Login login = md.getLoginByToken(validToken);
-		assertNull("Logout failed", login);
 	}
 
 	@Override
