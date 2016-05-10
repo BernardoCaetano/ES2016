@@ -258,16 +258,17 @@
           <version>2.9.2</version>
         </dependency>
         <dependency>
+	    	<groupId>org.jmockit</groupId>
+	    	<artifactId>jmockit</artifactId>
+		<version>1.21</version>
+	</dependency>
+	<dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${version.junit}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-	    	<groupId>org.jmockit</groupId>
-	    	<artifactId>jmockit</artifactId>
-	   		<version>1.21</version>
-		</dependency>
+        
     </dependencies>
 
     <repositories>
