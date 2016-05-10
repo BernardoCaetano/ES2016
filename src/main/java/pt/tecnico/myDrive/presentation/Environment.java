@@ -16,7 +16,8 @@ public class Environment extends MyDriveCommand {
 
 	@Override
 	void execute(String[] args) {
-		if (args.length == 0) {
+		switch (args.length) {
+		case 0:
 			ListVariablesService lvs = new ListVariablesService(getCurrentToken());
 			lvs.execute();
 			List<VariableDTO> vars = lvs.result();
@@ -25,17 +26,25 @@ public class Environment extends MyDriveCommand {
 				println(v.getName() + '=' + v.getValue());
 			}
 			println("Use '" + getName() + " <name>' to list a single variable");
-			println("Use '" + getName() + "<name> <value>' to set the value of a variable with name <name>");
-			
-		} else if (args.length == 1) {
+			println("Use '" + getName() + " <name> <value>' to set the value of a variable");
+			break;
+
+		case 1:
 			ShowVariableService svs = new ShowVariableService(getCurrentToken(), args[0]);
 			svs.execute();
 			VariableDTO v = svs.result();
 			println(v.getName() + '=' + v.getValue());
+			break;
 			
-		} else {
+		case 2:
 			AddVariableService avs = new AddVariableService(getCurrentToken(), args[0], args[1]);
 			avs.execute();
+			break;
+			
+		default:
+			throw new RuntimeException("USAGE: '" + getName() + "' to list all variables, '" + getName()
+					+ " <name>' to list a single variable or '" + getName()
+					+ " <name> <value>' to set the value of a variable");
 		}
 
 	}
