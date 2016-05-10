@@ -11,7 +11,7 @@ public class ChangeWorkingDirectory extends MyDriveCommand {
 	@Override
 	void execute(String[] args) {
 		if(args.length != 1){
-			throw new RuntimeException("USAGE: " + getName() + " <path>");
+			throw new RuntimeException("USAGE: '" + getName() + " <path>'");
 		}
 		
 		ChangeDirectoryService service = new ChangeDirectoryService(getCurrentToken(), args[0]);
