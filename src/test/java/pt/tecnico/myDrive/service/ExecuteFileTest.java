@@ -1,6 +1,7 @@
 package pt.tecnico.myDrive.service;
 
 import pt.tecnico.myDrive.presentation.FileViewer;
+import pt.tecnico.myDrive.presentation.Hello;
 
 import mockit.Mock;
 import mockit.MockUp;
@@ -24,7 +25,9 @@ import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.User;
 import pt.tecnico.myDrive.exception.AssociationDoesNotExistException;
+import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
+import pt.tecnico.myDrive.exception.UndefinedVariableException;
 
 @RunWith(JMockit.class)
 public class ExecuteFileTest extends TokenReceivingTest {
@@ -51,6 +54,14 @@ public class ExecuteFileTest extends TokenReceivingTest {
  		appNP.setPermissions("rw-d----");
  		
  		new Link(mD, currentDir ,newUser, "link to useless app" ,"./appWithoutPermissions.pdf");
+ 		
+ 		new App(mD, currentDir, newUser, "exampleApp", "pt.tecnico.myDrive.presentation.Hello.sum");
+ 		
+ 		new Link(mD, currentDir, newUser, "linkWith$", "/home/$NEWUSER/exampleApp");
+		new Link(mD, currentDir, newUser, "linkWith$FailFile", "/home/$JOHN/exampleApp");
+		new Link(mD, currentDir, newUser, "linkWith$FailEnv", "/home/$JAKE/exampleApp");
+		
+		User john = new User(mD, "john", "windything", "john", "rwxdrwxd", null);
 	}
 	
 	@Test
@@ -147,4 +158,58 @@ public class ExecuteFileTest extends TokenReceivingTest {
 		ExecuteFileService service = new ExecuteFileService(invalidToken, pdfFile);
 		service.execute();
 	}
+	
+	/// ENVIRONMENT LINKS TEST ///
+	@Test
+	public void successLinkWithEnvironment() {
+
+		new MockUp<Directory>() {
+			@Mock
+			String translate(String path) {
+				return "/home/insertUsername/exampleApp";
+			}
+		};
+		
+		String[] args= new String[]{"23", "13"};
+		ExecuteFileService service = new ExecuteFileService(validToken, "linkWith$", args );
+		service.execute();
+		
+		new Verifications(){{
+			Hello.sum(args);
+		}};
+	}
+
+	@Test(expected = FileNotFoundException.class)
+	public void failureLinkFileDoesNotExist() {
+
+		new MockUp<Directory>() {
+			@Mock
+			String translate(String path) {
+				return "/home/john/exampleApp";
+			}
+		};
+
+		String[] args= new String[]{"23", "13"};
+		ExecuteFileService service = new ExecuteFileService(validToken, "linkWith$FailFile", args );
+		service.execute();
+
+	}
+
+	@Test (expected = UndefinedVariableException.class)
+	public void failureLinkEnvDoesNotExist() {
+
+		new MockUp<Directory>() {
+			@Mock
+			String translate(String path) throws UndefinedVariableException{
+				throw new UndefinedVariableException("$JAKE");
+			};	
+			
+		};
+
+		String[] args= new String[]{"23", "13"};
+		ExecuteFileService service = new ExecuteFileService(validToken, "linkWith$FailEnv", args );
+		service.execute();
+
+	}
+
 }
