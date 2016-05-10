@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pt.tecnico.myDrive.service.LoginService;
+import pt.tecnico.myDrive.service.LogoutService;
 
 public class MyDriveShell extends Shell {
 
@@ -11,6 +12,7 @@ public class MyDriveShell extends Shell {
 	
 	private String currentUsername;
 	private long currentToken;
+	private boolean asGuest;
 
 	Long switchToToken(String username) {
 		Long token = tokens.get(username);
@@ -22,13 +24,18 @@ public class MyDriveShell extends Shell {
 	}
 
 	void switchToNewToken(String username, long token) {
+		logoutGuest();
 		tokens.put(username, token);
 		currentToken = token;
 		currentUsername = username;
 	}
 	
-	void forgetToken(String username){
-		tokens.remove(username);
+	void logoutGuest(){
+		if(asGuest){
+			LogoutService logout = new LogoutService(currentToken);
+			logout.execute();
+			asGuest = false;
+		}
 	}
 
 	String getCurrentUsername() {
@@ -49,6 +56,7 @@ public class MyDriveShell extends Shell {
 	public MyDriveShell() {
 		super("MyDrive");
 		login("nobody", "");
+		asGuest = true;
 
 		// Add MyDrive commands here
 		new Environment(this);
@@ -59,9 +67,9 @@ public class MyDriveShell extends Shell {
 	}
 
 	@Override
-	protected boolean onQuit() {
-		forgetToken("nobody");
-		return super.onQuit();
+	protected void quit() {
+		logoutGuest();
+		super.quit();
 	}
 
 }
