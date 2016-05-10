@@ -64,6 +64,7 @@ public class MyDriveShell extends Shell {
 		new Key(this);
 		new Write(this);
 		new Login(this);
+		new ChangeWorkingDirectory(this);
 	}
 
 	@Override
