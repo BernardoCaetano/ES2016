@@ -52,7 +52,6 @@ public class AddVariableTest extends TokenReceivingTest {
 		List<VariableDTO> variableList = service.result();
 		
 		assertNotNull(variableList);
-		
 		assertEquals("Wrong Number of Variables", 2, variableList.size());
 		
 		assertEquals("Wrong Name of First Variable","First", variableList.get(0).getName());
@@ -64,16 +63,34 @@ public class AddVariableTest extends TokenReceivingTest {
 	
 	@Test
 	public void canRedefineVariable(){
-		AddVariableService service = new AddVariableService(validToken, "First", "Redifined Value");
+		AddVariableService service = new AddVariableService(validToken, "First", "Redefined Value");
 		service.execute();
 		List<VariableDTO> variableList = service.result();
 		
 		assertNotNull(variableList);
-		
 		assertEquals("Wrong Number of Variables", 2, variableList.size());
 		
 		assertEquals("Wrong Name of First Variable","First", variableList.get(0).getName());
-		assertEquals("Wrong Value of Redifined Variable", "Redifined Value", variableList.get(0).getValue());
+		assertEquals("Wrong Value of First Variable", "Redefined Value", variableList.get(0).getValue());
+	}
+	
+	@Test
+	public void differentLoginsDoesntCount() {
+		Login newLogin = new Login(mD, "username", "myPassword");
+		long newToken = newLogin.getToken();
+		
+		AddVariableService service = new AddVariableService(newToken, "Third", "Third Value");
+		service.execute();
+		List<VariableDTO> variableList = service.result();
+		
+		assertNotNull(variableList);
+		assertEquals("Wrong Number of Variables", 2, variableList.size());
+		
+		assertEquals("Wrong Name of First Variable","First", variableList.get(0).getName());
+		assertEquals("Wrong Value of First Variable", "Redefined Value", variableList.get(0).getValue());
+		
+		assertEquals("Wrong Name of Second Variable","Second", variableList.get(1).getName());
+		assertEquals("Wrong Value of Second Variable","Second Value", variableList.get(1).getValue());
 	}
 	
 	@Override
