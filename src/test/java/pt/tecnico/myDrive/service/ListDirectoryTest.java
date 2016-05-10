@@ -47,14 +47,14 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		mD = MyDriveFS.getInstance();
 
 		manel = new User(mD, "manel", "password", "Malandro", "rwxdrwxd", null);
-		otherUser = new User(mD, "other", "123456", "TheOther", "rwxd----", null);
+		otherUser = new User(mD, "other", "12345678", "TheOther", "rwxd----", null);
 
 		super.populate("manel", "password");
 
 		manelLogin = mD.getLoginByToken(validToken);
 		rootLogin = new Login(mD, "root", "***");
 
-		otherUserLogin = new Login(mD, "other", "123456");
+		otherUserLogin = new Login(mD, "other", "12345678");
 
 		root = rootLogin.getUser();
 		rootToken = rootLogin.getToken();
