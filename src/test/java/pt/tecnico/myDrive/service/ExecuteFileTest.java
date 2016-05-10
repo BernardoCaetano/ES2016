@@ -35,8 +35,11 @@ public class ExecuteFileTest extends TokenReceivingTest {
 	MyDriveFS mD;
 	ExecuteFileService service;
 	private App appNP;
+	private App appHello;
 	private static final String pdfFile = "appWithoutPermissions.pdf";
 	private static final String linkFile = "link to useless app";
+	private static final String helloFile = "helloFile";
+	private static final String helloContent = "pt.tecnico.myDrive.presentation.Hello.sum";
 	
 	@Override
 	protected void populate() {
@@ -52,6 +55,9 @@ public class ExecuteFileTest extends TokenReceivingTest {
  		
  		appNP = new App(mD, currentDir, newUser, pdfFile);
  		appNP.setPermissions("rw-d----");
+ 		
+ 		appHello = new App(mD, currentDir, newUser, helloFile, helloContent);
+ 		appHello.setPermissions("rwxdrwxd"); 		
  		
  		new Link(mD, currentDir ,newUser, "link to useless app" ,"./appWithoutPermissions.pdf");
  		
@@ -70,22 +76,14 @@ public class ExecuteFileTest extends TokenReceivingTest {
 	}
 	
 	private void successTest() {
-		appNP.setPermissions("rwxdrwxd");
-		Directory currentDir = mD.getLoginByToken(validToken).getCurrentDir();
-		TextFile file = mD.getTextFileByPath(currentDir, pdfFile);
-
-		ExecuteFileService service = new ExecuteFileService(validToken, pdfFile);
+		String[] arguments = new String[]{"42", "80085"}; 
+		
+		ExecuteFileService service = new ExecuteFileService(validToken, helloFile, arguments);
 		service.execute();
 
-		try {
-			new Verifications() {
-				{
-					file.getClass().getMethod(file.getContent(), (Class<?>[]) null);
-				}
-			};
-		} catch (NoSuchMethodException exception) {
-			fail("Invalid method" + file.getContent());
-		}
+		new Verifications() {{
+				Hello.sum(arguments);
+		}};
 	}
 	
 	@Test
