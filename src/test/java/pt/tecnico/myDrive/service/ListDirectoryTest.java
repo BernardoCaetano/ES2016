@@ -475,7 +475,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 	}
 	
 	@Test
-	public void RootSessionStilValid9min() {
+	public void rootSessionStilValid9min() {
 		setLastActivity9minAgo();
 		
 		rootLogin.setCurrentDir(rootDirectory);
@@ -515,7 +515,7 @@ public class ListDirectoryTest extends TokenReceivingTest {
 	}
 	
 	@Test(expected = InvalidLoginException.class)
-	public void RootSessionInvalid11min() {
+	public void rootSessionInvalid11min() {
 		setLastActivity11minAgo();
 		
 		ListDirectoryService service = new ListDirectoryService(rootToken);
