@@ -26,6 +26,7 @@ import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.User;
+import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.AssociationDoesNotExistException;
 import pt.tecnico.myDrive.exception.ExecuteFileException;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
@@ -39,16 +40,14 @@ public class ExecuteFileTest extends TokenReceivingTest {
 	ExecuteFileService service;
 	private App appNP;
 	private App exampleApp;
-	User newUser;
+	private App helloExecuteApp;
+	private	User newUser;
+	private String validTextFileContent;
 	private static final String pdfFile = "appWithoutPermissions.pdf";
 	private static final String linkFile = "link to useless app";
 	private static final String helloClass = "pt.tecnico.myDrive.presentation.Hello";
 	private static final String helloExecute = helloClass + ".execute";
-	private static final String helloSum = helloClass + ".sum";
-	
-	private static final String invalidTextFileContent = helloSum + " 42 80085\n"
-								+ helloSum + " universe and everything\n";
-	
+	private static final String helloSum = helloClass + ".sum";	
 	
 	@Override
 	protected void populate() {
@@ -68,6 +67,13 @@ public class ExecuteFileTest extends TokenReceivingTest {
  		new Link(mD, currentDir ,newUser, "link to useless app" ,"./appWithoutPermissions.pdf");
  		
  		exampleApp = new App(mD, currentDir, newUser, "exampleApp", helloSum);
+		exampleApp.setPermissions("rwxdrwxd");
+ 		helloExecuteApp = new App(mD, currentDir, newUser, "helloExecuteApp", helloExecute);
+ 		helloExecuteApp.setPermissions("rwxdrwxd");
+ 		
+ 		validTextFileContent = exampleApp.getPath() + " 42 80085\n"
+ 								+ exampleApp.getPath() + " 1 -1 1 -1 1 -1\n"
+ 								+ helloExecuteApp.getPath() + " rabbit pig chipmunk\n";
  		
  		new Link(mD, currentDir, newUser, "linkWith$", "/home/$NEWUSER/exampleApp");
 		new Link(mD, currentDir, newUser, "linkWith$FailFile", "/home/$JOHN/exampleApp");
@@ -77,59 +83,111 @@ public class ExecuteFileTest extends TokenReceivingTest {
 	}
 	
 	private void executeApp(String method, String[] arguments) {
- 		exampleApp.setPermissions("rwxdrwxd");
  		exampleApp.setContent(method);
-		
 		ExecuteFileService service = new ExecuteFileService(validToken, "exampleApp", arguments);
 		service.execute();
-
-		new Verifications() {{
-				Hello.sum(arguments);
-		}};
 	}	
 	
 	@Test
 	public void successApp() {
-		executeApp(helloSum, new String[]{"42", "80085"});
+		String[] arguments = new String[]{"42", "80085"};
+		executeApp(helloSum, arguments);
+		
+		new Verifications() {{
+			Hello.sum(arguments);
+		}};
 	}
 	
 	@Test
 	public void successAppMain() {
-		executeApp(helloClass, new String[]{});
+		String[] arguments = new String[]{};
+		executeApp(helloClass, arguments);
+		
+		new Verifications() {{
+			Hello.main(arguments);
+		}};
 	}
 
 	@Test(expected=ExecuteFileException.class)
 	public void failAppArguments() {
-		executeApp(helloSum, new String[]{"four", "two"});
+		String[] arguments = new String[]{"four", "two"};
+		executeApp(helloSum, arguments);
+		
+		new Verifications() {{
+			Hello.sum(arguments);
+		}};
 	}
 	
 	@Test(expected=ExecuteFileException.class)
 	public void failMethod() {
-		executeApp(helloClass + ".fail", new String[]{});
-	}	
+		String[] arguments = new String[]{};
+		executeApp(helloClass + ".fail", arguments);
+		
+		new Verifications() {{
+			Hello.main(arguments);
+		}};
+	}
 	
-	@Test
-	public void successTextFile() { 		
- 		exampleApp.setPermissions("rwxdrwxd");
+	
+	private ArrayList<String[]> executeTextFile(String content, String targetPermissions) {
  		Directory currentDir = mD.getLoginByToken(validToken).getCurrentDir();
- 		App helloExecuteApp = new App(mD, currentDir, newUser, "helloExecuteApp", helloExecute);
- 		
- 		String content = exampleApp.getPath() + " 42 80085\n"
- 									+ exampleApp.getPath() + " 1 -1 1 -1 1 -1\n"
- 									+ helloExecuteApp.getPath() + " rabbit pig chipmunk\n";
  		
  		TextFile file = new TextFile(mD, currentDir, newUser, "file", content);
+ 		file.setPermissions(targetPermissions);
 		ArrayList<String[]> arguments = new ArrayList<String[]>();
 		arguments.addAll(file.getArguments());
 
 		ExecuteFileService service = new ExecuteFileService(validToken, "file");
 		service.execute();
-
+		
+		return arguments;
+	}
+	
+	private ArrayList<String[]> executeTextFile(String content) {
+		return executeTextFile(content, "rwxdrwxd");
+	}
+	
+	
+	@Test
+	public void successTextFile() {
+		ArrayList<String[]> arguments = executeTextFile(validTextFileContent);
 		new Verifications() {{
-				Hello.sum(arguments.get(0));
-				Hello.sum(arguments.get(1));
-				Hello.execute(arguments.get(2));
-		}};
+			Hello.sum(arguments.get(0));
+			Hello.sum(arguments.get(1));
+			Hello.execute(arguments.get(2));
+	}};
+	}
+	
+	@Test(expected=ExecuteFileException.class)
+	public void failTextFileArguments() { 		
+		String content = exampleApp.getPath() + " 42 80085\n"
+						+ exampleApp.getPath() + " universe and everything\n";
+		
+		ArrayList<String[]> arguments = executeTextFile(content);
+		new Verifications() {{
+			Hello.sum(arguments.get(0));
+			Hello.sum(arguments.get(1));
+	}};
+	}
+	
+	@Test(expected=AccessDeniedException.class)
+	public void failTextFileAccessDeniedTarget() {
+		exampleApp.setPermissions("rw-drw-d");
+		
+		ArrayList<String[]> arguments = executeTextFile(validTextFileContent);
+		new Verifications() {{
+			Hello.sum(arguments.get(0));
+			Hello.sum(arguments.get(1));
+	}};
+	}
+	
+	@Test(expected=AccessDeniedException.class)
+	public void failTextFileAccessDenied() {		
+		ArrayList<String[]> arguments = executeTextFile(validTextFileContent, "rw-drw-d");
+		new Verifications() {{
+			Hello.sum(arguments.get(0));
+			Hello.sum(arguments.get(1));
+	}};
 	}
 
 	
