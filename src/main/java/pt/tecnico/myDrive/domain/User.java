@@ -163,7 +163,11 @@ public class User extends User_Base {
 		setMyDrive(myDrive);
 
 		String s = userElement.getChildText("password");
-		setPassword(s != null ? s : username);
+		try {
+			setPassword(s != null ? s : username);
+		} catch (PasswordTooShortException e) {
+			throw new ImportDocumentException("Password must be at least 8 characters long");
+		}
 		s = userElement.getChildText("name");
 		setName(s != null ? s : username);
 		try {
