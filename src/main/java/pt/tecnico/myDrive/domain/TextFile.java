@@ -2,6 +2,7 @@ package pt.tecnico.myDrive.domain;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 import org.jdom2.Element;
 
@@ -82,7 +83,7 @@ public class TextFile extends TextFile_Base {
 		String[] lines = getContent().split("\\n");
 		for (String line : lines) {
 			String appPath = line.split(" ")[0];
-			String[] params = line.substring(line.indexOf(" ") + 1).split(" ");
+			String[] params = getLineArguments(line);
 			try {
 				App app = (App) u.getMyDrive().getFileByPath(getParent(), appPath);
 				app.execute(u, params);
@@ -91,6 +92,21 @@ public class TextFile extends TextFile_Base {
 						+ "a text file must refer to an App or a Link to an App"); // FIXME
 			}
 		}
+	}
+	
+	public ArrayList<String[]> getArguments() {
+		ArrayList<String[]> list = new ArrayList<String[]>();
+		String[] lines = getContent().split("\\n");
+		
+		for (String line : lines) {
+			list.add(getLineArguments(line));
+		}
+		
+		return list;
+	}
+	
+	public String[] getLineArguments(String line) {
+		return line.substring(line.indexOf(" ") + 1).split(" ");
 	}
     
 	static void executeReflection(String name, String[] args) {
