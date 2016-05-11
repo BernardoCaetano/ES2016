@@ -44,7 +44,7 @@ public class AddVariableTest extends TokenReceivingTest {
 		
 		otherLogin.addVariable("Third", "Third Value");
 	}
-	
+
 	@Test
 	public void success() {
 		AddVariableService service = new AddVariableService(validToken, "Second", "Second Value");
@@ -68,7 +68,7 @@ public class AddVariableTest extends TokenReceivingTest {
 		List<VariableDTO> variableList = service.result();
 		
 		assertNotNull(variableList);
-		assertEquals("Wrong Number of Variables", 2, variableList.size());
+		assertEquals("Wrong Number of Variables", 1, variableList.size());
 		
 		assertEquals("Wrong Name of First Variable","First", variableList.get(0).getName());
 		assertEquals("Wrong Value of First Variable", "Redefined Value", variableList.get(0).getValue());
@@ -84,13 +84,10 @@ public class AddVariableTest extends TokenReceivingTest {
 		List<VariableDTO> variableList = service.result();
 		
 		assertNotNull(variableList);
-		assertEquals("Wrong Number of Variables", 2, variableList.size());
+		assertEquals("Wrong Number of Variables", 1, variableList.size());
 		
-		assertEquals("Wrong Name of First Variable","First", variableList.get(0).getName());
-		assertEquals("Wrong Value of First Variable", "First Value", variableList.get(0).getValue());
-		
-		assertEquals("Wrong Name of Second Variable","Second", variableList.get(1).getName());
-		assertEquals("Wrong Value of Second Variable","Second Value", variableList.get(1).getValue());
+		assertEquals("Wrong Name of Third Variable","Third", variableList.get(0).getName());
+		assertEquals("Wrong Value of Third Variable", "Third Value", variableList.get(0).getValue());
 	}
 	
 	@Override
