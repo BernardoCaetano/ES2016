@@ -1,7 +1,5 @@
 package pt.tecnico.myDrive.domain;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.jdom2.Element;
 
 import pt.tecnico.myDrive.exception.AccessDeniedException;

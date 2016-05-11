@@ -89,7 +89,7 @@ public class TextFile extends TextFile_Base {
 				app.execute(u, params);
 			} catch (ClassCastException e) {
 				throw new ExecuteFileException("Wrong type of file found. The path on each line of "
-						+ "a text file must refer to an App or a Link to an App"); // FIXME
+						+ "a text file must refer to an App or a Link to an App");
 			}
 		}
 	}

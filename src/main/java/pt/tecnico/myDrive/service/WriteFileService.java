@@ -13,7 +13,7 @@ public class WriteFileService extends MyDriveService {
 	String content;
 
 	public WriteFileService(long token, String path, String content) {
-		//TODO @Marina, instead of fileName, a path will be received
+		
 		this.token = token;
 		this.path = path;
 		this.content = content;

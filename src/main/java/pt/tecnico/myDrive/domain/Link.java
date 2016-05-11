@@ -37,7 +37,7 @@ public class Link extends Link_Base {
     		TextFile t = u.getMyDrive().getTextFileByPath(getParent(), super.getContent());
     		t.execute(u, args);
     	} catch (NotTextFileException e) {
-    		throw new ExecuteFileException("The link does not reference neither a TextFile nor an App"); //FIXME
+    		throw new ExecuteFileException("The link does not reference neither a TextFile nor an App");
     	}
     }
     
