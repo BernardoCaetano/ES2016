@@ -26,8 +26,18 @@ public class List extends MyDriveCommand {
 		ArrayList<AbstractFileDTO> result = new ArrayList<AbstractFileDTO>();
 		result = service.result();
 		
+		String line;
+		
 		for (AbstractFileDTO file : result) {
-			println(file.getName());
+			line = "";
+			line += file.getType() + " ";
+			line += file.getPermissions() + " ";
+			line += file.getDimension() + " ";
+			line += file.getOwner() + " ";
+			line += file.getId() + " ";
+			line += file.getLastModified() + " ";
+			line += file.getName();
+			println(line);
 		}
 	}
 
