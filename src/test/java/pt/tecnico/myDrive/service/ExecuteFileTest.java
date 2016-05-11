@@ -12,6 +12,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +27,7 @@ import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.User;
 import pt.tecnico.myDrive.exception.AssociationDoesNotExistException;
+import pt.tecnico.myDrive.exception.ExecuteFileException;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
 import pt.tecnico.myDrive.exception.InvalidLoginException;
 import pt.tecnico.myDrive.exception.UndefinedVariableException;
@@ -35,11 +38,17 @@ public class ExecuteFileTest extends TokenReceivingTest {
 	MyDriveFS mD;
 	ExecuteFileService service;
 	private App appNP;
-	private App appHello;
+	private App exampleApp;
+	User newUser;
 	private static final String pdfFile = "appWithoutPermissions.pdf";
 	private static final String linkFile = "link to useless app";
-	private static final String helloFile = "helloFile";
-	private static final String helloContent = "pt.tecnico.myDrive.presentation.Hello.sum";
+	private static final String helloClass = "pt.tecnico.myDrive.presentation.Hello";
+	private static final String helloExecute = helloClass + ".execute";
+	private static final String helloSum = helloClass + ".sum";
+	
+	private static final String invalidTextFileContent = helloSum + " 42 80085\n"
+								+ helloSum + " universe and everything\n";
+	
 	
 	@Override
 	protected void populate() {
@@ -47,7 +56,7 @@ public class ExecuteFileTest extends TokenReceivingTest {
 		mD = MyDriveFS.getInstance();
 		Login login;
 		
-		User newUser = new User(mD, "insertUsername", "insertPassword", "insert Name", "rwxdrwxd", null);
+		newUser = new User(mD, "insertUsername", "insertPassword", "insert Name", "rwxdrwxd", null);
 		super.populate("insertUsername", "insertPassword");
 		login = mD.getLoginByToken(validToken);
 		
@@ -56,12 +65,9 @@ public class ExecuteFileTest extends TokenReceivingTest {
  		appNP = new App(mD, currentDir, newUser, pdfFile);
  		appNP.setPermissions("rw-d----");
  		
- 		appHello = new App(mD, currentDir, newUser, helloFile, helloContent);
- 		appHello.setPermissions("rwxdrwxd"); 		
- 		
  		new Link(mD, currentDir ,newUser, "link to useless app" ,"./appWithoutPermissions.pdf");
  		
- 		new App(mD, currentDir, newUser, "exampleApp", "pt.tecnico.myDrive.presentation.Hello.sum");
+ 		exampleApp = new App(mD, currentDir, newUser, "exampleApp", helloSum);
  		
  		new Link(mD, currentDir, newUser, "linkWith$", "/home/$NEWUSER/exampleApp");
 		new Link(mD, currentDir, newUser, "linkWith$FailFile", "/home/$JOHN/exampleApp");
@@ -70,21 +76,62 @@ public class ExecuteFileTest extends TokenReceivingTest {
 		User john = new User(mD, "john", "windything", "john", "rwxdrwxd", null);
 	}
 	
-	@Test
-	public void successExecuteApplication() {
-		successTest();
-	}
-	
-	private void successTest() {
-		String[] arguments = new String[]{"42", "80085"}; 
+	private void executeApp(String method, String[] arguments) {
+ 		exampleApp.setPermissions("rwxdrwxd");
+ 		exampleApp.setContent(method);
 		
-		ExecuteFileService service = new ExecuteFileService(validToken, helloFile, arguments);
+		ExecuteFileService service = new ExecuteFileService(validToken, "exampleApp", arguments);
 		service.execute();
 
 		new Verifications() {{
 				Hello.sum(arguments);
 		}};
+	}	
+	
+	@Test
+	public void successApp() {
+		executeApp(helloSum, new String[]{"42", "80085"});
 	}
+	
+	@Test
+	public void successAppMain() {
+		executeApp(helloClass, new String[]{});
+	}
+
+	@Test(expected=ExecuteFileException.class)
+	public void failAppArguments() {
+		executeApp(helloSum, new String[]{"four", "two"});
+	}
+	
+	@Test(expected=ExecuteFileException.class)
+	public void failMethod() {
+		executeApp(helloClass + ".fail", new String[]{});
+	}	
+	
+	@Test
+	public void successTextFile() { 		
+ 		exampleApp.setPermissions("rwxdrwxd");
+ 		Directory currentDir = mD.getLoginByToken(validToken).getCurrentDir();
+ 		App helloExecuteApp = new App(mD, currentDir, newUser, "helloExecuteApp", helloExecute);
+ 		
+ 		String content = exampleApp.getPath() + " 42 80085\n"
+ 									+ exampleApp.getPath() + " 1 -1 1 -1 1 -1\n"
+ 									+ helloExecuteApp.getPath() + " rabbit pig chipmunk\n";
+ 		
+ 		TextFile file = new TextFile(mD, currentDir, newUser, "file", content);
+		ArrayList<String[]> arguments = new ArrayList<String[]>();
+		arguments.addAll(file.getArguments());
+
+		ExecuteFileService service = new ExecuteFileService(validToken, "file");
+		service.execute();
+
+		new Verifications() {{
+				Hello.sum(arguments.get(0));
+				Hello.sum(arguments.get(1));
+				Hello.execute(arguments.get(2));
+		}};
+	}
+
 	
 	@Test
 	public void successExecuteAssociationApplication() {
@@ -148,7 +195,7 @@ public class ExecuteFileTest extends TokenReceivingTest {
 	@Test
 	public void sessionStillValidTest1h55min() {
 		super.setLastActivity1h55minAgo();
-		successTest();
+		executeApp(helloSum, new String[]{"42", "80085"});
 	}
 
 	@Test(expected = InvalidLoginException.class)
