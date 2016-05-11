@@ -5,8 +5,6 @@ import pt.tecnico.myDrive.service.dto.AbstractFileDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.MDC;
-
 import pt.tecnico.myDrive.domain.AbstractFile;
 import pt.tecnico.myDrive.domain.Directory;
 import pt.tecnico.myDrive.domain.Login;

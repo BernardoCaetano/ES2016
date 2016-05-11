@@ -1,7 +1,5 @@
 package pt.tecnico.myDrive.service;
 
-import java.util.Set;
-
 import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.Variable;
