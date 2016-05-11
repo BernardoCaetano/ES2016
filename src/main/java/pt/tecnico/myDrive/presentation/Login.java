@@ -15,6 +15,8 @@ public class Login extends MyDriveCommand {
 		} else {
 			LoginService service = new LoginService(args[0], args[1]);
 			service.execute();
+			
+			switchToNewToken(args[0], service.result());
 		}
 	}
 }
