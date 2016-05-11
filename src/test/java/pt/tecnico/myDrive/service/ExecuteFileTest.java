@@ -57,9 +57,6 @@ public class ExecuteFileTest extends TokenReceivingTest {
 												+ exampleAppPath + sumArguments + "\n"
 												+ helloExecuteAppPath + executeArguments + "\n";
 	
-	
-	
-	
 	@Override
 	protected void populate() {
 		
@@ -142,7 +139,7 @@ public class ExecuteFileTest extends TokenReceivingTest {
  		TextFile file = new TextFile(mD, currentDir, newUser, "file", content);
  		file.setPermissions(targetPermissions);
 		ArrayList<String[]> arguments = new ArrayList<String[]>();
-		arguments.addAll(getTextFileArguments(file));
+		arguments.addAll(getTextFileArguments(content));
 
 		ExecuteFileService service = new ExecuteFileService(validToken, "file");
 		service.execute();
@@ -154,17 +151,20 @@ public class ExecuteFileTest extends TokenReceivingTest {
 		return executeTextFile(content, "rwxdrwxd");
 	}
 	
-	public ArrayList<String[]> getTextFileArguments(TextFile file) {
+	private ArrayList<String[]> getTextFileArguments(String content) {
 		ArrayList<String[]> list = new ArrayList<String[]>();
-		String[] lines = file.getContent().split("\\n");
+		String[] lines = content.split("\\n");
 		
 		for (String line : lines) {
-			list.add(file.getLineArguments(line));
+			list.add(getLineArguments(content, line));
 		}
 		
 		return list;
 	}
 	
+	private String[] getLineArguments(String content, String line) {
+		return line.substring(line.indexOf(" ") + 1).split(" ");
+	}	
 	
 	@Test
 	public void successTextFile() {

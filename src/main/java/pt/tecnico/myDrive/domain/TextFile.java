@@ -83,7 +83,7 @@ public class TextFile extends TextFile_Base {
 		String[] lines = getContent().split("\\n");
 		for (String line : lines) {
 			String appPath = line.split(" ")[0];
-			String[] params = getLineArguments(line);
+			String[] params = line.substring(line.indexOf(" ") + 1).split(" ");
 			try {
 				App app = (App) u.getMyDrive().getFileByPath(getParent(), appPath);
 				app.execute(u, params);
@@ -92,10 +92,6 @@ public class TextFile extends TextFile_Base {
 						+ "a text file must refer to an App or a Link to an App");
 			}
 		}
-	}
-	
-	public String[] getLineArguments(String line) {
-		return line.substring(line.indexOf(" ") + 1).split(" ");
 	}
     
 	static void executeReflection(String name, String[] args) {
