@@ -4,6 +4,7 @@ import pt.tecnico.myDrive.service.dto.AbstractFileDTO;
 
 import static org.junit.Assert.assertEquals;
 
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.util.List;
@@ -459,6 +460,66 @@ public class ListDirectoryTest extends TokenReceivingTest {
 		service.execute();
 	}
 	
+	// Root Tests
 	
+	private void setLastActivity9minAgo() {
+		Login lg = MyDriveFS.getInstance().getLoginByToken(rootToken);
+		DateTime time = lg.getLastActivity().minusMinutes(9);
+		lg.setLastActivity(time);
+	}
+	
+	private void setLastActivity11minAgo() {
+		Login lg = MyDriveFS.getInstance().getLoginByToken(rootToken);
+		DateTime time = lg.getLastActivity().minusMinutes(11);
+		lg.setLastActivity(time);
+	}
+	
+	@Test
+	public void RootSessionStilValid9min() {
+		setLastActivity9minAgo();
+		
+		rootLogin.setCurrentDir(rootDirectory);
+
+		ListDirectoryService service = new ListDirectoryService(rootToken);
+		service.execute();
+
+		List<AbstractFileDTO> lds = service.result();
+
+		assertEquals("Wrong number of Files in RootDirectory", 3, lds.size());
+
+		assertEquals("Type of . is incorrect", "directory", lds.get(0).getType());
+		assertEquals("Permissions of . are incorrect", "rwxdr-x-", lds.get(0).getPermissions());
+		assertEquals("Dimension of . is incorrect", rootDirectory.dimension(), lds.get(0).getDimension());
+		assertEquals("Username of Owner is incorrect", "root", lds.get(0).getOwner());
+		assertEquals("Id of . is incorrect", rootDirectory.getId(), lds.get(0).getId());
+		assertEquals("Last Modified date of . is incorrect", rootDirectory.getLastModified(),
+				lds.get(0).getLastModified());
+		assertEquals("Name of . is incorrect", ".", lds.get(0).getName());
+
+		assertEquals("Type of .. is incorrect", "directory", lds.get(1).getType());
+		assertEquals("Permissions of .. are incorrect", "rwxdr-x-", lds.get(1).getPermissions());
+		assertEquals("Dimension of .. is incorrect", rootDirectory.dimension(), lds.get(1).getDimension());
+		assertEquals("Username of Owner is incorrect", "root", lds.get(1).getOwner());
+		assertEquals("Id of .. is incorrect", rootDirectory.getId(), lds.get(1).getId());
+		assertEquals("Last Modified date of .. is incorrect", rootDirectory.getLastModified(),
+				lds.get(1).getLastModified());
+		assertEquals("Name of .. is incorrect", "..", lds.get(1).getName());
+
+		assertEquals("Type of home is incorrect", "directory", lds.get(2).getType());
+		assertEquals("Permissions of home are incorrect", "rwxdr-x-", lds.get(2).getPermissions());
+		assertEquals("Dimension of home is incorrect", home.dimension(), lds.get(2).getDimension());
+		assertEquals("Username of Owner is incorrect", "root", lds.get(2).getOwner());
+		assertEquals("Id of home is incorrect", home.getId(), lds.get(2).getId());
+		assertEquals("Last Modified date of home is incorrect", home.getLastModified(), lds.get(2).getLastModified());
+		assertEquals("Name of home is incorrect", "home", lds.get(2).getName());
+	}
+	
+	@Test(expected = InvalidLoginException.class)
+	public void RootSessionInvalid11min() {
+		setLastActivity11minAgo();
+		
+		ListDirectoryService service = new ListDirectoryService(rootToken);
+		service.execute();
+	}
 
 }
