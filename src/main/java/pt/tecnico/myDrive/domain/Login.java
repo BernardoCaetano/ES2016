@@ -114,8 +114,6 @@ public class Login extends Login_Base {
 		}catch (UndefinedVariableException e){
 			addVariable(new Variable(name, value));	
 		}
-		
-    	
     }
        
     public Variable getVariableByName(String name) throws UndefinedVariableException {
