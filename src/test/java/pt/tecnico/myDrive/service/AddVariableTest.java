@@ -87,7 +87,7 @@ public class AddVariableTest extends TokenReceivingTest {
 		assertEquals("Wrong Number of Variables", 2, variableList.size());
 		
 		assertEquals("Wrong Name of First Variable","First", variableList.get(0).getName());
-		assertEquals("Wrong Value of First Variable", "Redefined Value", variableList.get(0).getValue());
+		assertEquals("Wrong Value of First Variable", "First Value", variableList.get(0).getValue());
 		
 		assertEquals("Wrong Name of Second Variable","Second", variableList.get(1).getName());
 		assertEquals("Wrong Value of Second Variable","Second Value", variableList.get(1).getValue());
