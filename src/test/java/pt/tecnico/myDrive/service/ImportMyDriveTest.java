@@ -158,5 +158,11 @@ public class ImportMyDriveTest extends AbstractServiceTest {
 		service = new ImportMyDriveService(doc);
 		service.execute();
 	}
-	
+
+	@Test(expected=ImportDocumentException.class)
+	public void failPasswordTooShort() throws JDOMException, IOException {
+		Document doc = new SAXBuilder().build(new File("src/test/resources/failPasswordTooShort.xml"));
+		service = new ImportMyDriveService(doc);
+		service.execute();
+	}
 }
