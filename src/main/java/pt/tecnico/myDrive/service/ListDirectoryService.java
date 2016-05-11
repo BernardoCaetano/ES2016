@@ -43,7 +43,7 @@ public class ListDirectoryService extends MyDriveService {
 		}
 	}
 	
-	public final List<AbstractFileDTO> result() {
+	public final ArrayList<AbstractFileDTO> result() {
 		return result;
 	}
 }
