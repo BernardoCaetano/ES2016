@@ -94,17 +94,6 @@ public class TextFile extends TextFile_Base {
 		}
 	}
 	
-	public ArrayList<String[]> getArguments() {
-		ArrayList<String[]> list = new ArrayList<String[]>();
-		String[] lines = getContent().split("\\n");
-		
-		for (String line : lines) {
-			list.add(getLineArguments(line));
-		}
-		
-		return list;
-	}
-	
 	public String[] getLineArguments(String line) {
 		return line.substring(line.indexOf(" ") + 1).split(" ");
 	}

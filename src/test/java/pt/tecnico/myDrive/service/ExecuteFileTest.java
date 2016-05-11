@@ -42,12 +42,23 @@ public class ExecuteFileTest extends TokenReceivingTest {
 	private App exampleApp;
 	private App helloExecuteApp;
 	private	User newUser;
-	private String validTextFileContent;
 	private static final String pdfFile = "appWithoutPermissions.pdf";
 	private static final String linkFile = "link to useless app";
+	private static final String exampleAppPath = "/home/insertUsername/exampleApp";
+	private static final String helloExecuteAppPath = "/home/insertUsername/helloExecuteApp";
 	private static final String helloClass = "pt.tecnico.myDrive.presentation.Hello";
 	private static final String helloExecute = helloClass + ".execute";
-	private static final String helloSum = helloClass + ".sum";	
+	private static final String helloSum = helloClass + ".sum";
+	
+	private static final String sumArguments = " 42 80085";
+	private static final String executeArguments = " rabbit pig chipmunk";
+	
+	private static final String validTextFile = exampleAppPath + sumArguments + "\n"
+												+ exampleAppPath + sumArguments + "\n"
+												+ helloExecuteAppPath + executeArguments + "\n";
+	
+	
+	
 	
 	@Override
 	protected void populate() {
@@ -71,15 +82,11 @@ public class ExecuteFileTest extends TokenReceivingTest {
  		helloExecuteApp = new App(mD, currentDir, newUser, "helloExecuteApp", helloExecute);
  		helloExecuteApp.setPermissions("rwxdrwxd");
  		
- 		validTextFileContent = exampleApp.getPath() + " 42 80085\n"
- 								+ exampleApp.getPath() + " 1 -1 1 -1 1 -1\n"
- 								+ helloExecuteApp.getPath() + " rabbit pig chipmunk\n";
- 		
  		new Link(mD, currentDir, newUser, "linkWith$", "/home/$NEWUSER/exampleApp");
 		new Link(mD, currentDir, newUser, "linkWith$FailFile", "/home/$JOHN/exampleApp");
 		new Link(mD, currentDir, newUser, "linkWith$FailEnv", "/home/$JAKE/exampleApp");
 		
-		User john = new User(mD, "john", "windything", "john", "rwxdrwxd", null);
+		new User(mD, "john", "windything", "john", "rwxdrwxd", null);
 	}
 	
 	private void executeApp(String method, String[] arguments) {
@@ -135,7 +142,7 @@ public class ExecuteFileTest extends TokenReceivingTest {
  		TextFile file = new TextFile(mD, currentDir, newUser, "file", content);
  		file.setPermissions(targetPermissions);
 		ArrayList<String[]> arguments = new ArrayList<String[]>();
-		arguments.addAll(file.getArguments());
+		arguments.addAll(getTextFileArguments(file));
 
 		ExecuteFileService service = new ExecuteFileService(validToken, "file");
 		service.execute();
@@ -147,10 +154,21 @@ public class ExecuteFileTest extends TokenReceivingTest {
 		return executeTextFile(content, "rwxdrwxd");
 	}
 	
+	public ArrayList<String[]> getTextFileArguments(TextFile file) {
+		ArrayList<String[]> list = new ArrayList<String[]>();
+		String[] lines = file.getContent().split("\\n");
+		
+		for (String line : lines) {
+			list.add(file.getLineArguments(line));
+		}
+		
+		return list;
+	}
+	
 	
 	@Test
 	public void successTextFile() {
-		ArrayList<String[]> arguments = executeTextFile(validTextFileContent);
+		ArrayList<String[]> arguments = executeTextFile(validTextFile);
 		new Verifications() {{
 			Hello.sum(arguments.get(0));
 			Hello.sum(arguments.get(1));
@@ -159,9 +177,9 @@ public class ExecuteFileTest extends TokenReceivingTest {
 	}
 	
 	@Test(expected=ExecuteFileException.class)
-	public void failTextFileArguments() { 		
-		String content = exampleApp.getPath() + " 42 80085\n"
-						+ exampleApp.getPath() + " universe and everything\n";
+	public void failTextFileArguments() {
+		String content = exampleAppPath + sumArguments + "\n"
+						+ exampleAppPath + executeArguments + "\n";
 		
 		ArrayList<String[]> arguments = executeTextFile(content);
 		new Verifications() {{
@@ -174,7 +192,7 @@ public class ExecuteFileTest extends TokenReceivingTest {
 	public void failTextFileAccessDeniedTarget() {
 		exampleApp.setPermissions("rw-drw-d");
 		
-		ArrayList<String[]> arguments = executeTextFile(validTextFileContent);
+		ArrayList<String[]> arguments = executeTextFile(validTextFile);
 		new Verifications() {{
 			Hello.sum(arguments.get(0));
 			Hello.sum(arguments.get(1));
@@ -183,7 +201,7 @@ public class ExecuteFileTest extends TokenReceivingTest {
 	
 	@Test(expected=AccessDeniedException.class)
 	public void failTextFileAccessDenied() {		
-		ArrayList<String[]> arguments = executeTextFile(validTextFileContent, "rw-drw-d");
+		ArrayList<String[]> arguments = executeTextFile(validTextFile, "rw-drw-d");
 		new Verifications() {{
 			Hello.sum(arguments.get(0));
 			Hello.sum(arguments.get(1));
@@ -269,7 +287,7 @@ public class ExecuteFileTest extends TokenReceivingTest {
 		new MockUp<Directory>() {
 			@Mock
 			String translate(String path) {
-				return "/home/insertUsername/exampleApp";
+				return exampleAppPath;
 			}
 		};
 		
