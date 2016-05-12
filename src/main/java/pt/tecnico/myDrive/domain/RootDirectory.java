@@ -22,7 +22,7 @@ public class RootDirectory extends RootDirectory_Base {
         super();
         setMyDrive(mydrive);
         setId(mydrive);
-    	setName("");
+    	setValidName("", false);
     	setLastModified(new DateTime());
     	setPermissions("rwxdr-x-");
     }

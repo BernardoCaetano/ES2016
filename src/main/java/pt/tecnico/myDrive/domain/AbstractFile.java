@@ -18,7 +18,7 @@ import pt.tecnico.myDrive.exception.PathMaximumLengthException;
 import pt.tecnico.myDrive.service.dto.AbstractFileDTO;;
 
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
-	
+
 	public void initAbstractFile(MyDriveFS mydrive, Directory parentDir, User owner, String name)
 			throws InvalidFileNameException, NameAlreadyExistsException, PathMaximumLengthException {
 		if (!owner.canWrite(parentDir)) {
@@ -34,12 +34,21 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 	}
 
 	@Override
-	public void setName(String name) throws InvalidFileNameException {
-		if (name.equals(".") || name.equals("..")) {
-			throw new InvalidFileNameException(name);
-		} else if (name.contains("/") || name.contains("\0")) {
-			throw new InvalidFileNameException(name);
-		} else {
+	public void setName(String name) {
+		setValidName(name, true);
+	}
+
+	public void setValidName(String name, boolean notRootDir) throws InvalidFileNameException {
+
+		if (notRootDir) {
+			if (name.equals(".") || name.equals("..") || name.isEmpty()) {
+				throw new InvalidFileNameException(name);
+			} else if (name.contains("/") || name.contains("\0")) {
+				throw new InvalidFileNameException(name);
+			} else {
+				super.setName(name);
+			}
+		}else{
 			super.setName(name);
 		}
 	}
@@ -51,15 +60,14 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		else
 			parentDir.addFiles(this);
 	}
-	
-		
+
 	public void setOwner(MyDriveFS mydrive, User owner) {
 		if (owner == null)
 			mydrive.getUserByUsername("root").addFiles(this);
 		else
 			owner.addFiles(this);
 	}
-	
+
 	protected void setId(MyDriveFS mydrive) {
 		mydrive.incrementLastFileID();
 		super.setId(mydrive.getLastFileID());
@@ -142,39 +150,40 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		String time = element.getChildText("lastModified");
 		setLastModified(time != null ? DateTime.parse(time) : DateTime.now());
 	}
-	
+
 	public abstract Element xmlExport();
-	
+
 	public Element xmlAddFile() {
 		Element element = new Element(xmlTag());
-		
+
 		element.setAttribute("id", "" + getId());
-		
-		//FIXME Very, very dirty hack: Paths need to be changed not to accept '/' as last char
+
+		// FIXME Very, very dirty hack: Paths need to be changed not to accept
+		// '/' as last char
 		String path = getParent().getPath();
 		if (path != "/" && path.endsWith("/")) {
 			path = path.substring(0, path.lastIndexOf("/"));
 		}
-		
+
 		Element pathElement = new Element("path");
 		pathElement.addContent(path);
-        element.addContent(pathElement);
-		
-        Element nameElement = new Element("name");
-        nameElement.addContent(getName());
-        element.addContent(nameElement);
-        
-        Element ownerElement = new Element("owner");
-        ownerElement.addContent(getOwner().getUsername());
-        element.addContent(ownerElement);
-        
-        Element permissionsElement = new Element("permissions");
-        permissionsElement.addContent(getPermissions());
-        element.addContent(permissionsElement);
-        
-        Element lastModifiedElement = new Element("lastModified");
-        lastModifiedElement.addContent(getLastModified().toString());
-        element.addContent(lastModifiedElement);
+		element.addContent(pathElement);
+
+		Element nameElement = new Element("name");
+		nameElement.addContent(getName());
+		element.addContent(nameElement);
+
+		Element ownerElement = new Element("owner");
+		ownerElement.addContent(getOwner().getUsername());
+		element.addContent(ownerElement);
+
+		Element permissionsElement = new Element("permissions");
+		permissionsElement.addContent(getPermissions());
+		element.addContent(permissionsElement);
+
+		Element lastModifiedElement = new Element("lastModified");
+		lastModifiedElement.addContent(getLastModified().toString());
+		element.addContent(lastModifiedElement);
 
 		return element;
 	}
@@ -197,7 +206,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 			deleteDomainObject();
 		}
 	};
-	
+
 	protected void cleanup() {
 		super.setParent(null);
 		super.deleteDomainObject();
@@ -232,7 +241,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 			throw new InvalidPermissionStringException(permissions);
 		}
 	}
-	
+
 	public AbstractFileDTO convertToDTO() {
 		return new AbstractFileDTO(this);
 	}
