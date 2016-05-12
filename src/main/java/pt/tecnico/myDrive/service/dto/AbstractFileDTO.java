@@ -5,13 +5,13 @@ import org.joda.time.DateTime;
 import pt.tecnico.myDrive.domain.AbstractFile;
 
 public class AbstractFileDTO {
-	private String _type;
-	private String _permissions;
-	private int _dimension;
-	private String _owner;
-	private Integer _id;
-	private DateTime _lastModified;
-	private String _name;
+	protected String _type;
+	protected String _permissions;
+	protected int _dimension;
+	protected String _owner;
+	protected Integer _id;
+	protected DateTime _lastModified;
+	protected String _name;
 	
 	public AbstractFileDTO(AbstractFile file, String name) {
 		_type = file.xmlTag();
@@ -53,5 +53,9 @@ public class AbstractFileDTO {
 	
 	public final String getName() {
 		return this._name;
+	}
+	
+	public String getContent() {
+		return "";
 	}
 }

@@ -8,6 +8,8 @@ import pt.tecnico.myDrive.exception.ImportDocumentException;
 import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.InvalidLinkContentException;
 import pt.tecnico.myDrive.exception.NotTextFileException;
+import pt.tecnico.myDrive.service.dto.AbstractFileDTO;
+import pt.tecnico.myDrive.service.dto.LinkDTO;
 
 public class Link extends Link_Base {
     
@@ -59,5 +61,10 @@ public class Link extends Link_Base {
     public String xmlTag() {
    	 return "link";
     }
+    
+    @Override
+	public AbstractFileDTO convertToDTO() {
+		return new LinkDTO(this);
+	}
     
 }

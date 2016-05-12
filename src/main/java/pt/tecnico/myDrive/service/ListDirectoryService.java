@@ -28,7 +28,6 @@ public class ListDirectoryService extends MyDriveService {
 
 	@Override
 	protected void dispatch() throws MyDriveException {
-		//TODO test this service when it receives a path. expect getDirectory exceptions
 		MyDriveFS mD = getMyDrive();
 		Login login = mD.getLoginByToken(loginToken);
 		Directory currentDirectory = login.getCurrentDir();
@@ -39,7 +38,7 @@ public class ListDirectoryService extends MyDriveService {
 		result.add(new AbstractFileDTO(toListDirectory.getParent(), ".."));
 		
 		for (AbstractFile file : files) {
-			result.add(new AbstractFileDTO(file));
+			result.add(file.convertToDTO());
 		}
 	}
 	

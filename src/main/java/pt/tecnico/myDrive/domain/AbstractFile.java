@@ -14,7 +14,8 @@ import pt.tecnico.myDrive.exception.InvalidFileNameException;
 import pt.tecnico.myDrive.exception.InvalidOperationException;
 import pt.tecnico.myDrive.exception.InvalidPermissionStringException;
 import pt.tecnico.myDrive.exception.NameAlreadyExistsException;
-import pt.tecnico.myDrive.exception.PathMaximumLengthException;;
+import pt.tecnico.myDrive.exception.PathMaximumLengthException;
+import pt.tecnico.myDrive.service.dto.AbstractFileDTO;;
 
 public abstract class AbstractFile extends AbstractFile_Base implements Comparable<AbstractFile> {
 	
@@ -230,5 +231,9 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		} else {
 			throw new InvalidPermissionStringException(permissions);
 		}
+	}
+	
+	public AbstractFileDTO convertToDTO() {
+		return new AbstractFileDTO(this);
 	}
 }

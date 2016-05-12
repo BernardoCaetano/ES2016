@@ -37,6 +37,7 @@ public class List extends MyDriveCommand {
 			line += file.getId() + " ";
 			line += file.getLastModified() + " ";
 			line += file.getName();
+			line += file.getContent();
 			println(line);
 		}
 	}
