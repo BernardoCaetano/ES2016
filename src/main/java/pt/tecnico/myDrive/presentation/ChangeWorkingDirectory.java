@@ -10,14 +10,21 @@ public class ChangeWorkingDirectory extends MyDriveCommand {
 
 	@Override
 	public void execute(String[] args) {
-		if(args.length != 1){
+		ChangeDirectoryService service;
+		
+		if(args.length != 0 && args.length != 1){
 			throw new RuntimeException("USAGE: '" + getName() + " <path>'");
 		}
 		
-		ChangeDirectoryService service = new ChangeDirectoryService(getCurrentToken(), args[0]);
-		service.execute();
-		String result = service.result();
+		if(args.length == 1){
+			service = new ChangeDirectoryService(getCurrentToken(), args[0]);	
+		} 
+		else {
+			service = new ChangeDirectoryService(getCurrentToken());
+		}
 		
+		service.execute();
+		String result = service.result();		
 		println(result);
 	}
 }

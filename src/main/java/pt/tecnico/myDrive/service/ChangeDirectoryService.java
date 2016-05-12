@@ -15,6 +15,10 @@ public class ChangeDirectoryService extends MyDriveService {
 		this.path = path;
 	}
 
+	public ChangeDirectoryService(long token) {
+		this.token = token;
+		this.path = ".";
+	}
 
 	@Override
 	public final void dispatch() {
