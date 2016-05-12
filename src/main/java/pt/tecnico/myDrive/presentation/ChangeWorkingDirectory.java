@@ -9,7 +9,7 @@ public class ChangeWorkingDirectory extends MyDriveCommand {
 	}
 
 	@Override
-	void execute(String[] args) {
+	public void execute(String[] args) {
 		if(args.length != 1){
 			throw new RuntimeException("USAGE: '" + getName() + " <path>'");
 		}

@@ -7,7 +7,7 @@ public class Help extends Command {
 	}
 
 	@Override
-	void execute(String[] args) {
+	public void execute(String[] args) {
 		if (args.length == 0) {
 			println("Valid commands:");
 			for (String s : getShell().list()) {

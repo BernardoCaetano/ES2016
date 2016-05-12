@@ -15,7 +15,7 @@ public class Environment extends MyDriveCommand {
 	
 
 	@Override
-	void execute(String[] args) {
+	public void execute(String[] args) {
 		switch (args.length) {
 		case 0:
 			ListVariablesService lvs = new ListVariablesService(getCurrentToken());

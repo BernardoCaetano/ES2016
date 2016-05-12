@@ -37,7 +37,7 @@ public abstract class Shell {
 
 		new Command(Shell.this, "quit", "quit the command interpreter") {
 			@Override
-			void execute(String[] args) {
+			public void execute(String[] args) {
 				Shell.this.quit();
 			}
 		};

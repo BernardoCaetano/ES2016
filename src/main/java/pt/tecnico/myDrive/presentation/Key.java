@@ -7,7 +7,7 @@ public class Key extends MyDriveCommand {
 	}
 
 	@Override
-	void execute(String[] args) {
+	public void execute(String[] args) {
 		
 		if (args.length > 1 ) {
 			throw new RuntimeException("USAGE: '" + getName() + " <username>' to change current session or '" + getName()

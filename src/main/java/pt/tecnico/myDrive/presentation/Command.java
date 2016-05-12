@@ -34,7 +34,7 @@ public abstract class Command {
 		return shell;
 	}
 
-	abstract void execute(String args[]);
+	public abstract void execute(String args[]);
 
 	public void print(String s) {
 		shell.print(s);

@@ -12,7 +12,7 @@ public class List extends MyDriveCommand {
 	}
 
 	@Override
-	void execute(String[] args) {
+	public void execute(String[] args) {
 		ListDirectoryService service;
 		
 		if (args.length < 1) {
