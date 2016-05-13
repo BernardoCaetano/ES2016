@@ -17,7 +17,7 @@ public class DeleteFileService extends MyDriveService {
 	@Override
 	protected void dispatch() throws MyDriveException {
 		Login login = getMyDrive().getLoginByToken(token);
-		AbstractFile file = login.getCurrentDir().getFileByName(name);
+		AbstractFile file = login.getCurrentDir().getFileByNameNoFollow(name);
 		file.remove(login.getUser());
 	}
 

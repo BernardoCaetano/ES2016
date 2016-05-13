@@ -45,7 +45,7 @@ public class Directory extends Directory_Base {
 
 	public boolean hasFile(String filename) {
 		try {
-			return getFileByName(filename) != null;
+			return getFileByNameNoFollow(filename) != null;
 		} catch (FileNotFoundException e) {
 			return false;
 		}
