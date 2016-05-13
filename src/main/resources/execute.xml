@@ -27,6 +27,11 @@
     <name>doc</name>
     <content>/home/jtb/documents</content>
   </link>
+  <directory id="6">
+    <owner>jtb</owner>
+    <path>/home/jtb</path>
+    <name>bin</name>
+  </directory>
   <app id="7">
     <path>/home/jtb/bin</path>
     <name>greetings</name>
@@ -69,5 +74,12 @@
     <name>sum</name>
     <content>/home/jtb/bin/the_answer</content>
   </link>
+  <textFile id="14">
+    <path>/home/jtb/bin</path>
+    <permissions>rw-drw-d</permissions>
+    <name>README.pdf</name>
+    <owner>jtb</owner>
+    <content></content>
+  </textFile>
 
 </myDrive>
