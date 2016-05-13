@@ -1,7 +1,8 @@
 package pt.tecnico.myDrive.exception;
 
 public class PasswordTooShortException extends MyDriveException {
-	
+
+	private static final long serialVersionUID = 1L;
 	private String password;
 	
 	public PasswordTooShortException(String password) {

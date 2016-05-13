@@ -2,7 +2,6 @@ package pt.tecnico.myDrive.domain;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 import org.jdom2.Element;
 

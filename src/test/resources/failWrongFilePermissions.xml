@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <!-- Success test -->
+ <!-- Test where file as wrong type of permission -->
 <myDrive>
   <user username="BOMDIAaLÉGRIA">
     <name>BOMDIAaLÉGRIA</name>

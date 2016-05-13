@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <!-- Test where password is too short -->
+ <!-- Test where username has less than 3 chars-->
 <myDrive>
-  <user username="BOMDIAaLÉGRIA">
+  <user username="ZU">
     <name>BOMDIAaLÉGRIA</name>
-    <password>7chars!</password>
+    <password>BOMDIAaLÉGRIA</password>
     <umask>rwxdrwxd</umask>
     <home>/home/jUAN</home>
   </user>

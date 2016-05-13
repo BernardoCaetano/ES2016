@@ -2,7 +2,6 @@ package pt.tecnico.myDrive.service;
 
 import org.junit.Test;
 
-import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.User;
 import pt.tecnico.myDrive.exception.InvalidLoginException;

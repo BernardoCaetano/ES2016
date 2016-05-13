@@ -157,9 +157,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 		Element element = new Element(xmlTag());
 
 		element.setAttribute("id", "" + getId());
-
-		// FIXME Very, very dirty hack: Paths need to be changed not to accept
-		// '/' as last char
+		
 		String path = getParent().getPath();
 		if (path != "/" && path.endsWith("/")) {
 			path = path.substring(0, path.lastIndexOf("/"));

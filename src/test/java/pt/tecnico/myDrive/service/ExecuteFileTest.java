@@ -8,17 +8,11 @@ import mockit.MockUp;
 import mockit.Verifications;
 import mockit.integration.junit4.JMockit;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import pt.tecnico.myDrive.domain.AbstractFile;
 import pt.tecnico.myDrive.domain.App;
 import pt.tecnico.myDrive.domain.Directory;
 import pt.tecnico.myDrive.domain.Link;

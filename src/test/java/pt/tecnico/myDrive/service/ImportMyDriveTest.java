@@ -165,4 +165,33 @@ public class ImportMyDriveTest extends AbstractServiceTest {
 		service = new ImportMyDriveService(doc);
 		service.execute();
 	}
+	
+	@Test(expected=ImportDocumentException.class)
+	public void failUsernameHasAlphaNumeric() throws JDOMException, IOException {
+		Document doc = new SAXBuilder().build(new File("src/test/resources/failUsernameHasAlphaNumeric.xml"));
+		service = new ImportMyDriveService(doc);
+		service.execute();
+	}
+	
+	@Test(expected=ImportDocumentException.class)
+	public void failUsernameHasLessThanThreeChars() throws JDOMException, IOException {
+		Document doc = new SAXBuilder().build(new File("src/test/resources/failUsernameHasLessThanThreeChars.xml"));
+		service = new ImportMyDriveService(doc);
+		service.execute();
+	}
+	
+	@Test(expected=ImportDocumentException.class)
+	public void failHomeDirectoryPath() throws JDOMException, IOException {
+		Document doc = new SAXBuilder().build(new File("src/test/resources/failHomeDirectoryPath.xml"));
+		service = new ImportMyDriveService(doc);
+		service.execute();
+	}
+	
+	@Test(expected=ImportDocumentException.class)
+	public void failHomeDirectoryPath2() throws JDOMException, IOException {
+		Document doc = new SAXBuilder().build(new File("src/test/resources/failHomeDirectoryPath2.xml"));
+		service = new ImportMyDriveService(doc);
+		service.execute();
+	}
+	
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
- <!-- Test where password is too short -->
+ <!-- Home Directory does not start with '/' -->
 <myDrive>
   <user username="BOMDIAaLÉGRIA">
     <name>BOMDIAaLÉGRIA</name>
-    <password>7chars!</password>
+    <password>BOMDIAaLÉGRIA</password>
     <umask>rwxdrwxd</umask>
-    <home>/home/jUAN</home>
+    <home>home/jUAN</home>
   </user>
 </myDrive>
