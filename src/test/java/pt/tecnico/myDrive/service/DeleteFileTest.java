@@ -56,7 +56,6 @@ public class DeleteFileTest extends TokenReceivingTest {
     
     @Test 
     public void sucessOwnLink(){
-    	assertTrue("Link was not deleted", (jadeHomeDir.hasFile("linkToDelete")));
     	DeleteFileService service = new DeleteFileService(validToken, "linkToDelete");
     	service.execute();
     	

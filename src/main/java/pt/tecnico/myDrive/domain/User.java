@@ -157,8 +157,12 @@ public class User extends User_Base {
 
 		if (myDrive.hasUser(username))
 			throw new ImportDocumentException("Trying to import a user that already exists '" + username + "'");
-
-		setUsername(username);
+		
+		try {
+			setUsername(username);
+		} catch (InvalidUsernameException e) {
+			throw new ImportDocumentException("Invalid username '" + username + "'" );
+		}
 		setMyDrive(myDrive);
 
 		String s = userElement.getChildText("password");
@@ -176,7 +180,11 @@ public class User extends User_Base {
 			throw new ImportDocumentException(e.getMessage());
 		}
 		s = userElement.getChildText("home");
-		setHomeDirectory(myDrive, s != null ? s : "/home/" + username);
+		try {
+		 setHomeDirectory(myDrive, s != null ? s : "/home/" + username);
+		} catch (InvalidPathException e) {
+			throw new ImportDocumentException("Path must begin with /");
+		}
 	}
 
     public Element xmlExport() {
