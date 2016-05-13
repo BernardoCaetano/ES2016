@@ -41,7 +41,7 @@ public abstract class AbstractFile extends AbstractFile_Base implements Comparab
 	public void setValidName(String name, boolean notRootDir) throws InvalidFileNameException {
 
 		if (notRootDir) {
-			if (name.equals(".") || name.equals("..") || name.isEmpty()) {
+			if (name.equals(".") || name.equals("..") || name.trim().isEmpty()) {
 				throw new InvalidFileNameException(name);
 			} else if (name.contains("/") || name.contains("\0")) {
 				throw new InvalidFileNameException(name);
