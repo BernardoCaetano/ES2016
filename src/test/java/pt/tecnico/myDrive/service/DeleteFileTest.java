@@ -1,12 +1,13 @@
 package pt.tecnico.myDrive.service;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.User;
 import pt.tecnico.myDrive.domain.Directory;
+import pt.tecnico.myDrive.domain.Link;
 import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.Login;
 
@@ -34,7 +35,8 @@ public class DeleteFileTest extends TokenReceivingTest {
     	roxy = new User(md, "roxy", "passroxy", "roxy", "rwxd-wxd", null);
     	jadeHomeDir= jade.getHomeDirectory();
     	new TextFile(md, jadeHomeDir, jade, "tf1", "blah delete me");
-		
+		new Link(md, jadeHomeDir, jade, "linkToDelete", "/home/jade/tf1");
+    	
         rootLogin = new Login(md, "root", "***");
         rootToken= rootLogin.getToken();
             
@@ -50,6 +52,15 @@ public class DeleteFileTest extends TokenReceivingTest {
     	service.execute();
     	
     	assertFalse("File was not deleted", (jadeHomeDir.hasFile("tf1")));	
+    }
+    
+    @Test 
+    public void sucessOwnLink(){
+    	assertTrue("Link was not deleted", (jadeHomeDir.hasFile("linkToDelete")));
+    	DeleteFileService service = new DeleteFileService(validToken, "linkToDelete");
+    	service.execute();
+    	
+    	assertFalse("Link was not deleted", (jadeHomeDir.hasFile("linkToDelete")));	
     }
    
     
