@@ -281,22 +281,4 @@ public class CreateFileTest extends TokenReceivingTest {
 		CreateFileService service = new CreateFileService(validToken, " ", "Directory");
 		service.execute();
 	}
-	
-	@Test(expected = InvalidFileNameException.class)
-	public void nameCreatedWithSpaces() {
-		CreateFileService service = new CreateFileService(validToken, "             ", "Directory");
-		service.execute();
-	}
-	
-	@Test(expected = InvalidFileNameException.class)
-	public void nameEndsWithSpace() {
-		CreateFileService service = new CreateFileService(validToken, "teste123 ", "Directory");
-		service.execute();
-	}	
-	
-	@Test(expected = InvalidFileNameException.class)
-	public void nameStartsWithSpace() {
-		CreateFileService service = new CreateFileService(validToken, " teste123", "Directory");
-		service.execute();
-	}
 }

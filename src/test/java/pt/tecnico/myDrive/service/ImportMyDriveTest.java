@@ -167,8 +167,8 @@ public class ImportMyDriveTest extends AbstractServiceTest {
 	}
 	
 	@Test(expected=ImportDocumentException.class)
-	public void failUsernameHasAlphaNumeric() throws JDOMException, IOException {
-		Document doc = new SAXBuilder().build(new File("src/test/resources/failUsernameHasAlphaNumeric.xml"));
+	public void failUsernameHasNonAlphaNumeric() throws JDOMException, IOException {
+		Document doc = new SAXBuilder().build(new File("src/test/resources/failUsernameHasNonAlphaNumeric.xml"));
 		service = new ImportMyDriveService(doc);
 		service.execute();
 	}
