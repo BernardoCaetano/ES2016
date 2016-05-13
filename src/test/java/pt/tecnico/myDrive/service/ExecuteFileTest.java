@@ -20,7 +20,6 @@ import pt.tecnico.myDrive.domain.Login;
 import pt.tecnico.myDrive.domain.MyDriveFS;
 import pt.tecnico.myDrive.domain.TextFile;
 import pt.tecnico.myDrive.domain.User;
-import pt.tecnico.myDrive.exception.AccessDeniedException;
 import pt.tecnico.myDrive.exception.AssociationDoesNotExistException;
 import pt.tecnico.myDrive.exception.ExecuteFileException;
 import pt.tecnico.myDrive.exception.FileNotFoundException;
@@ -181,27 +180,6 @@ public class ExecuteFileTest extends TokenReceivingTest {
 			Hello.sum(arguments.get(1));
 	}};
 	}
-	
-	@Test(expected=AccessDeniedException.class)
-	public void failTextFileAccessDeniedTarget() {
-		exampleApp.setPermissions("rw-drw-d");
-		
-		ArrayList<String[]> arguments = executeTextFile(validTextFile);
-		new Verifications() {{
-			Hello.sum(arguments.get(0));
-			Hello.sum(arguments.get(1));
-	}};
-	}
-	
-	@Test(expected=AccessDeniedException.class)
-	public void failTextFileAccessDenied() {		
-		ArrayList<String[]> arguments = executeTextFile(validTextFile, "rw-drw-d");
-		new Verifications() {{
-			Hello.sum(arguments.get(0));
-			Hello.sum(arguments.get(1));
-	}};
-	}
-
 	
 	@Test
 	public void successExecuteAssociationApplication() {
